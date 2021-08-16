@@ -1,0 +1,45 @@
+#logo {
+    width: 75px;
+    height: 75px;
+}
+
+.navbar {
+    padding-top: 4em;
+    padding-bottom: 4em;
+}
+
+
+.nav-img {
+    width: 47px;
+    height: 54px;
+}
+
+#notification {
+    width: 40px;
+    height: 40px;    
+    margin-left: 4em;
+    margin-right: 2em;
+}
+
+#profile {
+    width: 75px;
+    height: 75px;
+}
+
+.navbar > .navbar-nav {
+    margin-left: 4em;
+}
+
+.nav-link {
+    margin-left: 2em;
+    font-size: 20px;
+}
+
+#nav-logo {
+    margin-left: 2em;
+}
+
+#nav-div {
+    margin-left: auto;
+    margin-right: 2em;
+}
