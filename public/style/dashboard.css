@@ -8,6 +8,9 @@
     padding-bottom: 4em;
 }
 
+.nav-item {
+    margin-left: 2em;
+}
 
 .nav-img {
     width: 47px;
@@ -24,6 +27,12 @@
 #profile {
     width: 75px;
     height: 75px;
+}
+
+.home {
+    font-size: 20px;
+    text-decoration: none;
+    color: #fff;
 }
 
 .navbar > .navbar-nav {
