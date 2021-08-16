@@ -84,10 +84,21 @@
             </li>
         </ul>
 
-        <div id="nav-div" class="navbar-brand">
-            <a href="" class="navbar-brand"><img src="../public/images/notification.png" id="notification"></a>
+        <div id="nav-div" class="navbar-brand d-flex flex-row">
+            <div >
+                <a href="" class="navbar-brand"><img src="../public/images/notification.png" id="notification"></a>
+            </div>
+            
 
-            <a href="" class="navbar-brand"><img src="../public/images/profile.png" id="profile"></a>
+            <div class="dropdown">
+                <a href="#" class="navbar-brand" id="profile-btn" data-bs-toggle="dropdown">
+                  <img src="../public/images/profile.png" id="profile">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelled-by="profile-btn">
+                    <li><a href="" class="dropdown-item">Create an Account</a></li>
+                    <li><a href="" class="dropdown-item">Settings</a></li>
+                </ul>
+              </div>
         </div>
     </nav>
     
