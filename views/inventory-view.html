@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>	
+
+    <link rel="stylesheet" href="../public/style/dashboard.css">
+    <title>Dashboard</title>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-md bg-secondary d-flex">
+        <a href="" id="nav-logo" class="navbar-brand"><img src="../public/images/logo.png" id="logo"></a>
+        <ul class="navbar-nav text-center">
+            <li class="nav-item text-center">
+                <img src="../public/images/home.png" class="nav-img"> 
+                <br><br>
+                <a href="" class="btn btn-secondary">Home</a>
+            </li>
+
+            <li class="nav-item">
+                <img src="../public/images/inventory.png" class="nav-img"> 
+                    <br><br>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="inventory-btn" data-bs-toggle="dropdown">
+                            Inventory
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelled-by="inventory-btn">
+                            <li><a href="" class="dropdown-item">View Inventory</a></li>
+                            <li><a href="" class="dropdown-item">Pricelist</a></li>
+                        </ul>
+                    </div>
+            </li>
+
+            <li class="nav-item">
+                <img src="../public/images/sales.png" class="nav-img"> 
+                    <br><br>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="sales-btn" data-bs-toggle="dropdown">
+                            Sales
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelled-by="sales-btn">
+                            <li><a href="" class="dropdown-item">Customer PO</a></li>
+                            <li><a href="" class="dropdown-item">Customer PO List</a></li>
+                            <li><a href="" class="dropdown-item">Customer PO Tracker</a></li>
+                        </ul>
+                    </div>
+            </li>
+
+            <li class="nav-item">
+                <img src="../public/images/reorder.png" class="nav-img"> 
+                    <br><br>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="reorder-btn" data-bs-toggle="dropdown">
+                            Reorder
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelled-by="reorder-btn">
+                            <li><a href="" class="dropdown-item">Supplier PO</a></li>
+                            <li><a href="" class="dropdown-item">Supplier PO List</a></li>
+                            <li><a href="" class="dropdown-item">Supplier PO Tracker</a></li>
+                        </ul>
+                    </div>
+            </li>
+
+            <li class="nav-item">
+                <img src="../public/images/report.png" class="nav-img"> 
+                    <br><br>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="report-btn" data-bs-toggle="dropdown">
+                            Report
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelled-by="report-btn">
+                            <li><a href="" class="dropdown-item">Total Sales & Expenses</a></li>
+                            <li><a href="" class="dropdown-item">Shrinkages</a></li>
+                        </ul>
+                    </div>
+            </li>
+        </ul>
+
+        <div id="nav-div" class="navbar-brand d-flex flex-row">
+            <div >
+                <a href="" class="navbar-brand"><img src="../public/images/notification.png" id="notification"></a>
+            </div>
+            
+
+            <div class="dropdown">
+                <a href="#" class="navbar-brand" id="profile-btn" data-bs-toggle="dropdown">
+                  <img src="../public/images/profile.png" id="profile">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelled-by="profile-btn">
+                    <li><a href="" class="dropdown-item">Create an Account</a></li>
+                    <li><a href="" class="dropdown-item">Settings</a></li>
+                </ul>
+              </div>
+        </div>
+    </nav>
+    
+    
+
+    <div class="container mb-3 mt-3">
+        
+        <div class="row mb-2">
+            <div class="col-8 h3">
+                    Inventory: View Inventory
+            </div>
+            <div class="form-outline col-4 float-end">
+                <input type="search" id="form1" class="form-control" placeholder="Search Product Name"
+                aria-label="Search" />
+            </div>
+        </div>
+        
+        <header class="text-center h3 bg-secondary">
+            <br>
+            Inventory
+            <br>
+            As of today: xx, xxxx, xxxx
+            <br>
+            <br>
+        </header>
+
+        <table class="table table-bordered text-center">
+
+            <thead>
+                <th><input type="checkbox" name="select_all" value="1" id="example-select-all"></th>
+                <th scope="col">Product ID</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Brand</th>
+                <th scope="col">SRP</th>
+                <th scope="col">QTY On Hand</th>
+                <th scope="col">Reorder Point</th>
+                <th scope="col">Availability</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <th></th>
+                    <th>1</th>
+                    <td>Blue Shirt</td>
+                    <td>Uniqlo</td>
+                    <td>220</td>
+                    <td>34</td>
+                    <td>10</td>
+                    <td>High</td>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th>1</th>
+                    <td>Blue Shirt</td>
+                    <td>Uniqlo</td>
+                    <td>220</td>
+                    <td>34</td>
+                    <td>10</td>
+                    <td>High</td>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th>1</th>
+                    <td>Blue Shirt</td>
+                    <td>Uniqlo</td>
+                    <td>220</td>
+                    <td>34</td>
+                    <td>10</td>
+                    <td>High</td>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th>1</th>
+                    <td>Blue Shirt</td>
+                    <td>Uniqlo</td>
+                    <td>220</td>
+                    <td>34</td>
+                    <td>10</td>
+                    <td>High</td>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th>1</th>
+                    <td>Blue Shirt</td>
+                    <td>Uniqlo</td>
+                    <td>220</td>
+                    <td>34</td>
+                    <td>10</td>
+                    <td>High</td>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th>1</th>
+                    <td>Blue Shirt</td>
+                    <td>Uniqlo</td>
+                    <td>220</td>
+                    <td>34</td>
+                    <td>10</td>
+                    <td>High</td>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th>1</th>
+                    <td>Blue Shirt</td>
+                    <td>Uniqlo</td>
+                    <td>220</td>
+                    <td>34</td>
+                    <td>10</td>
+                    <td>High</td>
+                  </tr>
+            </tbody>
+
+        </table>
+
+        <div class="container d-flex justify-content-end">
+            <button type="button" class="btn btn-secondary m-2">Delete</button>
+            <button type="button" class="btn btn-secondary m-2">Edit</button>
+          <button type="button" class="btn btn-secondary m-2">Add</button>
+        </div>
+        
+    </div>
+
+</body>
+</html>
