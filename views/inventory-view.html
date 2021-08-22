@@ -145,11 +145,11 @@
 
                 <script>
                     for (var i = 0; i < 20; i += 1) {   
-                        $("#myTable").append("<tr><th></th>" + "<th>"+(100+i)+"</th>" + "<td>"+"Red Shirt"+"</td>" + "<td>"+"H&M"+"</td>" + "<td>"+(200)+"</td>" + "<td>"+(30+i)+"</td>" + "<td>"+(10 + i)+"</td>" + "<td>"+"High"+"</td></tr>");
+                        $("#myTable").append("<tr><td></td>" + "<td>"+(100+i)+"</td>" + "<td>"+"Red Shirt"+"</td>" + "<td>"+"H&M"+"</td>" + "<td>"+(200)+"</td>" + "<td>"+(30+i)+"</td>" + "<td>"+(10 + i)+"</td>" + "<td>"+"High"+"</td></tr>");
 
-                        $("#myTable").append("<tr><th></th>" + "<th>"+(200+i)+"</th>" + "<td>"+"Blue Shirt"+"</td>" + "<td>"+"Uniqlo"+"</td>" + "<td>"+(100)+"</td>" + "<td>"+(20+i)+"</td>" + "<td>"+(5 + i)+"</td>" + "<td>"+"High"+"</td></tr>");
+                        $("#myTable").append("<tr><td></td>" + "<td>"+(200+i)+"</td>" + "<td>"+"Blue Shirt"+"</td>" + "<td>"+"Uniqlo"+"</td>" + "<td>"+(100)+"</td>" + "<td>"+(20+i)+"</td>" + "<td>"+(5 + i)+"</td>" + "<td>"+"High"+"</td></tr>");
 
-                        $("#myTable").append("<tr><th></th>" + "<th>"+(300+i)+"</th>" + "<td>"+"Green Shirt"+"</td>" + "<td>"+"N/A"+"</td>" + "<td>"+(300)+"</td>" + "<td>"+(10+i)+"</td>" + "<td>"+(15 + i)+"</td>" + "<td>"+"High"+"</td></tr>");
+                        $("#myTable").append("<tr><td></td>" + "<td>"+(300+i)+"</td>" + "<td>"+"Green Shirt"+"</td>" + "<td>"+"N/A"+"</td>" + "<td>"+(300)+"</td>" + "<td>"+(10+i)+"</td>" + "<td>"+(15 + i)+"</td>" + "<td>"+"High"+"</td></tr>");
                     }
                 </script>
                     
@@ -159,70 +159,47 @@
         </table>
 
         <div class="container d-flex justify-content-end">
-            <button type="button" class="btn btn-secondary m-2" id="delete_button">Delete</button>
-            <button type="button" class="btn btn-secondary m-2" id="edit_button">Edit</button>
+            <button type="button" class="btn btn-secondary m-2" id="delete_button" disabled>Delete</button>
+            <button type="button" class="btn btn-secondary m-2" id="edit_button" disabled>Edit</button>
           <button type="button" class="btn btn-secondary m-2" id="add_button">Add</button>
         </div>
         
     </div>
+
+    <div class="modal fade" id="details_modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" id="close_details_modal">&times;</button>
+                </div>
+                <div class="modal-body bg-secondary">
+                     
+                    <div class="container mb-3 mt-3 ">
+
+                        <div class="row">
+                            <div class="col-5">
+                                <img src="../public/images/placeholder.png" class="img-fluid">
+                            </div>
+
+                            <div class="col-7">
+
+                                <div id="details_product_name" class="h3">Product Name: <span></span></div>
+                                <br>
+                                <p id="details_price" class="h3">Price: <span></span></p>
+                                <br>
+                                <p id="details_quantity" class="h3">Quantity: <span></span></p>
+                                <br>
+                                <p id="details_variations" class="h3">Variations: <span></span></p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
-    <script>
-        $(document).ready(function () 
-        {
-            let table = $('#myTable').DataTable( 
-            {
-                columnDefs: [{
-                            orderable: false,
-                            className: 'select-checkbox',
-                            targets: 0
-                            }],
-                select: true,
-                order: [
-                        [1, 'asc']
-                        ],
-                "dom":  '<lf<t>ip>'//'<l<t>"btn-secondary"ip>'
-            });
-
-            table.on("click", "th.select-checkbox", function() {
-            if ($("th.select-checkbox").hasClass("selected")) 
-            {
-                table.rows().deselect();
-                $("th.select-checkbox").removeClass("selected");
-                $("#edit_button").prop("disabled", false);
-            } 
-            else 
-            {
-                table.rows().select();
-                $("th.select-checkbox").addClass("selected");
-                $("#edit_button").prop("disabled", true);
-            }
-        }).on("select deselect", function() {
-            ("Some selection or deselection going on")
-            if (table.rows({ selected: true}).count() !== table.rows().count()) 
-            {
-                if(table.rows({ selected: true}).count() > 1)
-                {
-                    $("th.select-checkbox").removeClass("selected");
-                    $("#edit_button").prop("disabled", true);
-                }
-                else
-                {
-                    $("th.select-checkbox").removeClass("selected");
-                    $("#edit_button").prop("disabled", false);
-                }
-            } 
-            else 
-            {
-                $("th.select-checkbox").addClass("selected");
-            }
-
-
-
-        });
-
-        
-        });
-    </script>
+    <script src="../public/script/inventory-view.js"></script>
 
 </body>
 </html>
