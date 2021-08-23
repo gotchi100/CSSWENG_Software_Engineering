@@ -18,7 +18,7 @@
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
 
-    <title>View Pricelist</title>
+    <title>Customer PO Form</title>
 </head>
 <body>
 
@@ -58,7 +58,7 @@
                         </button>
                         <ul class="dropdown-menu" aria-labelled-by="sales-btn">
                             <li><a href="customer-po-form.html" class="dropdown-item">Customer PO</a></li>
-                            <li><a href="" class="dropdown-item">Customer PO List</a></li>
+                            <li><a href="customer-order-list.html" class="dropdown-item">Customer PO List</a></li>
                             <li><a href="" class="dropdown-item">Customer PO Tracker</a></li>
                         </ul>
                     </div>
@@ -118,110 +118,120 @@
         
         <div class="row mb-2">
             <div class="col-8 h3">
-                    Inventory: Pricelist
+                    Sales: Customer PO
             </div>
         </div>
         
         <header class="text-center h3 bg-secondary">
             <br>
-            Pricelist
-            <br>
-            As of today: xx, xxxx, xxxx
+            Customer PO Form
             <br>
             <br>
         </header>
+
+
+    <!-- customer po form -->
+        <div class="container mt-5">
+            <form>
+                <div class="form-info">
+                    <div class="form-group row">
+                        <label for="customer_po" class="col-2 col-form-label font-weight-bold">Customer-PO:</label>
+                        <input type="text" class="form-control-file col-2" id="customer_po" >
     
-        
-    <!-- data table -->
-
-        <table class="table table-bordered text-center" id="inventory_pricelist_table">
-
-            <thead>
-                <th></th>
-                <th scope="col">Product ID</th>
-                <th scope="col">Product Name</th>
-                <th scope="col">SRP</th>
-                <th scope="col">Buying Price</th>
-            </thead>
-            <tbody>
-
-                <!-- Table placeholders -->
-                <script>
-                    for (var i = 0; i < 20; i += 1) {   
-                        $("#inventory_pricelist_table").append("<tr><td></td>" + "<td>"+(100+i)+"</td>" + "<td>"+"Red Shirt"+"</td>" + "<td>"+(200)+"</td>" + "<td>"+(30+i)+"</td>");
-
-                        $("#inventory_pricelist_table").append("<tr><td></td>" + "<td>"+(200+i)+"</td>" + "<td>"+"Blue Shirt"+"</td>" + "<td>"+(100)+"</td>" + "<td>"+(20+i)+"</td>");
-
-                        $("#inventory_pricelist_table").append("<tr><td></td>" + "<td>"+(300+i)+"</td>" + "<td>"+"Green Shirt"+"</td>" + "<td>"+(300)+"</td>" + "<td>"+(10+i)+"</td>" );
-                    }
-                </script>
-                    
-               
-            </tbody>
-
-        </table>
-
-        <div class="container d-flex justify-content-end">
-            <button type="button" class="btn btn-secondary m-2" id="delete_button" disabled>Delete</button>
-            <button type="button" class="btn btn-secondary m-2" id="edit_modal_button" data-toggle="modal" data-target="#edit_modal" disabled>Edit</button>
-        </div>
-        
-    </div>
-
-     <!-- edit product pop-up -->
-
-     <div class="modal fade" id="edit_modal" role="dialog" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-
-                <div class="modal-header bg-secondary border-0"></div>
-                
-                <div class="modal-body bg-secondary">
-                     
-                    <table class="table table-bordered text-center bg-light" id="inventory_pricelist_table">
-
-                        <thead>
-                            <tr>
-                                <th colspan="7" class="h2">Edit Product</th>
-                            </tr>
-                            <tr>
-                                <th scope="col">Product ID</th>
-                                <th scope="col">Product Name</th>
-                                <th scope="col">SRP</th>
-                                <th scope="col">Buying Price</th>
-                            </tr>
-                            
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>
-                                    <input type="number" class="form-control" id="edit_product_id" value="10">
-                                </th>
-                                <th>
-                                    <input type="text" class="form-control" id="edit_product_name">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="edit_price">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="edit_buying_price">
-                                </th>
-                            </tr>
+                        <label for="customer_name" class="col-2 col-form-label font-weight-bold">Customer Name:</label>
+                        <input type="text" class="form-control-file col-2" id="customer_name" >
+    
+                        <label for="date_ordered" class="col-2 col-form-label font-weight-bold">Date Ordered:</label>
+                        <input type="text" class="form-control-file col-2" id="date_ordered" >
+                    </div>
+    
+                    <div class="form-group row">
+                        <label for="customer_order_id" class="col-2 col-form-label font-weight-bold">Customer Order ID:</label>
+                        <input type="text" class="form-control-file col-2" id="customer_order_id" >
+    
+                        <div class="col-2 text-center">
+                            <label for="physical_checkbox" class="form-check-label font-weight-bold mt-2">
+                                <input type="checkbox" class="form-check-input" id="physical_checkbox" style="width:20px;height:20px;">&nbsp&nbspPhysical
+                            </label>
+                        </div>
                         
-                        </tbody>
-            
-                    </table>
-
-                    <button type="button" class="btn btn-light float-right" id="edit_product_button">Edit</button>
-                    <button type="button" class="btn btn-light float-right mr-3" data-dismiss="modal" id="close_edit_modal">Cancel</button>
-                    
+    
+                        <div class="col-2 text-center">
+                            <label for="online_checkbox" class="form-check-label font-weight-bold mt-2">
+                                <input type="checkbox" class="form-check-input" id="online_checkbox" style="width:20px;height:20px;">&nbsp&nbspOnline
+                            </label>    
+                        </div>
+                        
+                        <label for="pickup_date" class="col-2 col-form-label font-weight-bold">Pickup Date:</label>
+                        <input type="text" class="form-control-file col-form-label col-2" id="pickup_date">
+                    </div>
                 </div>
 
-                <div class="modal-footer bg-secondary border-0"></div>
-            </div>
-        </div>
-    </div>
+                <table class="table table-bordered mt-5">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Unit Price</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <select class="custom-select">
+                                    <option></option>
+                                </select>
+
+                            </td>
+                            <td>
+                                <input type="number" class="form-control" id="unit_price" readonly>
+                            </td>
+                            <td>
+                                <input type="number" class="form-control" id="quantity">
+                            </td>
+                            <td>
+                                <input type="number" class="form-control" id="amount" readonly>
+                            </td>
+                            <td><button type="button" class="btn btn-secondary form-control font-weight-bold" id="add_item_button">+</button></td>
+                        </tr>
+                    
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" class="h4 text-right">Total: </th>
+                            <th colspan="2" class="h4"></th>
+                        </tr>
+                        
+                    </tfoot>
+                    
+
+
+                </table>
+
+
+
+
+
+            </form>
+            <button type="button" class="btn btn-secondary float-right font-weight-bold" id="add_item_button">Submit</button>
+        </div>        
+        
+        
+        
+        
+
+
+
+
+
+
     
-    <script src="../public/script/inventory-pricelist.js"></script>
+    </div> 
+
+        
+   
 </body>
 </html>
