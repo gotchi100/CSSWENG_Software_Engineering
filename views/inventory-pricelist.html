@@ -118,13 +118,13 @@
         
         <div class="row mb-2">
             <div class="col-8 h3">
-                    Inventory: View Inventory
+                    Inventory: Pricelist
             </div>
         </div>
         
         <header class="text-center h3 bg-secondary">
             <br>
-            Inventory
+            Pricelist
             <br>
             As of today: xx, xxxx, xxxx
             <br>
@@ -134,28 +134,25 @@
         
     <!-- data table -->
 
-        <table class="table table-bordered text-center" id="inventory_view_table">
+        <table class="table table-bordered text-center" id="inventory_pricelist_table">
 
             <thead>
                 <th></th>
                 <th scope="col">Product ID</th>
                 <th scope="col">Product Name</th>
-                <th scope="col">Brand</th>
                 <th scope="col">SRP</th>
-                <th scope="col">QTY On Hand</th>
-                <th scope="col">Reorder Point</th>
-                <th scope="col">Availability</th>
+                <th scope="col">Buying Price</th>
             </thead>
             <tbody>
 
                 <!-- Table placeholders -->
                 <script>
                     for (var i = 0; i < 20; i += 1) {   
-                        $("#inventory_view_table").append("<tr><td></td>" + "<td>"+(100+i)+"</td>" + "<td>"+"Red Shirt"+"</td>" + "<td>"+"H&M"+"</td>" + "<td>"+(200)+"</td>" + "<td>"+(30+i)+"</td>" + "<td>"+(10 + i)+"</td>" + "<td>"+"High"+"</td></tr>");
+                        $("#inventory_pricelist_table").append("<tr><td></td>" + "<td>"+(100+i)+"</td>" + "<td>"+"Red Shirt"+"</td>" + "<td>"+(200)+"</td>" + "<td>"+(30+i)+"</td>");
 
-                        $("#inventory_view_table").append("<tr><td></td>" + "<td>"+(200+i)+"</td>" + "<td>"+"Blue Shirt"+"</td>" + "<td>"+"Uniqlo"+"</td>" + "<td>"+(100)+"</td>" + "<td>"+(20+i)+"</td>" + "<td>"+(5 + i)+"</td>" + "<td>"+"High"+"</td></tr>");
+                        $("#inventory_pricelist_table").append("<tr><td></td>" + "<td>"+(200+i)+"</td>" + "<td>"+"Blue Shirt"+"</td>" + "<td>"+(100)+"</td>" + "<td>"+(20+i)+"</td>");
 
-                        $("#inventory_view_table").append("<tr><td></td>" + "<td>"+(300+i)+"</td>" + "<td>"+"Green Shirt"+"</td>" + "<td>"+"N/A"+"</td>" + "<td>"+(300)+"</td>" + "<td>"+(10+i)+"</td>" + "<td>"+(15 + i)+"</td>" + "<td>"+"High"+"</td></tr>");
+                        $("#inventory_pricelist_table").append("<tr><td></td>" + "<td>"+(300+i)+"</td>" + "<td>"+"Green Shirt"+"</td>" + "<td>"+(300)+"</td>" + "<td>"+(10+i)+"</td>" );
                     }
                 </script>
                     
@@ -167,106 +164,8 @@
         <div class="container d-flex justify-content-end">
             <button type="button" class="btn btn-secondary m-2" id="delete_button" disabled>Delete</button>
             <button type="button" class="btn btn-secondary m-2" id="edit_modal_button" data-toggle="modal" data-target="#edit_modal" disabled>Edit</button>
-          <button type="button" class="btn btn-secondary m-2" id="add_modal_button" data-toggle="modal" data-target="#add_modal">Add</button>
         </div>
         
-    </div>
-
-    <!-- view product pop-up -->
-
-    <div class="modal fade" id="details_modal" role="dialog" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" id="close_details_modal">&times;</button>
-                </div>
-                <div class="modal-body bg-secondary">
-                     
-                    <div class="container mb-3 mt-3">
-
-                        <div class="row">
-                            <div class="col-5">
-                                <img src="../public/images/placeholder.png" class="img-fluid">
-                            </div>
-
-                            <div class="col-7">
-
-                                <div id="details_product_name" class="h3">Product Name: <span></span></div>
-                                <br>
-                                <p id="details_price" class="h3">Price: <span></span></p>
-                                <br>
-                                <p id="details_quantity" class="h3">Quantity: <span></span></p>
-                                <br>
-                                <p id="details_variations" class="h3">Variations: <span></span></p>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- add product pop-up -->
-
-    <div class="modal fade" id="add_modal" role="dialog" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-
-                <div class="modal-header bg-secondary border-0"></div>
-                
-                <div class="modal-body bg-secondary">
-                     
-                    <table class="table table-bordered text-center bg-light" id="inventory_view_table">
-
-                        <thead>
-                            <tr>
-                                <th colspan="7" class="h2">Add Product</th>
-                            </tr>
-                            <tr>
-                                <th scope="col">Product ID</th>
-                                <th scope="col">Product Name</th>
-                                <th scope="col">Brand</th>
-                                <th scope="col">SRP</th>
-                                <th scope="col">QTY On Hand</th>
-                                <th scope="col">Reorder Point</th>
-                            </tr>
-                            
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>
-                                    <input type="number" class="form-control" id="add_product_id">
-                                </th>
-                                <th>
-                                    <input type="text" class="form-control" id="add_product_name">
-                                </th>
-                                <th>
-                                    <input type="text" class="form-control" id="add_brand">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="add_price">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="add_quantity">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="add_reorder_point">
-                                </th>
-                            </tr>
-                        
-                        </tbody>
-            
-                    </table>
-
-                    <button type="button" class="btn btn-light float-right" id="add_product_button">Add</button>
-                    <button type="button" class="btn btn-light float-right mr-3" data-dismiss="modal" id="close_add_modal">Cancel</button>
-                    
-                </div>
-
-                <div class="modal-footer bg-secondary border-0"></div>
-            </div>
-        </div>
     </div>
 
      <!-- edit product pop-up -->
@@ -279,7 +178,7 @@
                 
                 <div class="modal-body bg-secondary">
                      
-                    <table class="table table-bordered text-center bg-light" id="inventory_view_table">
+                    <table class="table table-bordered text-center bg-light" id="inventory_pricelist_table">
 
                         <thead>
                             <tr>
@@ -288,10 +187,8 @@
                             <tr>
                                 <th scope="col">Product ID</th>
                                 <th scope="col">Product Name</th>
-                                <th scope="col">Brand</th>
                                 <th scope="col">SRP</th>
-                                <th scope="col">QTY On Hand</th>
-                                <th scope="col">Reorder Point</th>
+                                <th scope="col">Buying Price</th>
                             </tr>
                             
                         </thead>
@@ -304,23 +201,17 @@
                                     <input type="text" class="form-control" id="edit_product_name">
                                 </th>
                                 <th>
-                                    <input type="text" class="form-control" id="edit_brand">
-                                </th>
-                                <th>
                                     <input type="number" class="form-control" id="edit_price">
                                 </th>
                                 <th>
-                                    <input type="number" class="form-control" id="edit_quantity">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="edit_reorder_point">
+                                    <input type="number" class="form-control" id="edit_buying_price">
                                 </th>
                             </tr>
                         
                         </tbody>
             
                     </table>
-                    
+
                     <button type="button" class="btn btn-light float-right" id="edit_product_button">Edit</button>
                     <button type="button" class="btn btn-light float-right mr-3" data-dismiss="modal" id="close_edit_modal">Cancel</button>
                     
@@ -331,6 +222,6 @@
         </div>
     </div>
     
-    <script src="../public/script/inventory-view.js"></script>
+    <script src="../public/script/inventory-pricelist.js"></script>
 </body>
 </html>
