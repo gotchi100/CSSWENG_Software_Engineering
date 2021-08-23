@@ -18,7 +18,7 @@
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
 
-    <title>View Pricelist</title>
+    <title>Customer PO Form</title>
 </head>
 <body>
 
@@ -118,110 +118,81 @@
         
         <div class="row mb-2">
             <div class="col-8 h3">
-                    Inventory: Pricelist
+                    Reorder: Supplier PO
             </div>
         </div>
         
         <header class="text-center h3 bg-secondary">
             <br>
-            Pricelist
-            <br>
-            As of today: xx, xxxx, xxxx
+            Supplier PO Form
             <br>
             <br>
         </header>
+
+
+    <!-- customer po form -->
+        <div class="container mt-5">
+            <form>
+                <div class="form-info">
+
+                    <div class="form-group row">
+                        <label for="supplier_po" class="col-2 col-form-label font-weight-bold">Supplier-ID:</label>
+                        <input type="text" class="form-control-file col-2" id="supplier_po" >
     
-        
-    <!-- data table -->
+                        <label for="supplier_email" class="col-2 col-form-label font-weight-bold">Supplier Number:</label>
+                        <input type="text" class="form-control-file col-2" id="supplier_email" >
+    
+                        <label for="supplier_address" class="col-2 col-form-label font-weight-bold">Supplier Address:</label>
+                        <input type="text" class="form-control-file col-2" id="supplier_address" >
+                    </div>
+    
+                    <div class="form-group row">
+                        <label for="supplier_name" class="col-2 col-form-label font-weight-bold">Supplier Name:</label>
+                        <input type="text" class="form-control-file col-2" id="supplier_name" >
 
-        <table class="table table-bordered text-center" id="inventory_pricelist_table">
-
-            <thead>
-                <th></th>
-                <th scope="col">Product ID</th>
-                <th scope="col">Product Name</th>
-                <th scope="col">SRP</th>
-                <th scope="col">Buying Price</th>
-            </thead>
-            <tbody>
-
-                <!-- Table placeholders -->
-                <script>
-                    for (var i = 0; i < 20; i += 1) {   
-                        $("#inventory_pricelist_table").append("<tr><td></td>" + "<td>"+(100+i)+"</td>" + "<td>"+"Red Shirt"+"</td>" + "<td>"+(200)+"</td>" + "<td>"+(30+i)+"</td>");
-
-                        $("#inventory_pricelist_table").append("<tr><td></td>" + "<td>"+(200+i)+"</td>" + "<td>"+"Blue Shirt"+"</td>" + "<td>"+(100)+"</td>" + "<td>"+(20+i)+"</td>");
-
-                        $("#inventory_pricelist_table").append("<tr><td></td>" + "<td>"+(300+i)+"</td>" + "<td>"+"Green Shirt"+"</td>" + "<td>"+(300)+"</td>" + "<td>"+(10+i)+"</td>" );
-                    }
-                </script>
-                    
-               
-            </tbody>
-
-        </table>
-
-        <div class="container d-flex justify-content-end">
-            <button type="button" class="btn btn-secondary m-2" id="delete_button" disabled>Delete</button>
-            <button type="button" class="btn btn-secondary m-2" id="edit_modal_button" data-toggle="modal" data-target="#edit_modal" disabled>Edit</button>
-        </div>
-        
-    </div>
-
-     <!-- edit product pop-up -->
-
-     <div class="modal fade" id="edit_modal" role="dialog" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-
-                <div class="modal-header bg-secondary border-0"></div>
-                
-                <div class="modal-body bg-secondary">
-                     
-                    <table class="table table-bordered text-center bg-light" id="inventory_pricelist_table">
-
-                        <thead>
-                            <tr>
-                                <th colspan="7" class="h2">Edit Product</th>
-                            </tr>
-                            <tr>
-                                <th scope="col">Product ID</th>
-                                <th scope="col">Product Name</th>
-                                <th scope="col">SRP</th>
-                                <th scope="col">Buying Price</th>
-                            </tr>
-                            
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>
-                                    <input type="number" class="form-control" id="edit_product_id" value="10">
-                                </th>
-                                <th>
-                                    <input type="text" class="form-control" id="edit_product_name">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="edit_price">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="edit_buying_price">
-                                </th>
-                            </tr>
-                        
-                        </tbody>
-            
-                    </table>
-
-                    <button type="button" class="btn btn-light float-right" id="edit_product_button">Edit</button>
-                    <button type="button" class="btn btn-light float-right mr-3" data-dismiss="modal" id="close_edit_modal">Cancel</button>
-                    
+                        <label for="supplier_number" class="col-2 col-form-label font-weight-bold">Supplier Email:</label>
+                        <input type="text" class="form-control-file col-2" id="supplier_number" >
+                    </div>
                 </div>
 
-                <div class="modal-footer bg-secondary border-0"></div>
-            </div>
-        </div>
-    </div>
+                <header class="h4 bg-secondary text-center">
+                    <br>
+                    Product name
+                    <br>
+                    <br>             
+                </header>
+                        
+                <div class="form-group row">
+                    <div class="col-1"></div>
+                    <select name="" id="mode_of_payment" class="col-9 form-control-file">
+                        <option value=""></option>
+                        <option value=""></option>
+                    </select>
+                    <button type="button" class="btn btn-secondary form-control font-weight-bold col-1 ml-3" id="add_item_button">+</button>
+                </div>    
+
+
+
+            </form>
+
+
+            <button type="button" class="btn btn-secondary float-right m-2" id="add_item_button">Submit</button>
+            <button type="button" class="btn btn-secondary float-right m-2" id="clear_item_button">Clear</button>
+        </div>        
+        
+        
+        
+        
+
+
+
+
+
+
     
-    <script src="../public/script/inventory-pricelist.js"></script>
+    </div> 
+
+        
+   
 </body>
 </html>

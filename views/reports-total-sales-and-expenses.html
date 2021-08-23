@@ -18,7 +18,7 @@
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
 
-    <title>View Pricelist</title>
+    <title>View Inventory</title>
 </head>
 <body>
 
@@ -118,110 +118,12 @@
         
         <div class="row mb-2">
             <div class="col-8 h3">
-                    Inventory: Pricelist
+                    Sales: Customer Order List
             </div>
         </div>
         
-        <header class="text-center h3 bg-secondary">
-            <br>
-            Pricelist
-            <br>
-            As of today: xx, xxxx, xxxx
-            <br>
-            <br>
-        </header>
     
-        
-    <!-- data table -->
-
-        <table class="table table-bordered text-center" id="inventory_pricelist_table">
-
-            <thead>
-                <th></th>
-                <th scope="col">Product ID</th>
-                <th scope="col">Product Name</th>
-                <th scope="col">SRP</th>
-                <th scope="col">Buying Price</th>
-            </thead>
-            <tbody>
-
-                <!-- Table placeholders -->
-                <script>
-                    for (var i = 0; i < 20; i += 1) {   
-                        $("#inventory_pricelist_table").append("<tr><td></td>" + "<td>"+(100+i)+"</td>" + "<td>"+"Red Shirt"+"</td>" + "<td>"+(200)+"</td>" + "<td>"+(30+i)+"</td>");
-
-                        $("#inventory_pricelist_table").append("<tr><td></td>" + "<td>"+(200+i)+"</td>" + "<td>"+"Blue Shirt"+"</td>" + "<td>"+(100)+"</td>" + "<td>"+(20+i)+"</td>");
-
-                        $("#inventory_pricelist_table").append("<tr><td></td>" + "<td>"+(300+i)+"</td>" + "<td>"+"Green Shirt"+"</td>" + "<td>"+(300)+"</td>" + "<td>"+(10+i)+"</td>" );
-                    }
-                </script>
-                    
-               
-            </tbody>
-
-        </table>
-
-        <div class="container d-flex justify-content-end">
-            <button type="button" class="btn btn-secondary m-2" id="delete_button" disabled>Delete</button>
-            <button type="button" class="btn btn-secondary m-2" id="edit_modal_button" data-toggle="modal" data-target="#edit_modal" disabled>Edit</button>
-        </div>
-        
-    </div>
-
-     <!-- edit product pop-up -->
-
-     <div class="modal fade" id="edit_modal" role="dialog" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-
-                <div class="modal-header bg-secondary border-0"></div>
-                
-                <div class="modal-body bg-secondary">
-                     
-                    <table class="table table-bordered text-center bg-light" id="inventory_pricelist_table">
-
-                        <thead>
-                            <tr>
-                                <th colspan="7" class="h2">Edit Product</th>
-                            </tr>
-                            <tr>
-                                <th scope="col">Product ID</th>
-                                <th scope="col">Product Name</th>
-                                <th scope="col">SRP</th>
-                                <th scope="col">Buying Price</th>
-                            </tr>
-                            
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>
-                                    <input type="number" class="form-control" id="edit_product_id" value="10">
-                                </th>
-                                <th>
-                                    <input type="text" class="form-control" id="edit_product_name">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="edit_price">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="edit_buying_price">
-                                </th>
-                            </tr>
-                        
-                        </tbody>
-            
-                    </table>
-
-                    <button type="button" class="btn btn-light float-right" id="edit_product_button">Edit</button>
-                    <button type="button" class="btn btn-light float-right mr-3" data-dismiss="modal" id="close_edit_modal">Cancel</button>
-                    
-                </div>
-
-                <div class="modal-footer bg-secondary border-0"></div>
-            </div>
-        </div>
     </div>
     
-    <script src="../public/script/inventory-pricelist.js"></script>
 </body>
 </html>
