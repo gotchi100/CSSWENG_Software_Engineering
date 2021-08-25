@@ -1,5 +1,5 @@
 const express = require('express');
-//const router = require('./routes/routes');
+const router = require('./routes/routes');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -21,6 +21,10 @@ app.listen(_Port, () => {
     console.log('Server is running!');
   });
 
-app.get('/', (req, res) => {
-    res.render('sales-customer-po-form');
-})
+app.use(router);
+
+// 404 page
+app.use((req, res) => {
+    console.log("404 on URL: " + req.url);
+    res.status(404).render('404');
+  });
