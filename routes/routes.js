@@ -55,6 +55,14 @@ router.get('/reorder-supplier-order-tracker', (req, res) => {
     res.render('reorder-supplier-order-tracker');
 });
 
+router.get('/reports-total-sales-and-expenses', (req, res) => {
+    res.render('reports-total-sales-and-expenses');
+});
+
+router.get('/reports-shrinkages', (req, res) => {
+    res.render('reports-shrinkages');
+});
+
 
 
 
