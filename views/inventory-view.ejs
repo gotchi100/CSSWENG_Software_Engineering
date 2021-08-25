@@ -1,117 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link rel="stylesheet" href="../public/style/dashboard.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="http://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.1/css/select.dataTables.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>    
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="http://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
-
-    <title>View Inventory</title>
+    <link rel="stylesheet" href="/style/dashboard.css">
+    <%- include('./partials/head.ejs') %>
+    <%- include('./partials/bootstrap-link.ejs') %>
+    <%- include('./partials/table-link.ejs') %>
 </head>
 <body>
 
     <!-- dashboard -->
-    <nav class="navbar navbar-expand-md bg-secondary d-flex p-5">
-        <a href="" id="nav-logo" class="navbar-brand"><img src="../public/images/logo.png" id="logo"></a>
-        <ul class="navbar-nav text-center">
-            <li class="nav-item text-center">
-                <img src="../public/images/home.png" class="nav-img"> 
-                <br><br>
-                <a href="dashboard.html" class="btn btn-secondary">Home</a>
-            </li>
-
-            <li class="nav-item">
-                <img src="../public/images/inventory.png" class="nav-img"> 
-                    <br><br>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="inventory-btn" data-toggle="dropdown">
-                            Inventory
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelled-by="inventory-btn">
-                            <li><a href="inventory-view.html" class="dropdown-item">View Inventory</a></li>
-                            <li><a href="inventory-pricelist.html" class="dropdown-item">Pricelist</a></li>
-                        </ul>
-                    </div>
-            </li>
-
-            <li class="nav-item">
-                <img src="../public/images/sales.png" class="nav-img"> 
-                    <br><br>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="sales-btn" data-toggle="dropdown">
-                            Sales
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelled-by="sales-btn">
-                            <li><a href="sales-customer-po-form.html" class="dropdown-item">Customer PO</a></li>
-                            <li><a href="sales-customer-order-list.html" class="dropdown-item">Customer PO List</a></li>
-                            <li><a href="sales-customer-order-tracker.html" class="dropdown-item">Customer PO Tracker</a></li>
-                        </ul>
-                    </div>
-            </li>
-
-            <li class="nav-item">
-                <img src="../public/images/reorder.png" class="nav-img"> 
-                    <br><br>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="reorder-btn" data-toggle="dropdown">
-                            Reorder
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelled-by="reorder-btn">
-                            <li><a href="reorder-supplier-po-form.html" class="dropdown-item">Supplier PO</a></li>
-                            <li><a href="reorder-supplier-order-list.html" class="dropdown-item">Supplier PO List</a></li>
-                            <li><a href="reorder-supplier-order-tracker.html" class="dropdown-item">Supplier PO Tracker</a></li>
-                        </ul>
-                    </div>
-            </li>
-
-            <li class="nav-item">
-                <img src="../public/images/report.png" class="nav-img"> 
-                    <br><br>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="report-btn" data-toggle="dropdown">
-                            Report
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelled-by="report-btn">
-                            <li><a href="reports-total-sales-and-expenses.html" class="dropdown-item">Total Sales & Expenses</a></li>
-                            <li><a href="reports-shrinkages.html" class="dropdown-item">Shrinkages</a></li>
-                        </ul>
-                    </div>
-            </li>
-        </ul>
-
-        <div id="nav-div" class="navbar-brand d-flex flex-row">
-            <div >
-                <a href="" class="navbar-brand"><img src="../public/images/notification.png" id="notification"></a>
-            </div>
-            
-
-            <div class="dropdown">
-                <a href="#" class="navbar-brand" id="profile-btn" data-toggle="dropdown">
-                  <img src="../public/images/profile.png" id="profile">
-                </a>
-                <ul class="dropdown-menu dropdown-menu-right" aria-labelled-by="profile-btn">
-                    <li><a href="" class="dropdown-item">Create an Account</a></li>
-                    <li><a href="" class="dropdown-item">Settings</a></li>
-                </ul>
-              </div>
-        </div>
-    </nav>
+    <%- include('./partials/nav.ejs') %>
     
     <!-- inventory view -->
     <div class="container mb-3 mt-3">
@@ -388,6 +286,6 @@
         </div>
     </div>
     
-    <script src="../public/script/inventory-view.js"></script>
+    <script src="/script/inventory-view.js"></script>
 </body>
 </html>
