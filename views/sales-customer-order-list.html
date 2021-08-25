@@ -112,8 +112,8 @@
               </div>
         </div>
     </nav>
-    
-    <!-- reorder supplier order list -->
+
+    <!-- sales customer order list -->
     <div class="container mb-3 mt-3">
         
         <div class="row mb-2">
@@ -133,7 +133,8 @@
     
         
     <!-- data table -->
-        <table class="table table-bordered text-center" id="reorder_supplier_order_list_table">
+
+        <table class="table table-bordered text-center" id="sales_order_list_table">
 
             <thead>
                 <th></th>
@@ -186,7 +187,7 @@
         
     </div>
 
-    <!-- reorder supplier order list PO # popup -->
+    <!-- sales customer order list PO # pop-up -->
     <div class="modal fade" id="details_modal" role="dialog" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
@@ -270,6 +271,7 @@
                                 </tfoot>
                             </table>
 
+                            
                             <button type="button" class="btn btn-secondary float-right m-2" id="modal_edit_button">Edit</button>
                             <button type="button" class="btn btn-secondary float-right m-2" id="modal_delete_button">Delete</button>
 
@@ -279,8 +281,7 @@
             </div>
         </div>
     </div>
-
-    <script src="../public/script/reorder-supplier-order-list.js"></script>
     
+    <script src="../public/script/customer-order-list.js"></script>
 </body>
 </html>

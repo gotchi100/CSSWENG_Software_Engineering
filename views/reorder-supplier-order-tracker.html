@@ -113,18 +113,18 @@
         </div>
     </nav>
     
-    <!-- reorder supplier order list -->
+    <!-- reorder supplier order tracker -->
     <div class="container mb-3 mt-3">
         
         <div class="row mb-2">
             <div class="col-8 h3">
-                    Sales: Customer Order List
+                    Sales: Customer Order Tracker
             </div>
         </div>
         
         <header class="text-center h3 bg-secondary">
             <br>
-            Customer Order List
+            Supplier Order Tracker
             <br>
             As of today: xx, xxxx, xxxx
             <br>
@@ -133,7 +133,8 @@
     
         
     <!-- data table -->
-        <table class="table table-bordered text-center" id="reorder_supplier_order_list_table">
+
+        <table class="table table-bordered text-center" id="reorder_supplier_order_tracker_table">
 
             <thead>
                 <th></th>
@@ -186,7 +187,7 @@
         
     </div>
 
-    <!-- reorder supplier order list PO # popup -->
+    <!-- reorder supplier order tracker PO # popup -->
     <div class="modal fade" id="details_modal" role="dialog" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
@@ -270,8 +271,7 @@
                                 </tfoot>
                             </table>
 
-                            <button type="button" class="btn btn-secondary float-right m-2" id="modal_edit_button">Edit</button>
-                            <button type="button" class="btn btn-secondary float-right m-2" id="modal_delete_button">Delete</button>
+                            <button type="button" class="btn btn-secondary float-right m-2" id="proceed_button">Proceed</button>
 
                         </form>
                     </div>        
@@ -280,7 +280,45 @@
         </div>
     </div>
 
-    <script src="../public/script/reorder-supplier-order-list.js"></script>
+
+    <!-- reorder supplier order tracker status from ordering to received -->
+    <div class="modal fade" id="tracker_status_received_modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" id="tracker_status_received_modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="container mt-3">
+                        <table class="table table-bordered mt-3">
+                            <header class="text-center h4">Confirm Package On-Route to Customer</header>
+                            <thead>
+                                <tr>
+                                    <th>PO #</th>
+                                    <th>Date Ordered</th>
+                                    <th>Customer Name</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>                                        
+                                    <td></td>
+                                    <td>Ordering</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <button type="button" class="btn btn-secondary float-right m-2" id="onroute_confirm_button">Confirm</button>
+
+                    </div>        
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../public/script/reorder-supplier-order-tracker.js"></script>
     
 </body>
 </html>

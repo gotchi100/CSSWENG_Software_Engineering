@@ -23,7 +23,6 @@
 <body>
 
     <!-- dashboard -->
-
     <nav class="navbar navbar-expand-md bg-secondary d-flex p-5">
         <a href="" id="nav-logo" class="navbar-brand"><img src="../public/images/logo.png" id="logo"></a>
         <ul class="navbar-nav text-center">
@@ -57,9 +56,9 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelled-by="sales-btn">
-                            <li><a href="customer-po-form.html" class="dropdown-item">Customer PO</a></li>
-                            <li><a href="customer-order-list.html" class="dropdown-item">Customer PO List</a></li>
-                            <li><a href="" class="dropdown-item">Customer PO Tracker</a></li>
+                            <li><a href="sales-customer-po-form.html" class="dropdown-item">Customer PO</a></li>
+                            <li><a href="sales-customer-order-list.html" class="dropdown-item">Customer PO List</a></li>
+                            <li><a href="sales-customer-order-tracker.html" class="dropdown-item">Customer PO Tracker</a></li>
                         </ul>
                     </div>
             </li>
@@ -75,7 +74,7 @@
                         <ul class="dropdown-menu" aria-labelled-by="reorder-btn">
                             <li><a href="reorder-supplier-po-form.html" class="dropdown-item">Supplier PO</a></li>
                             <li><a href="reorder-supplier-order-list.html" class="dropdown-item">Supplier PO List</a></li>
-                            <li><a href="" class="dropdown-item">Supplier PO Tracker</a></li>
+                            <li><a href="reorder-supplier-order-tracker.html" class="dropdown-item">Supplier PO Tracker</a></li>
                         </ul>
                     </div>
             </li>
@@ -114,6 +113,7 @@
         </div>
     </nav>
     
+    <!-- inventory view -->
     <div class="container mb-3 mt-3">
         
         <div class="row mb-2">
@@ -133,7 +133,6 @@
     
         
     <!-- data table -->
-
         <table class="table table-bordered text-center" id="inventory_view_table">
 
             <thead>
@@ -172,8 +171,7 @@
         
     </div>
 
-    <!-- view product pop-up -->
-
+    <!-- inventory view product pop up -->
     <div class="modal fade" id="details_modal" role="dialog" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
@@ -207,8 +205,7 @@
         </div>
     </div>
 
-    <!-- add product pop-up -->
-
+    <!-- inventory view add product pop-up -->
     <div class="modal fade" id="add_modal" role="dialog" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
@@ -217,7 +214,7 @@
                 
                 <div class="modal-body bg-secondary">
                      
-                    <table class="table table-bordered text-center bg-light" id="inventory_view_table">
+                    <table class="table table-bordered text-center bg-light" id="add_product_table">
 
                         <thead>
                             <tr>
@@ -269,8 +266,7 @@
         </div>
     </div>
 
-     <!-- edit product pop-up -->
-
+     <!-- inventory view edit product pop-up -->
      <div class="modal fade" id="edit_modal" role="dialog" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
@@ -279,7 +275,7 @@
                 
                 <div class="modal-body bg-secondary">
                      
-                    <table class="table table-bordered text-center bg-light" id="inventory_view_table">
+                    <table class="table table-bordered text-center bg-light" id="edit_product_table">
 
                         <thead>
                             <tr>
@@ -314,6 +310,67 @@
                                 </th>
                                 <th>
                                     <input type="number" class="form-control" id="edit_reorder_point">
+                                </th>
+                            </tr>
+                        
+                        </tbody>
+            
+                    </table>
+                    
+                    <button type="button" class="btn btn-light float-right" id="edit_product_button">Edit</button>
+                    <button type="button" class="btn btn-light float-right mr-3" data-dismiss="modal" id="close_edit_modal">Cancel</button>
+                    
+                </div>
+
+                <div class="modal-footer bg-secondary border-0"></div>
+            </div>
+        </div>
+    </div>
+
+     <!-- inventory view delete product pop-up -->
+     <div class="modal fade" id="delete_modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+
+                <div class="modal-header bg-secondary border-0"></div>
+                
+                <div class="modal-body bg-secondary">
+                     
+                    <table class="table table-bordered text-center bg-light" id="delete_product_table">
+
+                        <thead>
+                            <tr>
+                                <th colspan="7" class="h2">Edit Product</th>
+                            </tr>
+                            <tr>
+                                <th scope="col">Product ID</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Brand</th>
+                                <th scope="col">SRP</th>
+                                <th scope="col">QTY On Hand</th>
+                                <th scope="col">Reorder Point</th>
+                            </tr>
+                            
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>
+                                    <input type="number" class="form-control" id="delete_product_id" value="10">
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" id="delete_product_name">
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" id="delete_brand">
+                                </th>
+                                <th>
+                                    <input type="number" class="form-control" id="delete_price">
+                                </th>
+                                <th>
+                                    <input type="number" class="form-control" id="delete_quantity">
+                                </th>
+                                <th>
+                                    <input type="number" class="form-control" id="delete_reorder_point">
                                 </th>
                             </tr>
                         

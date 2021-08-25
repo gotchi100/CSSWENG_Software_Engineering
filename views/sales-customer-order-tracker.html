@@ -23,7 +23,6 @@
 <body>
 
     <!-- dashboard -->
-
     <nav class="navbar navbar-expand-md bg-secondary d-flex p-5">
         <a href="" id="nav-logo" class="navbar-brand"><img src="../public/images/logo.png" id="logo"></a>
         <ul class="navbar-nav text-center">
@@ -57,9 +56,9 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelled-by="sales-btn">
-                            <li><a href="customer-po-form.html" class="dropdown-item">Customer PO</a></li>
-                            <li><a href="customer-order-list.html" class="dropdown-item">Customer PO List</a></li>
-                            <li><a href="" class="dropdown-item">Customer PO Tracker</a></li>
+                            <li><a href="sales-customer-po-form.html" class="dropdown-item">Customer PO</a></li>
+                            <li><a href="sales-customer-order-list.html" class="dropdown-item">Customer PO List</a></li>
+                            <li><a href="sales-customer-order-tracker.html" class="dropdown-item">Customer PO Tracker</a></li>
                         </ul>
                     </div>
             </li>
@@ -75,7 +74,7 @@
                         <ul class="dropdown-menu" aria-labelled-by="reorder-btn">
                             <li><a href="reorder-supplier-po-form.html" class="dropdown-item">Supplier PO</a></li>
                             <li><a href="reorder-supplier-order-list.html" class="dropdown-item">Supplier PO List</a></li>
-                            <li><a href="" class="dropdown-item">Supplier PO Tracker</a></li>
+                            <li><a href="reorder-supplier-order-tracker.html" class="dropdown-item">Supplier PO Tracker</a></li>
                         </ul>
                     </div>
             </li>
@@ -114,27 +113,27 @@
         </div>
     </nav>
     
+    <!-- sales customer order tracker -->
     <div class="container mb-3 mt-3">
         
         <div class="row mb-2">
             <div class="col-8 h3">
-                    Sales: Customer Order List
+                    Sales: Customer Order Tracker
             </div>
         </div>
         
         <header class="text-center h3 bg-secondary">
             <br>
-            Customer Order List
+            Customer Order Tracker
             <br>
             As of today: xx, xxxx, xxxx
             <br>
             <br>
         </header>
-    
         
     <!-- data table -->
 
-        <table class="table table-bordered text-center" id="sales_order_list_table">
+        <table class="table table-bordered text-center" id="sales_order_list_tracker_table">
 
             <thead>
                 <th></th>
@@ -173,9 +172,6 @@
                     <td scope="col">Customer Name</td>
                     <td scope="col">Status</td>
                 </tr>
-                
-
-               
                
             </tbody>
 
@@ -187,8 +183,7 @@
         
     </div>
 
-    <!-- view order list pop-up -->
-
+    <!-- sales customer order tracker PO # popup -->
     <div class="modal fade" id="details_modal" role="dialog" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
@@ -273,8 +268,7 @@
                             </table>
 
                             
-                            <button type="button" class="btn btn-secondary float-right m-2" id="modal_edit_button">Edit</button>
-                            <button type="button" class="btn btn-secondary float-right m-2" id="modal_delete_button">Delete</button>
+                            <button type="button" class="btn btn-secondary float-right m-2" id="proceed_button">Proceed</button>
 
                         </form>
                     </div>        
@@ -283,8 +277,80 @@
         </div>
     </div>
 
+    <!-- sales customer order tracker status from packing to delivering -->
+    <div class="modal fade" id="tracker_status_onroute_modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" id="tracker_status_onroute_modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="container mt-3">
+                        <table class="table table-bordered mt-3">
+                            <header class="text-center h4">Confirm Package On-route to Customer</header>
+                            <thead>
+                                <tr>
+                                    <th>PO #</th>
+                                    <th>Date Ordered</th>
+                                    <th>Customer Name</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>                                        
+                                    <td></td>
+                                    <td>Packing</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <button type="button" class="btn btn-secondary float-right m-2" id="onroute_confirm_button">Confirm</button>
+
+                    </div>        
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- sales customer order tracker status from delivering to received -->
+    <div class="modal fade" id="tracker_status_delivered_modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" id="tracker_status_delivered_modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="container mt-3">
+                        <table class="table table-bordered mt-3">
+                            <header class="text-center h4">Confirm Package with Customer</header>
+                            <thead>
+                                <tr>
+                                    <th>PO #</th>
+                                    <th>Date Ordered</th>
+                                    <th>Customer Name</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>                                        
+                                    <td></td>
+                                    <td>Delivering</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <button type="button" class="btn btn-secondary float-right m-2" id="onroute_confirm_button">Confirm</button>
+
+                    </div>        
+                </div>
+            </div>
+        </div>
+    </div>
     
-    
-    <script src="../public/script/customer-order-list.js"></script>
+    <script src="../public/script/sales-customer-order-tracker.js"></script>
 </body>
 </html>
