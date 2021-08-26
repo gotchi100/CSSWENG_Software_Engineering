@@ -32,6 +32,10 @@ router.get('/inventory-view', inventoryController.GetInventoryView);
 
 router.post('/inventory-add-product', inventoryController.PostInventoryAddProduct);
 
+router.post('/inventory-delete-one-product', inventoryController.PostInventoryDeleteOneProduct);
+
+router.post('/inventory-delete-many-product', inventoryController.PostInventoryDeleteManyProduct);
+
 router.get('/inventory-pricelist', (req, res) => {
     res.render('inventory-pricelist');
 });

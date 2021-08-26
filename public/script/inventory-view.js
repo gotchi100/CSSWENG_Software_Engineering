@@ -55,7 +55,7 @@ $(document).ready(function ()
         else 
         {
             $("th.select-checkbox").addClass("selected");
-            $("#delete_button").prop("disabled", true);
+            $("#delete_button").prop("disabled", false);
         }
     });
 
@@ -95,8 +95,6 @@ $(document).ready(function ()
         $("#edit_reorder_point").val(reorder_point);
     });
 
-
-    // not done
     $("#add_product_button").on("click", function () 
     {
         var xhttp = new XMLHttpRequest();
@@ -107,7 +105,22 @@ $(document).ready(function ()
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     
         xhttp.onload = function() {
+            
             console.log("POST - Add Product - Status: " + this.status);
+
+            var product_id = (table.column(1).data() > 0) ? (Math.max.apply(Math, table.column(1).data()) + 1) : 1;
+
+            var availability = ""; 
+
+            if(quantity > reorder_point + 10) {
+                availability = "High"; 
+            }else if(quantity > reorder_point + 5) {
+                availability = "Medium"; 
+            }else if(quantity <= reorder_point) {
+                availability = "Low";
+            } 
+
+            table.row.add(["", product_id, name, brand, selling_price, quantity, reorder_point, availability]).draw(false);
 
             $("#add_product_name").val("");
             $("#add_brand").val("");
@@ -131,6 +144,53 @@ $(document).ready(function ()
                 + "&SellingPrice=" + selling_price
                 + "&Quantity=" + quantity
                 + "&ReorderPoint=" + reorder_point);
+    });
+
+    $("#delete_button").on("click", function () 
+    {
+        var count = table.rows('.selected').data().length;
+
+        if(count == 1) {
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.open('POST', '/inventory-delete-one-product', true);
+            
+            //console.log("XHTTP instance created!");
+        
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        
+            xhttp.onload = function() {
+                console.log("POST - Delete One Product - Status: " + this.status);
+            };
+
+            var ProductId =  $(".selected").closest("tr").children().eq(1).text();
+            table.rows(".selected").remove().draw(false);
+            xhttp.send("ProductId=" + ProductId);
+        }
+        else {
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.open('POST', '/inventory-delete-many-product', true);
+            
+            //console.log("XHTTP instance created!");
+        
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        
+            xhttp.onload = function() {
+                console.log("POST - Delete Many Product - Status: " + this.status);
+            };
+
+            var data = table.rows( { selected: true } ).data();
+
+            var ProductId = [];
+            for(var i = 0; i < count; i++) {
+                ProductId[i] = data[i][1];
+            }
+            table.rows(".selected").remove().draw(false);
+
+            xhttp.send("ProductId=" + JSON.stringify(ProductId));
+        }
+        
     });
 
 });

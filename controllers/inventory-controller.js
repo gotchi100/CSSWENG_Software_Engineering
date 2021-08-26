@@ -12,6 +12,7 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const inventoryController = {
 
+    
     GetInventoryView: (req, res) => {
 
         Inventory.find()
@@ -52,6 +53,24 @@ const inventoryController = {
             console.log("Product added to inventory database:\n" + inventory);
             res.status(200).send();
         });
+    },
+
+    PostInventoryDeleteOneProduct: (req, res) => {
+
+        
+        Inventory.deleteOne({ProductId: req.body.ProductId}).exec()
+        .then(() => {
+            res.status(200).send;
+        })
+    },
+
+    PostInventoryDeleteManyProduct: (req, res) => {
+
+        var x = JSON.parse(req.body.ProductId)
+        Inventory.deleteMany({ProductId: {$in: x}}).exec()
+        .then(() => {
+            res.status(200).send;
+        })
     }
 }
 
