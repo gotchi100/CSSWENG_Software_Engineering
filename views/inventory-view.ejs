@@ -46,15 +46,23 @@
             <tbody>
 
                 <!-- Table placeholders -->
-                <script>
-                    for (var i = 0; i < 20; i += 1) {   
-                        $("#inventory_view_table").append("<tr><td></td>" + "<td>"+(100+i)+"</td>" + "<td>"+"Red Shirt"+"</td>" + "<td>"+"H&M"+"</td>" + "<td>"+(200)+"</td>" + "<td>"+(30+i)+"</td>" + "<td>"+(10 + i)+"</td>" + "<td>"+"High"+"</td></tr>");
+                <% for(var i = 0; i < ProductList.length; i++) { %>
 
-                        $("#inventory_view_table").append("<tr><td></td>" + "<td>"+(200+i)+"</td>" + "<td>"+"Blue Shirt"+"</td>" + "<td>"+"Uniqlo"+"</td>" + "<td>"+(100)+"</td>" + "<td>"+(20+i)+"</td>" + "<td>"+(5 + i)+"</td>" + "<td>"+"High"+"</td></tr>");
-
-                        $("#inventory_view_table").append("<tr><td></td>" + "<td>"+(300+i)+"</td>" + "<td>"+"Green Shirt"+"</td>" + "<td>"+"N/A"+"</td>" + "<td>"+(300)+"</td>" + "<td>"+(10+i)+"</td>" + "<td>"+(15 + i)+"</td>" + "<td>"+"High"+"</td></tr>");
-                    }
-                </script>
+                    <tr>
+                        <td></td>
+                        <td><%= ProductList[i].ProductId %></td>
+                        <td><%= ProductList[i].ProductName %></td>
+                        <td><%= ProductList[i].Brand %></td>
+                        <td><%= ProductList[i].SellingPrice %></td>
+                        <td><%= ProductList[i].Quantity %></td>
+                        <td><%= ProductList[i].ReorderPoint %></td>
+                        <% var Availability = ""; %>
+                        <% if(ProductList[i].Quantity + 5 > ProductList[i].ReorderPoint) {Availability = "Medium"; %>
+                        <% }else if(ProductList[i].Quantity + 10 > ProductList[i].ReorderPoint) {Availability = "High"; %>
+                        <% }else if(ProductList[i].Quantity <= ProductList[i].ReorderPoint) {Availability = "Low";} %>
+                        <td><%= Availability %></td>
+                    </tr>
+                <% } %>
                     
                
             </tbody>
@@ -111,51 +119,48 @@
                 <div class="modal-header bg-secondary border-0"></div>
                 
                 <div class="modal-body bg-secondary">
-                     
-                    <table class="table table-bordered text-center bg-light" id="add_product_table">
-
-                        <thead>
-                            <tr>
-                                <th colspan="7" class="h2">Add Product</th>
-                            </tr>
-                            <tr>
-                                <th scope="col">Product ID</th>
-                                <th scope="col">Product Name</th>
-                                <th scope="col">Brand</th>
-                                <th scope="col">SRP</th>
-                                <th scope="col">QTY On Hand</th>
-                                <th scope="col">Reorder Point</th>
-                            </tr>
-                            
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>
-                                    <input type="number" class="form-control" id="add_product_id">
-                                </th>
-                                <th>
-                                    <input type="text" class="form-control" id="add_product_name">
-                                </th>
-                                <th>
-                                    <input type="text" class="form-control" id="add_brand">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="add_price">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="add_quantity">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="add_reorder_point">
-                                </th>
-                            </tr>
-                        
-                        </tbody>
-            
-                    </table>
-
-                    <button type="button" class="btn btn-light float-right" id="add_product_button">Add</button>
-                    <button type="button" class="btn btn-light float-right mr-3" data-dismiss="modal" id="close_add_modal">Cancel</button>
+                    <form action="" id="inventory-add-product-form" method="POST">
+                        <table class="table table-bordered text-center bg-light" id="add_product_table">
+                            <thead>
+                                <tr>
+                                    <th colspan="7" class="h2">Add Product</th>
+                                </tr>
+                                <tr>
+                                    <th scope="col">Product Name</th>
+                                    <th scope="col">Brand</th>
+                                    <th scope="col">SRP</th>
+                                    <th scope="col">Buying Price</th>
+                                    <th scope="col">QTY On Hand</th>
+                                    <th scope="col">Reorder Point</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <input type="text" class="form-control-file" id="add_product_name">
+                                    </th>
+                                    <th>
+                                        <input type="text" class="form-control-file" id="add_brand">
+                                    </th>
+                                    <th>
+                                        <input type="number" class="form-control-file" id="add_selling_price">
+                                    </th>
+                                    <th>
+                                        <input type="number" class="form-control-file" id="add_buying_price">
+                                    </th>
+                                    <th>
+                                        <input type="number" class="form-control-file" id="add_quantity">
+                                    </th>
+                                    <th>
+                                        <input type="number" class="form-control-file" id="add_reorder_point">
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button type="button" class="btn btn-light float-right" id="add_product_button">Add</button>
+                        <button type="button" class="btn btn-light float-right mr-3" data-dismiss="modal" id="close_add_modal">Cancel</button>
+                    </form>
+                
                     
                 </div>
 
@@ -180,7 +185,6 @@
                                 <th colspan="7" class="h2">Edit Product</th>
                             </tr>
                             <tr>
-                                <th scope="col">Product ID</th>
                                 <th scope="col">Product Name</th>
                                 <th scope="col">Brand</th>
                                 <th scope="col">SRP</th>
@@ -191,9 +195,6 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <th>
-                                    <input type="number" class="form-control" id="edit_product_id" value="10">
-                                </th>
                                 <th>
                                     <input type="text" class="form-control" id="edit_product_name">
                                 </th>

@@ -1,4 +1,9 @@
 const express = require('express');
+const mongoose = require('mongoose');
+
+const inventoryController = require('../controllers/inventory-controller');
+
+
 
 const router = express.Router();
 
@@ -11,6 +16,10 @@ router.get('/register', (req, res) => {
     res.render('register');
 });
 
+router.get('/test', (req, res) => {
+    res.send('TEST HERE');
+});
+
 router.get('/', (req, res) => {
     res.render('dashboard');
 });
@@ -19,9 +28,9 @@ router.get('/dashboard', (req, res) => {
     res.render('dashboard');
 });
 
-router.get('/inventory-view', (req, res) => {
-    res.render('inventory-view');
-});
+router.get('/inventory-view', inventoryController.GetInventoryView);
+
+router.post('/inventory-add-product', inventoryController.PostInventoryAddProduct);
 
 router.get('/inventory-pricelist', (req, res) => {
     res.render('inventory-pricelist');

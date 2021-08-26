@@ -82,14 +82,12 @@ $(document).ready(function ()
     $("#edit_modal_button").on("click", function () 
     {
         // get value from table
-        var id =  $(".selected").closest("tr").children().eq(1).text();
         var name =  $(".selected").closest("tr").children().eq(2).text();
         var brand =  $(".selected").closest("tr").children().eq(3).text();
         var price =  $(".selected").closest("tr").children().eq(4).text();
         var quantity =  $(".selected").closest("tr").children().eq(5).text();
         var reorder_point =  $(".selected").closest("tr").children().eq(6).text();
 
-        $("#edit_product_id").val(id);
         $("#edit_product_name").val(name);
         $("#edit_brand").val(brand);
         $("#edit_price").val(price);
@@ -101,28 +99,38 @@ $(document).ready(function ()
     // not done
     $("#add_product_button").on("click", function () 
     {
-        // get value from input
-        var id =  $("#add_product_id").val();
-        var name =  $("#add_product_name").val();
-        var brand =  $("#add_brand").val();
-        var price =  $("#add_price").val();
-        var quantity =  $("#add_quantity").val();
-        var reorder_point =  $("#add_reorder_point").val();
+        var xhttp = new XMLHttpRequest();
+        xhttp.open('POST', '/inventory-add-product', true);
+        
+        //console.log("XHTTP instance created!");
+    
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    
+        xhttp.onload = function() {
+            console.log("POST - Add Product - Status: " + this.status);
 
-        //change
-        var availability =  "High";
+            $("#add_product_name").val("");
+            $("#add_brand").val("");
+            $("#add_buying_price").val("");
+            $("#add_selling_price").val("");
+            $("#add_quantity").val("");
+            $("#add_reorder_point").val("");
+            $("#add_modal").modal("hide");
+        };
+        
+        var name = $("#add_product_name").val();
+        var brand = $("#add_brand").val();
+        var buying_price = $("#add_buying_price").val();
+        var selling_price = $("#add_selling_price").val();
+        var quantity = $("#add_quantity").val();
+        var reorder_point = $("#add_reorder_point").val();
 
-        $("#inventory_view_table").append(
-            "<tr><td></td>" + 
-            "<td>" + id + "</td>" + 
-            "<td>" + name + "</td>" + 
-            "<td>" + brand + "</td>" + 
-            "<td>" + price + "</td>" + 
-            "<td>" + quantity + "</td>" + 
-            "<td>" + reorder_point + "</td>" + 
-            "<td>" + availability + "</td></tr>");
-
-        $("#add_modal").modal("hide");
+        xhttp.send("&ProductName=" + name
+                + "&Brand=" + brand
+                + "&BuyingPrice=" + buying_price
+                + "&SellingPrice=" + selling_price
+                + "&Quantity=" + quantity
+                + "&ReorderPoint=" + reorder_point);
     });
 
 });
