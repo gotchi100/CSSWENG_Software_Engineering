@@ -51,25 +51,25 @@ const inventoryController = {
             // save the details to the database
             inventory.save()
             console.log("Product added to inventory database:\n" + inventory);
-            res.status(200).send();
+            res.status(200).send(inventory);
         });
     },
 
     PostInventoryDeleteOneProduct: (req, res) => {
 
-        
-        Inventory.deleteOne({ProductId: req.body.ProductId}).exec()
+        var ProductId = req.body.tempProductId;
+        Inventory.deleteOne({ProductId: ProductId}).exec()
         .then(() => {
-            res.status(200).send;
+            res.status(200).send();
         })
     },
 
     PostInventoryDeleteManyProduct: (req, res) => {
 
-        var x = JSON.parse(req.body.ProductId)
-        Inventory.deleteMany({ProductId: {$in: x}}).exec()
+        var ProductId = JSON.parse(req.body.ProductId)
+        Inventory.deleteMany({ProductId: {$in: ProductId}}).exec()
         .then(() => {
-            res.status(200).send;
+            res.status(200).send();
         })
     }
 }

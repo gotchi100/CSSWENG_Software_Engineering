@@ -97,30 +97,29 @@ $(document).ready(function ()
 
     $("#add_product_button").on("click", function () 
     {
-        var xhttp = new XMLHttpRequest();
-        xhttp.open('POST', '/inventory-add-product', true);
-        
-        //console.log("XHTTP instance created!");
-    
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    
-        xhttp.onload = function() {
+        var ProductName = $("#add_product_name").val();
+        var Brand = $("#add_brand").val();
+        var BuyingPrice = $("#add_buying_price").val();
+        var SellingPrice = $("#add_selling_price").val();
+        var Quantity = $("#add_quantity").val();
+        var ReorderPoint = $("#add_reorder_point").val();
+
+        $.post("/inventory-add-product", {ProductName, Brand, BuyingPrice, SellingPrice, Quantity, ReorderPoint}, function(data, status) {
             
-            console.log("POST - Add Product - Status: " + this.status);
+            console.log("POST - Add Product - Status: " + status);
+            console.log("POST - Add Product - Data: " + data.ProductId);
 
-            var product_id = (table.column(1).data() > 0) ? (Math.max.apply(Math, table.column(1).data()) + 1) : 1;
+            var Availability = ""; 
 
-            var availability = ""; 
-
-            if(quantity > reorder_point + 10) {
-                availability = "High"; 
-            }else if(quantity > reorder_point + 5) {
-                availability = "Medium"; 
-            }else if(quantity <= reorder_point) {
-                availability = "Low";
+            if(Quantity > ReorderPoint + 10) {
+                Availability = "High"; 
+            }else if(Quantity > ReorderPoint + 5) {
+                Availability = "Medium"; 
+            }else if(Quantity <= ReorderPoint) {
+                Availability = "Low";
             } 
 
-            table.row.add(["", product_id, name, brand, selling_price, quantity, reorder_point, availability]).draw(false);
+            table.row.add(["", data.ProductId, ProductName, Brand, SellingPrice, Quantity, ReorderPoint, Availability]).draw(false);
 
             $("#add_product_name").val("");
             $("#add_brand").val("");
@@ -129,66 +128,32 @@ $(document).ready(function ()
             $("#add_quantity").val("");
             $("#add_reorder_point").val("");
             $("#add_modal").modal("hide");
-        };
+        })
         
-        var name = $("#add_product_name").val();
-        var brand = $("#add_brand").val();
-        var buying_price = $("#add_buying_price").val();
-        var selling_price = $("#add_selling_price").val();
-        var quantity = $("#add_quantity").val();
-        var reorder_point = $("#add_reorder_point").val();
-
-        xhttp.send("&ProductName=" + name
-                + "&Brand=" + brand
-                + "&BuyingPrice=" + buying_price
-                + "&SellingPrice=" + selling_price
-                + "&Quantity=" + quantity
-                + "&ReorderPoint=" + reorder_point);
     });
-
     $("#delete_button").on("click", function () 
     {
         var count = table.rows('.selected').data().length;
-
+        var data = table.rows( { selected: true } ).data();
+        var tempProductId = [];
+        //if only one item is selected
         if(count == 1) {
-            var xhttp = new XMLHttpRequest();
-
-            xhttp.open('POST', '/inventory-delete-one-product', true);
-            
-            //console.log("XHTTP instance created!");
-        
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        
-            xhttp.onload = function() {
-                console.log("POST - Delete One Product - Status: " + this.status);
-            };
-
-            var ProductId =  $(".selected").closest("tr").children().eq(1).text();
-            table.rows(".selected").remove().draw(false);
-            xhttp.send("ProductId=" + ProductId);
+            tempProductId = data[0][1];
+            $.post("/inventory-delete-one-product", {tempProductId}, function(data, status) {
+                console.log("POST - Delete One Product - Status: " + status);
+                table.rows(".selected").remove().draw(false);
+            })
         }
+        //if only multiple items are selected
         else {
-            var xhttp = new XMLHttpRequest();
-
-            xhttp.open('POST', '/inventory-delete-many-product', true);
-            
-            //console.log("XHTTP instance created!");
-        
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        
-            xhttp.onload = function() {
-                console.log("POST - Delete Many Product - Status: " + this.status);
-            };
-
-            var data = table.rows( { selected: true } ).data();
-
-            var ProductId = [];
             for(var i = 0; i < count; i++) {
-                ProductId[i] = data[i][1];
+                tempProductId[i] = data[i][1];
             }
-            table.rows(".selected").remove().draw(false);
-
-            xhttp.send("ProductId=" + JSON.stringify(ProductId));
+            var ProductId = JSON.stringify(tempProductId);
+            $.post("/inventory-delete-many-product", {ProductId}, function(data, status) {
+                console.log("POST - Delete Many Products - Status: " + status);
+                table.rows(".selected").remove().draw(false);
+            })
         }
         
     });
