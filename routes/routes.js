@@ -16,10 +16,6 @@ router.get('/register', (req, res) => {
     res.render('register');
 });
 
-router.get('/test', (req, res) => {
-    res.send('TEST HERE');
-});
-
 router.get('/', (req, res) => {
     res.render('dashboard');
 });
@@ -30,15 +26,17 @@ router.get('/dashboard', (req, res) => {
 
 router.get('/inventory-view', inventoryController.GetInventoryView);
 
-router.post('/inventory-add-product', inventoryController.PostInventoryAddProduct);
+router.get('/check-product-name', inventoryController.GetCheckProductName);
 
-router.post('/inventory-delete-one-product', inventoryController.PostInventoryDeleteOneProduct);
+router.post('/inventory-add-product', inventoryController.PostInventoryViewAddProduct);
 
-router.post('/inventory-delete-many-product', inventoryController.PostInventoryDeleteManyProduct);
+router.post('/inventory-edit-product', inventoryController.PostInventoryViewEditProduct);
 
-router.get('/inventory-pricelist', (req, res) => {
-    res.render('inventory-pricelist');
-});
+router.post('/inventory-delete-one-product', inventoryController.PostInventoryViewDeleteOneProduct);
+
+router.post('/inventory-delete-many-product', inventoryController.PostInventoryViewDeleteManyProduct);
+
+router.get('/inventory-pricelist', inventoryController.GetInventoryPricelist);
 
 router.get('/sales-customer-po-form', (req, res) => {
     res.render('sales-customer-po-form');

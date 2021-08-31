@@ -20,12 +20,41 @@ const inventoryController = {
 
             res.render('inventory-view', {ProductList});
         });
+    },
+
+    GetInventoryPricelist: (req, res) => {
+
+        Inventory.find()
+        .then((ProductList) => {
+
+            res.render('inventory-pricelist', {ProductList});
+        });
+    },
+
+    GetCheckProductName: async (req, res) => {
+    
+        var ProductName = req.query.ProductName;
+        var temp = false;
+        await Inventory.find()
+        .then((result) => {
+            for(var i = 0; i < result.length; i++){
+                if(result[i].ProductName.toLowerCase() == ProductName.toLowerCase()) {
+                    temp = true;
+                }
+            }
+            if(temp) {
+                res.send(result);
+            }
+            else {
+                res.send(null)
+            }
+        })
 
     },
 
-    PostInventoryAddProduct: (req, res) => { 
+    PostInventoryViewAddProduct: async (req, res) => { 
 
-        Inventory.find()
+        await Inventory.find()
         .then((ProductList) => {
 
             // generate new id based on the highest id on the database
@@ -55,23 +84,35 @@ const inventoryController = {
         });
     },
 
-    PostInventoryDeleteOneProduct: (req, res) => {
+    PostInventoryViewEditProduct: async(req, res) => {
 
-        var ProductId = req.body.tempProductId;
-        Inventory.deleteOne({ProductId: ProductId}).exec()
+        var ProductId = req.body.ProductId;
+        await Inventory.updateOne({ProductId: ProductId}, {ProductName: req.body.ProductName, Brand: req.body.Brand, SellingPrice: req.body.SellingPrice, Quantity: req.body.Quantity, ReorderPoint: req.body.ReorderPoint}).exec()
         .then(() => {
+
+            console.log("Product updated in the database");
             res.status(200).send();
         })
     },
 
-    PostInventoryDeleteManyProduct: (req, res) => {
+    PostInventoryViewDeleteOneProduct: async (req, res) => {
+
+        var ProductId = req.body.tempProductId;
+        const deleted_count = await Inventory.deleteOne({ProductId: ProductId}).exec();
+        console.log(deleted_count);
+        res.status(200).send();
+    },
+
+    PostInventoryViewDeleteManyProduct: async (req, res) => {
 
         var ProductId = JSON.parse(req.body.ProductId)
-        Inventory.deleteMany({ProductId: {$in: ProductId}}).exec()
-        .then(() => {
-            res.status(200).send();
-        })
+        const deleted_count = await Inventory.deleteMany({ProductId: {$in: ProductId}}).exec();
+        console.log(deleted_count);
+        res.status(200).send();
     }
+
+    
+
 }
 
 

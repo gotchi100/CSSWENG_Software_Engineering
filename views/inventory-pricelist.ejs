@@ -24,8 +24,7 @@
             <br>
             Pricelist
             <br>
-            As of today: xx, xxxx, xxxx
-            <br>
+            <p >As of today: <span id="current-date"></span></p>
             <br>
         </header>
     
@@ -41,25 +40,20 @@
                 <th scope="col">Buying Price</th>
             </thead>
             <tbody>
-
-                <!-- Table placeholders -->
-                <script>
-                    for (var i = 0; i < 20; i += 1) {   
-                        $("#inventory_pricelist_table").append("<tr><td></td>" + "<td>"+(100+i)+"</td>" + "<td>"+"Red Shirt"+"</td>" + "<td>"+(200)+"</td>" + "<td>"+(30+i)+"</td>");
-
-                        $("#inventory_pricelist_table").append("<tr><td></td>" + "<td>"+(200+i)+"</td>" + "<td>"+"Blue Shirt"+"</td>" + "<td>"+(100)+"</td>" + "<td>"+(20+i)+"</td>");
-
-                        $("#inventory_pricelist_table").append("<tr><td></td>" + "<td>"+(300+i)+"</td>" + "<td>"+"Green Shirt"+"</td>" + "<td>"+(300)+"</td>" + "<td>"+(10+i)+"</td>" );
-                    }
-                </script>
-                    
-               
+                <% for(var i = 0; i < ProductList.length; i++) { %>
+                    <tr>
+                        <td></td>
+                        <td><%= ProductList[i].ProductId %></td>
+                        <td><%= ProductList[i].ProductName %></td>
+                        <td><%= ProductList[i].SellingPrice %></td>
+                        <td><%= ProductList[i].BuyingPrice %></td>
+                    </tr>
+                <% } %>
             </tbody>
-
         </table>
 
         <div class="container d-flex justify-content-end">
-            <button type="button" class="btn btn-secondary m-2" id="delete_button" disabled>Delete</button>
+            <button type="button" class="btn btn-secondary m-2" id="delete_modal_button" data-toggle="modal" data-target="#delete_modal" disabled>Delete</button>
             <button type="button" class="btn btn-secondary m-2" id="edit_modal_button" data-toggle="modal" data-target="#edit_modal" disabled>Edit</button>
         </div>
         
@@ -91,21 +85,22 @@
                         <tbody>
                             <tr>
                                 <th>
-                                    <input type="number" class="form-control" id="edit_product_id" value="10">
+                                    <input type="number" class="form-control" id="edit_product_id" disabled>
                                 </th>
                                 <th>
                                     <input type="text" class="form-control" id="edit_product_name">
+                                    <p class="text-danger" id="edit_product_name_error"></p>
                                 </th>
                                 <th>
-                                    <input type="number" class="form-control" id="edit_price">
+                                    <input type="number" class="form-control" id="edit_selling_price">
+                                    <p class="text-danger" id="edit_selling_price_error"></p>
                                 </th>
                                 <th>
                                     <input type="number" class="form-control" id="edit_buying_price">
+                                    <p class="text-danger" id="edit_buying_price_error"></p>
                                 </th>
                             </tr>
-                        
                         </tbody>
-            
                     </table>
 
                     <button type="button" class="btn btn-light float-right" id="edit_product_button">Edit</button>
@@ -118,55 +113,48 @@
         </div>
     </div>
 
-     <!-- inventory pricelist delete -->
-     <div class="modal fade" id="delete_modal" role="dialog" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
+    <!-- inventory view edit product error pop-up -->
+    <div class="modal fade" id="edit_error_modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-confirm">
             <div class="modal-content">
 
-                <div class="modal-header bg-secondary border-0"></div>
+                <div class="modal-header">
+                    <p class="h3">Error!</p>
+                </div>
                 
-                <div class="modal-body bg-secondary">
-                     
-                    <table class="table table-bordered text-center bg-light" id="delete_product_table">
-
-                        <thead>
-                            <tr>
-                                <th colspan="7" class="h2">Delete Product</th>
-                            </tr>
-                            <tr>
-                                <th scope="col">Product ID</th>
-                                <th scope="col">Product Name</th>
-                                <th scope="col">SRP</th>
-                                <th scope="col">Buying Price</th>
-                            </tr>
-                            
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>
-                                    <input type="number" class="form-control" id="delete_product_id" value="10">
-                                </th>
-                                <th>
-                                    <input type="text" class="form-control" id="delete_product_name">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="delete_price">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="delete_buying_price">
-                                </th>
-                            </tr>
-                        
-                        </tbody>
-            
-                    </table>
-
-                    <button type="button" class="btn btn-light float-right" id="edit_product_button">Edit</button>
-                    <button type="button" class="btn btn-light float-right mr-3" data-dismiss="modal" id="close_edit_modal">Cancel</button>
+                <div class="modal-body text-center">
                     
+				<p class="h6" id="edit_error_modal_text"></p>
+                        
                 </div>
 
-                <div class="modal-footer bg-secondary border-0"></div>
+                <div class="modal-footer">
+                    
+                    <button type="button" class="btn btn-secondary float-right mr-3" data-dismiss="modal" id="close_edit_error_modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- inventory view delete product pop-up -->
+     <div class="modal fade" id="delete_modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-confirm">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p class="h3">Are you sure?</p>
+                </div>
+                
+                <div class="modal-body text-center">
+                    
+				<p class="h6" id="delete_modal_text">Are you sure you want to permanently remove the selected product/s?</p>
+                        
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary float-right mr-3" data-dismiss="modal" id="cancel_delete_modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary float-right mr-3" id="delete_button">Delete</button>
+                </div>
             </div>
         </div>
     </div>
