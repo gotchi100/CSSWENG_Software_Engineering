@@ -52,7 +52,7 @@ const inventoryController = {
 
     },
 
-    PostInventoryViewAddProduct: async (req, res) => { 
+    PostInventoryViewAddOneProduct: async (req, res) => { 
 
         await Inventory.find()
         .then((ProductList) => {
@@ -66,21 +66,50 @@ const inventoryController = {
             }
             next_id += 1;
 
+            var temp = req.body.ProductInfo;
+
             // store the new product details
             const inventory = new Inventory({
                 ProductId: next_id,
-                ProductName: req.body.ProductName,
-                Brand: req.body.Brand,
-                BuyingPrice: req.body.BuyingPrice,
-                SellingPrice: req.body.SellingPrice,
-                Quantity: req.body.Quantity,
-                ReorderPoint: req.body.ReorderPoint
+                ProductName: temp[0].ProductName,
+                Brand: temp[0].Brand,
+                Color: temp[0].Color,
+                BuyingPrice: temp[0].BuyingPrice,
+                SellingPrice: temp[0].SellingPrice,
+                Quantity: temp[0].Quantity,
+                ReorderPoint: temp[0].ReorderPoint
             });
 
             // save the details to the database
             inventory.save()
             console.log("Product added to inventory database:\n" + inventory);
             res.status(200).send(inventory);
+        });
+    },
+
+    PostInventoryViewAddManyProduct: async (req, res) => { 
+
+        await Inventory.find()
+        .then((ProductList) => {
+
+            // generate new id based on the highest id on the database
+            var next_id = 0;
+            for(var i = 0; i < ProductList.length; i++) {
+                if(ProductList[i].ProductId > next_id) {
+                    next_id = ProductList[i].ProductId;
+                }
+            }
+            next_id += 1;
+
+            for(var x = 0; x < req.body.ProductInfo.length; x++) {
+                req.body.ProductInfo[x].ProductId = next_id;
+                next_id++;
+            }
+
+            Inventory.insertMany(req.body.ProductInfo).then((result) => {
+                res.status(200).send(result);
+                console.log("Product added to inventory database:\n" + result);
+            })
         });
     },
 

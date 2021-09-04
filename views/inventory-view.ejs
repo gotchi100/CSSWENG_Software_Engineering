@@ -37,6 +37,7 @@
                 <th scope="col">Product ID</th>
                 <th scope="col">Product Name</th>
                 <th scope="col">Brand</th>
+                <th scope="col">Color</th>
                 <th scope="col">SRP</th>
                 <th scope="col">QTY On Hand</th>
                 <th scope="col">Reorder Point</th>
@@ -49,6 +50,7 @@
                         <td><%= ProductList[i].ProductId %></td>
                         <td><%= ProductList[i].ProductName %></td>
                         <td><%= ProductList[i].Brand %></td>
+                        <td><%= ProductList[i].Color %></td>
                         <td><%= ProductList[i].SellingPrice %></td>
                         <td><%= ProductList[i].Quantity %></td>
                         <td><%= ProductList[i].ReorderPoint %></td>
@@ -116,43 +118,55 @@
                         <table class="table table-bordered text-center bg-light" id="add_product_table">
                             <thead>
                                 <tr>
-                                    <th colspan="7" class="h2">Add Product</th>
+                                    <th colspan="8" class="h2">Add Product</th>
                                 </tr>
                                 <tr>
                                     <th scope="col">Product Name</th>
                                     <th scope="col">Brand</th>
+                                    <th scope="col">Color</th>
                                     <th scope="col">SRP</th>
                                     <th scope="col">Buying Price</th>
                                     <th scope="col">QTY On Hand</th>
                                     <th scope="col">Reorder Point</th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th>
-                                        <input type="text" class="form-control-file" id="add_product_name">
-                                        <p class="text-danger" id="add_product_name_error"></p>
-                                    </th>
-                                    <th>
-                                        <input type="text" class="form-control-file" id="add_brand">
-                                        <p class="text-danger" id="add_brand_error"></p>
-                                    </th>
-                                    <th>
-                                        <input type="number" class="form-control-file" id="add_selling_price">
-                                        <p class="text-danger" id="add_selling_price_error"></p>
-                                    </th>
-                                    <th>
-                                        <input type="number" class="form-control-file" id="add_buying_price">
-                                        <p class="text-danger" id="add_buying_price_error"></p>
-                                    </th>
-                                    <th>
-                                        <input type="number" class="form-control-file" id="add_quantity">
-                                        <p class="text-danger" id="add_quantity_error"></p>
-                                    </th>
-                                    <th>
-                                        <input type="number" class="form-control-file" id="add_reorder_point">
-                                        <p class="text-danger" id="add_reorder_point_error"></p>
-                                    </th>
+                                    <td>
+                                        <input type="text" class="form-control-file" id="add_product_name1">
+                                        <p class="text-danger" id="add_product_name_error1"></p>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control-file" id="add_brand1">
+                                        <p class="text-danger" id="add_brand_error1"></p>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control-file" id="add_color1">
+                                        <p class="text-danger" id="add_color_error1"></p>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control-file" id="add_selling_price1">
+                                        <p class="text-danger" id="add_selling_price_error1"></p>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control-file" id="add_buying_price1">
+                                        <p class="text-danger" id="add_buying_price_error1"></p>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control-file" id="add_quantity1">
+                                        <p class="text-danger" id="add_quantity_error1"></p>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control-file" id="add_reorder_point1">
+                                        <p class="text-danger" id="add_reorder_point_error1"></p>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <button type="button" class="btn btn-secondary mr-2" id="add_row_button"><span class="fas fa-plus"></span></button>
+                                            <button type="button" class="btn btn-secondary" id="delete_row_button" disabled><span class="fas fa-trash"></span></button>
+                                        </div>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

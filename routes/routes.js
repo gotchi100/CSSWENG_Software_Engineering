@@ -28,13 +28,15 @@ router.get('/inventory-view', inventoryController.GetInventoryView);
 
 router.get('/check-product-name', inventoryController.GetCheckProductName);
 
-router.post('/inventory-add-product', inventoryController.PostInventoryViewAddProduct);
+router.post('/inventory-add-one-product', inventoryController.PostInventoryViewAddOneProduct);
+
+router.post('/inventory-add-many-products', inventoryController.PostInventoryViewAddManyProduct);
 
 router.post('/inventory-edit-product', inventoryController.PostInventoryViewEditProduct);
 
 router.post('/inventory-delete-one-product', inventoryController.PostInventoryViewDeleteOneProduct);
 
-router.post('/inventory-delete-many-product', inventoryController.PostInventoryViewDeleteManyProduct);
+router.post('/inventory-delete-many-products', inventoryController.PostInventoryViewDeleteManyProduct);
 
 router.get('/inventory-pricelist', inventoryController.GetInventoryPricelist);
 

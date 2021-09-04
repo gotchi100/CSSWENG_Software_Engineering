@@ -5,6 +5,7 @@ const inventorySchema = new mongoose.Schema({
     ProductId: Number,
     ProductName: String,
     Brand: String,
+    Color: String,
     BuyingPrice: Number,
     SellingPrice: Number,
     Quantity: Number,
