@@ -204,7 +204,7 @@ $(document).ready(function ()
     {
         return new Promise((resolve, reject) => 
         {
-            $.get("/check-product-name", {ProductName: ProductName}, function(result) 
+            $.get("/is-product-available", {ProductName: ProductName}, function(result) 
             {
 
                 if(result) 

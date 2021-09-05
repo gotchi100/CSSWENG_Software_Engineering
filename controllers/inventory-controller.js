@@ -31,14 +31,15 @@ const inventoryController = {
         });
     },
 
-    GetCheckProductName: async (req, res) => {
+    GetIsProductAvailable: async (req, res) => {
     
         var ProductName = req.query.ProductName;
+        var Color = req.query.Color;
         var temp = false;
         await Inventory.find()
         .then((result) => {
             for(var i = 0; i < result.length; i++){
-                if(result[i].ProductName.toLowerCase() == ProductName.toLowerCase()) {
+                if(result[i].ProductName.toLowerCase() == ProductName.toLowerCase() && result[i].Color.toLowerCase() == Color.toLowerCase()) {
                     temp = true;
                 }
             }

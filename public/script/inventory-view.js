@@ -100,7 +100,8 @@ $(document).ready(function ()
         else 
         {   var ProductInfo = [];
 
-            for(var i = 1; i <= rowCount; i++) {
+            for(var i = 1; i <= rowCount; i++) 
+            {
                 var temp = {
                     ProductId: "",
                     ProductName: $("#add_product_name" + i).val(),
@@ -144,7 +145,7 @@ $(document).ready(function ()
             clearAddErrors();
             clearAddInputs();
             while(rowCount != 1) {
-                deleteRow();
+                addProductDeleteRow();
             }
             $("#add_modal").modal("hide");
                 
@@ -157,6 +158,9 @@ $(document).ready(function ()
     {
         clearAddErrors();
         clearAddInputs();
+        while(rowCount != 1) {
+            addProductDeleteRow();
+        }
     })
 
     // edit data
@@ -166,9 +170,9 @@ $(document).ready(function ()
         var ProductId = $(".selected").closest("tr").children().eq(1).text();
         var ProductName =  $(".selected").closest("tr").children().eq(2).text();
         var Brand =  $(".selected").closest("tr").children().eq(3).text();
-        var SellingPrice =  $(".selected").closest("tr").children().eq(4).text();
-        var Quantity =  $(".selected").closest("tr").children().eq(5).text();
-        var ReorderPoint =  $(".selected").closest("tr").children().eq(6).text();
+        var SellingPrice =  $(".selected").closest("tr").children().eq(5).text();
+        var Quantity =  $(".selected").closest("tr").children().eq(6).text();
+        var ReorderPoint =  $(".selected").closest("tr").children().eq(7).text();
 
         $("#edit_product_name").val(ProductName);
         $("#edit_brand").val(Brand);
@@ -191,7 +195,7 @@ $(document).ready(function ()
         var checkQuantity = checkNumberInput($("#edit_quantity").val());
         var checkReorderPoint = checkNumberInput($("#edit_reorder_point").val());
 
-        var value = await checkProductName(ProductName);
+        var value = await isProductAvailable(ProductName, Color);
 
         if(OldProductName == ProductName) 
         {
@@ -301,11 +305,11 @@ $(document).ready(function ()
         $("#delete_modal").modal("hide");
     })
 
-    $("#add_row_button").on("click", addRow);
+    $("#add_product_add_row_button").on("click", addProductAddRow);
 
-    $("#delete_row_button").on("click", deleteRow);
+    $("#add_product_delete_row_button").on("click", addProductDeleteRow);
 
-    function addRow() {
+    function addProductAddRow() {
     
         rowCount++;
         
@@ -341,21 +345,21 @@ $(document).ready(function ()
         "</td><td>" +
     
         "<div class=\"d-flex\">" +
-        "<button type=\"button\" class=\"btn btn-secondary mr-2\" id=\"add_row_button\"><span class=\"fas fa-plus\"></span></button>" +
-        "<button type=\"button\" class=\"btn btn-secondary\" id=\"delete_row_button\"><span class=\"fas fa-trash\"></span></button>" +
+        "<button type=\"button\" class=\"btn btn-secondary mr-2\" id=\"add_product_add_row_button\"><span class=\"fas fa-plus\"></span></button>" +
+        "<button type=\"button\" class=\"btn btn-secondary\" id=\"add_product_delete_row_button\"><span class=\"fas fa-trash\"></span></button>" +
         
         "</div></td></tr>");
     
-        $("#add_row_button").on("click", addRow);
-        $("#delete_row_button").on("click", deleteRow);
+        $("#add_product_add_row_button").on("click", addProductAddRow);
+        $("#add_product_delete_row_button").on("click", addProductDeleteRow);
         
         if(rowCount == 1) {
-            $("#delete_row_button").prop("disabled", false);
+            $("#add_product_delete_row_button").prop("disabled", false);
         }
     
     }
     
-    function deleteRow() {
+    function addProductDeleteRow() {
     
         rowCount--;
     
@@ -363,15 +367,15 @@ $(document).ready(function ()
         $("#add_product_table td:last").remove();
         $("#add_product_table tr:last").append("<td>" +
             "<div class=\"d-flex\">" +
-            "<button type=\"button\" class=\"btn btn-secondary mr-2\" id=\"add_row_button\"><span class=\"fas fa-plus\"></span></button>" +
-            "<button type=\"button\" class=\"btn btn-secondary\" id=\"delete_row_button\"><span class=\"fas fa-trash\"></span></button>" +
+            "<button type=\"button\" class=\"btn btn-secondary mr-2\" id=\"add_product_add_row_button\"><span class=\"fas fa-plus\"></span></button>" +
+            "<button type=\"button\" class=\"btn btn-secondary\" id=\"add_product_delete_row_button\"><span class=\"fas fa-trash\"></span></button>" +
             "</div></td>");
     
-         $("#add_row_button").on("click", addRow);
-         $("#delete_row_button").on("click", deleteRow);
+         $("#add_product_add_row_button").on("click", addProductAddRow);
+         $("#add_product_delete_row_button").on("click", addProductDeleteRow);
     
          if(rowCount == 1) {
-            $("#delete_row_button").prop("disabled", true);
+            $("#add_product_delete_row_button").prop("disabled", true);
         }
     }
 
@@ -392,7 +396,7 @@ $(document).ready(function ()
             ReorderPoint = $("#add_reorder_point" + i).val();
             ProductNameTaken[i-1] = false;
             if(ProductName != "") {
-                value = await checkProductName(ProductName);
+                value = await isProductAvailable(ProductName, Color);
             }
 
             if(value == "unavailable" || ProductName == "" || Brand == "" || Color == "" ||
@@ -475,20 +479,18 @@ $(document).ready(function ()
         }
     }
 
-    function checkProductName(ProductName) 
+    function isProductAvailable(ProductName, Color) 
     {
         return new Promise((resolve, reject) => 
         {
-            $.get("/check-product-name", {ProductName: ProductName}, function(result) 
+            $.get("/is-product-available", {ProductName: ProductName, Color: Color}, function(result) 
             {
-
                 if(result) 
                 {
                     resolve("unavailable");
                 }
                 else 
                 {
-                    $("#add_product_name_error").text("");
                     resolve("available");
                 }
     

@@ -26,7 +26,7 @@ router.get('/dashboard', (req, res) => {
 
 router.get('/inventory-view', inventoryController.GetInventoryView);
 
-router.get('/check-product-name', inventoryController.GetCheckProductName);
+router.get('/is-product-available', inventoryController.GetIsProductAvailable);
 
 router.post('/inventory-add-one-product', inventoryController.PostInventoryViewAddOneProduct);
 
