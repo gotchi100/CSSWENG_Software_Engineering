@@ -32,7 +32,9 @@ router.post('/inventory-add-one-product', inventoryController.PostInventoryViewA
 
 router.post('/inventory-add-many-products', inventoryController.PostInventoryViewAddManyProduct);
 
-router.post('/inventory-edit-product', inventoryController.PostInventoryViewEditProduct);
+router.post('/inventory-edit-one-product', inventoryController.PostInventoryViewUpdateOneProduct);
+
+router.post('/inventory-edit-many-product', inventoryController.PostInventoryViewUpdateManyProduct);
 
 router.post('/inventory-delete-one-product', inventoryController.PostInventoryViewDeleteOneProduct);
 

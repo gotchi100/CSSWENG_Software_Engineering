@@ -22,7 +22,7 @@
         
         <header class="text-center h3 bg-secondary">
             <br>
-            Pricelist
+            Inventory
             <br>
             <p >As of today: <span id="current-date"></span></p>
             <br>
@@ -107,7 +107,7 @@
     </div>
 
     <!-- inventory view add product pop-up -->
-    <div class="modal fade" id="add_modal" role="dialog">
+    <div class="modal fade" id="add_modal" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
 
@@ -183,10 +183,8 @@
         </div>
     </div>
 
-    
-
      <!-- inventory view edit product pop-up -->
-     <div class="modal fade" id="edit_modal" role="dialog" tabindex="-1">
+     <div class="modal fade" id="edit_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
 
@@ -201,8 +199,10 @@
                                 <th colspan="7" class="h2">Edit Product</th>
                             </tr>
                             <tr>
+                                <th scope="col">Product ID</th>
                                 <th scope="col">Product Name</th>
                                 <th scope="col">Brand</th>
+                                <th scope="col">Color</th>
                                 <th scope="col">SRP</th>
                                 <th scope="col">QTY On Hand</th>
                                 <th scope="col">Reorder Point</th>
@@ -211,26 +211,33 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <th>
-                                    <input type="text" class="form-control" id="edit_product_name">
-                                    <p class="text-danger" id="edit_product_name_error"></p>
-                                </th>
-                                <th>
-                                    <input type="text" class="form-control" id="edit_brand">
-                                    <p class="text-danger" id="edit_branderror"></p>
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="edit_price">
-                                    <p class="text-danger" id="edit_priceerror"></p>
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="edit_quantity">
-                                    <p class="text-danger" id="edit_quantity_error"></p>
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="edit_reorder_point">
-                                    <p class="text-danger" id="edit_reorder_point_error"></p>
-                                </th>
+                                <td>
+                                    <input type="text" class="form-control-file" id="edit_product_id1" disabled>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control-file" id="edit_product_name1">
+                                    <p class="text-danger" id="edit_product_name_error1"></p>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control-file" id="edit_brand1">
+                                    <p class="text-danger" id="edit_brand_error1"></p>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control-file" id="edit_color1">
+                                    <p class="text-danger" id="edit_color_error1"></p>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control-file" id="edit_selling_price1">
+                                    <p class="text-danger" id="edit_selling_price_error1"></p>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control-file" id="edit_quantity1">
+                                    <p class="text-danger" id="edit_quantity_error1"></p>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control-file" id="edit_reorder_point1">
+                                    <p class="text-danger" id="edit_reorder_point_error1"></p>
+                                </td>
                             </tr>
                         
                         </tbody>
@@ -248,7 +255,7 @@
     </div>
 
     <!-- inventory view add product error pop-up -->
-    <div class="modal fade" id="add_error_modal" role="dialog" tabindex="-1">
+    <div class="modal fade" id="add_error_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-confirm">
             <div class="modal-content">
 
@@ -270,8 +277,31 @@
         </div>
     </div>
 
+     <!-- inventory view duplicate input error pop-up -->
+     <div class="modal fade" id="duplicate_error_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-confirm">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p class="h3">Error!</p>
+                </div>
+                
+                <div class="modal-body text-center">
+                    
+				<p class="h6" id="duplicate_error_modal_text"></p>
+                        
+                </div>
+
+                <div class="modal-footer">
+                    
+                    <button type="button" class="btn btn-secondary float-right mr-3" data-dismiss="modal" id="close_duplicate_error_modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- inventory view edit product error pop-up -->
-    <div class="modal fade" id="edit_error_modal" role="dialog" tabindex="-1">
+    <div class="modal fade" id="edit_error_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-confirm">
             <div class="modal-content">
 
@@ -294,7 +324,7 @@
     </div>
 
      <!-- inventory view delete product pop-up -->
-     <div class="modal fade" id="delete_modal" role="dialog" tabindex="-1">
+     <div class="modal fade" id="delete_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-confirm">
             <div class="modal-content">
 

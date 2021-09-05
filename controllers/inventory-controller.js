@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const { updateOne } = require('../models/inventory');
 const Inventory = require('../models/inventory');
 
 //connect to mongodb
@@ -114,14 +115,47 @@ const inventoryController = {
         });
     },
 
-    PostInventoryViewEditProduct: async(req, res) => {
+    PostInventoryViewUpdateOneProduct: async(req, res) => {
 
-        var ProductId = req.body.ProductId;
-        await Inventory.updateOne({ProductId: ProductId}, {ProductName: req.body.ProductName, Brand: req.body.Brand, SellingPrice: req.body.SellingPrice, Quantity: req.body.Quantity, ReorderPoint: req.body.ReorderPoint}).exec()
+        var temp = req.body.ProductInfo;
+
+        await Inventory.updateOne({ProductId: temp[0].ProductId}, 
+                                    {ProductName: temp[0].ProductName, 
+                                        Brand: temp[0].Brand, 
+                                        Color: temp[0].Color, 
+                                        SellingPrice: temp[0].SellingPrice, 
+                                        Quantity: temp[0].Quantity, 
+                                        ReorderPoint: temp[0].ReorderPoint}).exec()
         .then(() => {
-
             console.log("Product updated in the database");
-            res.status(200).send();
+            res.status(200).send(temp);
+        })
+    },
+
+    PostInventoryViewUpdateManyProduct: async(req, res) => {
+
+        var temp = req.body.ProductInfo;
+
+        var tempArr = [];
+
+        for(var i = 0; i < temp.length; i++)
+        {
+            tempArr.push({
+                updateOne: {
+                    "filter" : {ProductId: temp[i].ProductId},
+                    "update" : {ProductName: temp[i].ProductName, 
+                        Brand: temp[i].Brand, 
+                        Color: temp[i].Color, 
+                        SellingPrice: temp[i].SellingPrice, 
+                        Quantity: temp[i].Quantity, 
+                        ReorderPoint: temp[i].ReorderPoint}
+                }
+            });
+        }   
+
+        Inventory.bulkWrite(tempArr).then((result) => {
+            console.log("Products updated in the database");
+            res.status(200).send(temp);
         })
     },
 

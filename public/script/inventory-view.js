@@ -1,8 +1,11 @@
 $(document).ready(function () 
 {
     getCurrentDate();
-    var rowCount = 1;
-    var ProductNameTaken;
+    var addProductRowCount = 1;
+    var editProductRowCount = 1;
+    var addProductNameTaken;
+    var editProductNameTaken;
+    var parser = new DOMParser;
 
     let table = $("#inventory_view_table").DataTable( 
     {
@@ -26,23 +29,23 @@ $(document).ready(function ()
         {
             table.rows().deselect();
             $("th.select-checkbox").removeClass("selected");
-            $("#edit_modal_button").prop("disabled", false);
+            $("#edit_modal_button").prop("disabled", true);
             $("#delete_modal_button").prop("disabled", true);
         } 
         else 
         {
             table.rows().select();
             $("th.select-checkbox").addClass("selected");
-            $("#edit_modal_button").prop("disabled", true);
         }
-    }).on("select deselect", function() 
+    })
+    .on("select deselect", function() 
     {
         if (table.rows({ selected: true}).count() !== table.rows().count()) 
         {
             if(table.rows({ selected: true}).count() > 1)
             {
                 $("th.select-checkbox").removeClass("selected");
-                $("#edit_modal_button").prop("disabled", true);
+                $("#edit_modal_button").prop("disabled", false);
                 $("#delete_modal_button").prop("disabled", false);
             }
             else if (table.rows({ selected: true}).count() == 0)
@@ -61,6 +64,7 @@ $(document).ready(function ()
         else 
         {
             $("th.select-checkbox").addClass("selected");
+            $("#edit_modal_button").prop("disabled", false);
             $("#delete_modal_button").prop("disabled", false);
         }
     });
@@ -85,22 +89,33 @@ $(document).ready(function ()
         }
     });
 
-
     // add data
     $("#add_product_button").on("click", async function () 
     {
 
         var checkError = await checkAddInputErrors();
-        if(checkError == true) 
+        var checkDuplicate = checkAddDuplicates();
+
+        if(checkError == true || checkDuplicate == true) 
         {
-            $("#add_error_modal_text").text("There are some errors on the form! Please try to avoid using an existing product name and numbers less than 0 for inputs that accept numbers.");
-            clearAddErrors();
-            $("#add_error_modal").modal("show");
+            if(checkDuplicate == true)
+            {
+                $("#duplicate_error_modal_text").text("There are products with the same product name and color.");
+                clearAddErrors();
+                $("#duplicate_error_modal").modal("show");
+
+            }
+            else
+            {
+                $("#add_error_modal_text").text("There are some errors on the form! Please try to avoid using an existing product name and numbers less than 0 for inputs that accept numbers.");
+                clearAddErrors();
+                $("#add_error_modal").modal("show");
+            }
         }
         else 
         {   var ProductInfo = [];
 
-            for(var i = 1; i <= rowCount; i++) 
+            for(var i = 1; i <= addProductRowCount; i++) 
             {
                 var temp = {
                     ProductId: "",
@@ -113,10 +128,9 @@ $(document).ready(function ()
                     ReorderPoint: $("#add_reorder_point" + i).val()
                 }
                 ProductInfo.push(temp);
-                console.log(i + " " + temp.ProductName);
             }
 
-            if(rowCount == 1)
+            if(addProductRowCount == 1)
             {
                 $.post("/inventory-add-one-product", {ProductInfo}, function(data, status) 
                 {
@@ -144,7 +158,7 @@ $(document).ready(function ()
             
             clearAddErrors();
             clearAddInputs();
-            while(rowCount != 1) {
+            while(addProductRowCount != 1) {
                 addProductDeleteRow();
             }
             $("#add_modal").modal("hide");
@@ -152,129 +166,499 @@ $(document).ready(function ()
         }
     });
 
-    $("#close_add_error_modal").on("click", setAddInputErrors);
-    
     $("#close_add_modal").on("click", function () 
     {
         clearAddErrors();
         clearAddInputs();
-        while(rowCount != 1) {
+        while(addProductRowCount != 1) {
             addProductDeleteRow();
         }
     })
 
+    $("#close_add_error_modal").on("click", setAddInputErrors);
+
+    $("#add_product_add_row_button").on("click", addProductAddRow);
+
+    $("#add_product_delete_row_button").on("click", addProductDeleteRow);
+
+    function addProductAddRow() 
+    {
+        addProductRowCount++;
+        
+        $("#add_product_table td:last").text("");
+        
+        $("#add_product_table tr:last").after("<tr><td>" + 
+        "<input type=\"text\" class=\"form-control-file\" id=\"add_product_name" + addProductRowCount + "\">" +
+        "<p class=\"text-danger\" id=\"add_product_name_error" + addProductRowCount + "\"></p>" +
+        "</td><td>" +
+    
+        "<input type=\"text\" class=\"form-control-file\" id=\"add_brand" + addProductRowCount + "\">" +
+        "<p class=\"text-danger\" id=\"add_brand_error" + addProductRowCount + "\"></p>" +
+        "</td><td>" +
+    
+        "<input type=\"text\" class=\"form-control-file\" id=\"add_color" + addProductRowCount + "\">" +
+        "<p class=\"text-danger\" id=\"add_color_error" + addProductRowCount + "\"></p>" +
+        "</td><td>" +
+        
+        "<input type=\"text\" class=\"form-control-file\" id=\"add_selling_price" + addProductRowCount + "\">" +
+        "<p class=\"text-danger\" id=\"add_selling_price_error" + addProductRowCount + "\"></p>" +
+        "</td><td>" +
+        
+        "<input type=\"text\" class=\"form-control-file\" id=\"add_buying_price" + addProductRowCount + "\">" +
+        "<p class=\"text-danger\" id=\"add_buying_price_error" + addProductRowCount + "\"></p>" +
+        "</td><td>" +
+        
+        "<input type=\"text\" class=\"form-control-file\" id=\"add_quantity" + addProductRowCount + "\">" +
+        "<p class=\"text-danger\" id=\"add_quantity_error" + addProductRowCount + "\"></p>" +
+        "</td><td>" +
+        
+        "<input type=\"text\" class=\"form-control-file\" id=\"add_reorder_point" + addProductRowCount + "\">" +
+        "<p class=\"text-danger\" id=\"add_reorder_point_error" + addProductRowCount + "\"></p>" +
+        "</td><td>" +
+    
+        "<div class=\"d-flex\">" +
+        "<button type=\"button\" class=\"btn btn-secondary mr-2\" id=\"add_product_add_row_button\"><span class=\"fas fa-plus\"></span></button>" +
+        "<button type=\"button\" class=\"btn btn-secondary\" id=\"add_product_delete_row_button\"><span class=\"fas fa-trash\"></span></button>" +
+        
+        "</div></td></tr>");
+    
+        $("#add_product_add_row_button").on("click", addProductAddRow);
+        $("#add_product_delete_row_button").on("click", addProductDeleteRow);
+        
+        if(addProductRowCount == 1) {
+            $("#add_product_delete_row_button").prop("disabled", false);
+        }
+    
+    }
+    
+    function addProductDeleteRow() 
+    {
+        addProductRowCount--;
+    
+        $("#add_product_table tr:last").remove();
+        $("#add_product_table td:last").remove();
+        $("#add_product_table tr:last").append("<td>" +
+            "<div class=\"d-flex\">" +
+            "<button type=\"button\" class=\"btn btn-secondary mr-2\" id=\"add_product_add_row_button\"><span class=\"fas fa-plus\"></span></button>" +
+            "<button type=\"button\" class=\"btn btn-secondary\" id=\"add_product_delete_row_button\"><span class=\"fas fa-trash\"></span></button>" +
+            "</div></td>");
+    
+         $("#add_product_add_row_button").on("click", addProductAddRow);
+         $("#add_product_delete_row_button").on("click", addProductDeleteRow);
+    
+         if(addProductRowCount == 1) {
+            $("#add_product_delete_row_button").prop("disabled", true);
+        }
+    }
+
+    function clearAddErrors() 
+    {
+        for(var i = 1; i <= addProductRowCount; i++) {
+            $("#add_product_name_error" + i).text("");
+            $("#add_brand_error" + i).text("");
+            $("#add_color_error" + i).text("");
+            $("#add_buying_price_error" + i).text("");
+            $("#add_selling_price_error" + i).text("");
+            $("#add_quantity_error" + i).text("");
+            $("#add_reorder_point_error" + i).text("");
+        }
+    }
+
+    function clearAddInputs() 
+    {
+        for(var i = 1; i <= addProductRowCount; i++) {
+            $("#add_product_name" + i).val("");
+            $("#add_brand" + i).val("");
+            $("#add_color" + i).val("");
+            $("#add_buying_price" + i).val("");
+            $("#add_selling_price" + i).val("");
+            $("#add_quantity" + i).val("");
+            $("#add_reorder_point" + i).val("");        
+        }
+    }
+
+    async function checkAddInputErrors() 
+    {
+        var ProductName, Brand, Color, BuyingPrice, SellingPrice, Quantity, ReorderPoint;
+        var value;
+        var err = false;
+        addProductNameTaken = [];
+        
+        for(var i = 1; i <= addProductRowCount; i++) 
+        {
+            ProductName = $("#add_product_name" + i).val();
+            Brand = $("#add_brand" + i).val();
+            Color = $("#add_color" + i).val();
+            BuyingPrice = $("#add_buying_price" + i).val();
+            SellingPrice = $("#add_selling_price" + i).val();
+            Quantity = $("#add_quantity" + i).val();
+            ReorderPoint = $("#add_reorder_point" + i).val();
+            addProductNameTaken[i-1] = false;
+            if(ProductName != "") {
+                value = await isProductAvailable(ProductName, Color);
+            }
+
+            if(value == "unavailable" || ProductName == "" || Brand == "" || Color == "" ||
+                !checkNumberInput(BuyingPrice) || !checkNumberInput(SellingPrice) || 
+                !checkNumberInput(Quantity) || !checkNumberInput(ReorderPoint)) 
+            {
+                if(value == "unavailable") 
+                {
+                    addProductNameTaken[i-1] = true;
+                }
+                else 
+                {
+                    addProductNameTaken[i-1] = false;
+                }
+                err = true;
+            }
+        }
+        return err;
+    }
+
+    function setAddInputErrors() 
+    {
+        for(var i = 1; i <= addProductRowCount; i++)
+        {
+            if($("#add_product_name" + i).val() == "") 
+            {
+                $("#add_product_name_error" + i).text("Unavailable!");
+            }
+            else if(addProductNameTaken[i - 1] == true) 
+            {
+                $("#add_product_name_error" + i).text("Unavailable!");
+                $("#add_color_error" + i).text("Unavailable!");
+            }
+            if($("#add_brand" + i).val() == "") 
+            {
+                $("#add_brand_error" + i).text("Unavailable!");
+            }
+            if($("#add_color" + i).val() == "") 
+            {
+                $("#add_color_error" + i).text("Unavailable!");
+            }
+            if(!checkNumberInput($("#add_buying_price" + i).val())) 
+            {
+                $("#add_buying_price_error" + i).text("Unavailable!");
+            }
+            if(!checkNumberInput($("#add_selling_price" + i).val())) 
+            {
+                $("#add_selling_price_error" + i).text("Unavailable!");
+            }
+            if(!checkNumberInput($("#add_quantity" + i).val())) 
+            {
+                $("#add_quantity_error" + i).text("Unavailable!");
+            }
+            if(!checkNumberInput($("#add_reorder_point" + i).val())) 
+            {
+                $("#add_reorder_point_error" + i).text("Unavailable!");
+            }
+        }
+
+    }
+
+    function checkAddDuplicates()
+    {
+        var data = [];
+        for(var k = 1; k <= addProductRowCount; k++)
+        {
+            var temp = {
+                ProductName: $("#add_product_name" + k).val(),
+                Brand: $("#add_brand" + k).val(),
+                Color: $("#add_color" + k).val(),
+                BuyingPrice: $("#add_buying_price" + k).val(),
+                SellingPrice: $("#add_selling_price" + k).val(),
+                Quantity: $("#add_quantity" + k).val(),
+                ReorderPoint: $("#add_reorder_point" + k).val()
+            }
+            data.push(temp);
+        }
+
+        for(var i = 0; i < data.length; i++)
+        {
+            for(var j = i+1; j < data.length; j++)
+            {
+                if(data[i].ProductName == data[j].ProductName && data[i].Color == data[j].Color)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     // edit data
     $("#edit_modal_button").on("click", function () 
     {
-        // get value from table
-        var ProductId = $(".selected").closest("tr").children().eq(1).text();
-        var ProductName =  $(".selected").closest("tr").children().eq(2).text();
-        var Brand =  $(".selected").closest("tr").children().eq(3).text();
-        var SellingPrice =  $(".selected").closest("tr").children().eq(5).text();
-        var Quantity =  $(".selected").closest("tr").children().eq(6).text();
-        var ReorderPoint =  $(".selected").closest("tr").children().eq(7).text();
-
-        $("#edit_product_name").val(ProductName);
-        $("#edit_brand").val(Brand);
-        $("#edit_price").val(SellingPrice);
-        $("#edit_quantity").val(Quantity);
-        $("#edit_reorder_point").val(ReorderPoint);
+        editProductAddRows();
+        editProductPopulateInputs();
     });
 
     $("#edit_product_button").on("click", async function () 
     {
-        var ProductId = $(".selected").closest("tr").children().eq(1).text();
-        var OldProductName = $(".selected").closest("tr").children().eq(2).text();
-        var ProductName =  $("#edit_product_name").val();
-        var Brand = $("#edit_brand").val();
-        var SellingPrice = $("#edit_price").val();
-        var Quantity = $("#edit_quantity").val();
-        var ReorderPoint = $("#edit_reorder_point").val();
-
-        var checkSellingPrice = checkNumberInput($("#edit_price").val());
-        var checkQuantity = checkNumberInput($("#edit_quantity").val());
-        var checkReorderPoint = checkNumberInput($("#edit_reorder_point").val());
-
-        var value = await isProductAvailable(ProductName, Color);
-
-        if(OldProductName == ProductName) 
+        var checkError = await checkEditInputErrors();
+        if(checkError == true) 
         {
-            value = "available";
-        }
-
-        if(value == "unavailable" || ProductName == "" || Brand == "" || !checkSellingPrice || !checkQuantity || !checkReorderPoint) 
-        {
-            if(value == "unavailable") 
-            {
-                ProductNameTaken = true;
-            }
-            else 
-            {
-                ProductNameTaken = false;
-            }
             $("#edit_error_modal_text").text("There are some errors on the form! Please try to avoid using an existing product name and numbers less than 0 for inputs that accept numbers.");
-            
+            clearEditErrors();
             $("#edit_error_modal").modal("show");
         }
-        else if(value == "available" && checkSellingPrice && checkQuantity && checkReorderPoint)
+        else
         {
-                ProductNameTaken = false;
-                $.post("/inventory-edit-product", {ProductId, ProductName, Brand, SellingPrice, Quantity, ReorderPoint}, function(data, status) 
-                {
-                    console.log("POST - Edit Product - Status: " + status);
-        
-                    var Availability = getAvailability(Quantity, ReorderPoint); 
+            var ProductInfo = [];
 
+            for(var i = 1; i <= editProductRowCount; i++) 
+            {
+                var temp = {
+                    ProductId: $("#edit_product_id" + i).val(),
+                    ProductName: $("#edit_product_name" + i).val(),
+                    Brand: $("#edit_brand" + i).val(),
+                    Color: $("#edit_color" + i).val(),
+                    SellingPrice: $("#edit_selling_price" + i).val(),
+                    Quantity: $("#edit_quantity" + i).val(),
+                    ReorderPoint: $("#edit_reorder_point" + i).val()
+                }
+                ProductInfo.push(temp);
+            }
+
+            if(editProductRowCount == 1)
+            {
+                $.post("/inventory-edit-one-product", {ProductInfo}, function(data, status) 
+                {
+                    console.log("POST - Edit One Product - Status: " + status);
+            
+                    Availability = getAvailability(data[0].Quantity, data[0].ReorderPoint); 
+                        
                     table.rows(".selected").remove().draw(false);
-                    table.row.add(["", ProductId, ProductName, Brand, SellingPrice, Quantity, ReorderPoint, Availability]).draw(false);
-        
+                    table.row.add(["", data[0].ProductId, data[0].ProductName, data[0].Brand, data[0].Color, 
+                                    data[0].SellingPrice, data[0].Quantity, data[0].ReorderPoint, Availability]).draw(false);
+
                     $("#edit_modal_button").prop("disabled", true);
                     $("#delete_modal_button").prop("disabled", true);
                     $("#edit_modal").modal("hide");
                 })
-        }
-    });
+            }
+            else
+            {
+                $.post("/inventory-edit-many-product", {ProductInfo}, function(data, status) 
+                {
+                    console.log("POST - Edit Many Product - Status: " + status);
+            
+                    var Availability;
+                    
+                    table.rows(".selected").remove().draw(false);
+                    
+                    for(var i = 0; i < data.length; i++) {
+                        Availability = getAvailability(data[i].Quantity, data[i].ReorderPoint); 
+                        table.row.add(["", data[i].ProductId, data[i].ProductName, data[i].Brand, data[i].Color, 
+                                    data[i].SellingPrice, data[i].Quantity, data[i].ReorderPoint, Availability]).draw(false);
+                    }
 
-    $("#close_edit_error_modal").on("click", function () 
-    {
-        if($("#edit_product_name").val() == "" || ProductNameTaken == true) 
-        {
-            $("#edit_product_name_error").text("Unavailable!");
-        }
-        if($("#edit_brand").val() == "") 
-        {
-            $("#edit_brand_error").text("Unavailable!");
-        }
-        if(!checkNumberInput($("#edit_selling_price").val())) 
-        {
-            $("#edit_selling_price_error").text("Unavailable!");
-        }
-        if(!checkNumberInput($("#edit_quantity").val())) 
-        {
-            $("#edit_quantity_error").text("Unavailable!");
-        }
-        if(!checkNumberInput($("#edit_reorder_point").val())) 
-        {
-            $("#edit_reorder_point_error").text("Unavailable!");
+                    $("#edit_modal_button").prop("disabled", true);
+                    $("#delete_modal_button").prop("disabled", true);
+                    $("#edit_modal").modal("hide");
+                })
+            }
+
+            
+
         }
         
-    })
+    });
+
+    function editProductAddRows() 
+    {
+        var count = table.rows(".selected").data().length;
+        if(count > 1) 
+        {
+            while(editProductRowCount != count)
+            {
+                editProductRowCount++;
+
+                $("#edit_product_table tr:last").after("<tr><td>" + 
+
+                "<input type=\"text\" class=\"form-control-file\" id=\"edit_product_id" + editProductRowCount + "\"disabled>" +
+                "</td><td>" +
+
+                "<input type=\"text\" class=\"form-control-file\" id=\"edit_product_name" + editProductRowCount + "\">" +
+                "<p class=\"text-danger\" id=\"edit_product_name_error" + editProductRowCount + "\"></p>" +
+                "</td><td>" +
+            
+                "<input type=\"text\" class=\"form-control-file\" id=\"edit_brand" + editProductRowCount + "\">" +
+                "<p class=\"text-danger\" id=\"edit_brand_error" + editProductRowCount + "\"></p>" +
+                "</td><td>" +
+            
+                "<input type=\"text\" class=\"form-control-file\" id=\"edit_color" + editProductRowCount + "\">" +
+                "<p class=\"text-danger\" id=\"edit_color_error" + editProductRowCount + "\"></p>" +
+                "</td><td>" +
+                
+                "<input type=\"text\" class=\"form-control-file\" id=\"edit_selling_price" + editProductRowCount + "\">" +
+                "<p class=\"text-danger\" id=\"edit_selling_price_error" + editProductRowCount + "\"></p>" +
+                "</td><td>" +
+                
+                "<input type=\"text\" class=\"form-control-file\" id=\"edit_quantity" + editProductRowCount + "\">" +
+                "<p class=\"text-danger\" id=\"edit_quantity_error" + editProductRowCount + "\"></p>" +
+                "</td><td>" +
+                
+                "<input type=\"text\" class=\"form-control-file\" id=\"edit_reorder_point" + editProductRowCount + "\">" +
+                "<p class=\"text-danger\" id=\"edit_reorder_point_error" + editProductRowCount + "\"></p>" +
+                "</td></tr>");
+            }
+        }
+        
+    }
+
+    function editProductDeleteRows()
+    {
+        while(editProductRowCount != 1)
+        {
+            editProductRowCount--;
+            $("#edit_product_table tr:last").remove();
+        }
+    }
+
+    function editProductPopulateInputs()
+    {
+        var data = table.rows(".selected").data();
+        var parsedName, parsedBrand, parsedColor;
+
+        for(var i = 0; i < data.length; i++)
+        {
+            parsedName = parser.parseFromString(data[i][2], 'text/html').body.textContent
+            parsedBrand = parser.parseFromString(data[i][3], 'text/html').body.textContent
+            parsedColor = parser.parseFromString(data[i][4], 'text/html').body.textContent
+
+            $("#edit_product_id" + (i + 1)).val(data[i][1]);
+            $("#edit_product_name" + (i + 1)).val(parsedName);
+            $("#edit_brand" + (i + 1)).val(parsedBrand);
+            $("#edit_color" + (i + 1)).val(parsedColor);
+            $("#edit_selling_price" + (i + 1)).val(data[i][5]);
+            $("#edit_quantity" + (i + 1)).val(data[i][6]);
+            $("#edit_reorder_point" + (i + 1)).val(data[i][7]);
+        }
+    }
+
+    async function checkEditInputErrors() 
+    {
+        var ProductName, Brand, Color, SellingPrice, Quantity, ReorderPoint;
+        var data = table.rows(".selected").data();
+        var value, parsedName, parsedColor;
+        var err = false;
+        editProductNameTaken = [];
+        for(var i = 1; i <= editProductRowCount; i++) 
+        {
+            ProductName = $("#edit_product_name" + i).val();
+            Brand = $("#edit_brand" + i).val();
+            Color = $("#edit_color" + i).val();
+            SellingPrice = $("#edit_selling_price" + i).val();
+            Quantity = $("#edit_quantity" + i).val();
+            ReorderPoint = $("#edit_reorder_point" + i).val();
+            editProductNameTaken[i-1] = false;
+            if(ProductName != "") {
+                value = await isProductAvailable(ProductName, Color);
+            }
+
+            
+            parsedName = parser.parseFromString(data[i-1][2], 'text/html').body.textContent
+            parsedColor = parser.parseFromString(data[i-1][4], 'text/html').body.textContent
+            // data[i-1][2] = Product Name column
+            if(ProductName == parsedName)
+            {
+                value = "available";
+            }
+
+            if(value == "unavailable" || ProductName == "" || Brand == "" || Color == "" ||
+                !checkNumberInput(SellingPrice) || !checkNumberInput(Quantity) || !checkNumberInput(ReorderPoint)) 
+            {
+                if(value == "unavailable") 
+                {
+                    editProductNameTaken[i-1] = true;
+                }
+                else 
+                {
+                    editProductNameTaken[i-1] = false;
+                }
+                err = true;
+            }
+        }
+        return err;
+    }
+
+    function setEditInputErrors() 
+    {
+        for(var i = 1; i <= editProductRowCount; i++)
+        {
+            if($("#edit_product_name" + i).val() == "") 
+            {
+                $("#edit_product_name_error" + i).text("Unavailable!");
+            }
+            else if(editProductNameTaken[i - 1] == true)
+            {
+                $("#edit_product_name_error" + i).text("Unavailable!");
+                $("#edit_color_error" + i).text("Unavailable!");
+            }
+            if($("#edit_brand" + i).val() == "") 
+            {
+                $("#edit_brand_error" + i).text("Unavailable!");
+            }
+            if($("#edit_color" + i).val() == "") 
+            {
+                $("#edit_color_error" + i).text("Unavailable!");
+            }
+            if(!checkNumberInput($("#edit_selling_price" + i).val())) 
+            {
+                $("#edit_selling_price_error" + i).text("Unavailable!");
+            }
+            if(!checkNumberInput($("#edit_quantity" + i).val())) 
+            {
+                $("#edit_quantity_error" + i).text("Unavailable!");
+            }
+            if(!checkNumberInput($("#edit_reorder_point" + i).val())) 
+            {
+                $("#edit_reorder_point_error" + i).text("Unavailable!");
+            }
+        }
+
+    }
+
+    $("#close_edit_error_modal").on("click", setEditInputErrors);
 
     $("#close_edit_modal").on("click", function () 
     {
-        $("#edit_product_name").val("");
-        $("#edit_brand").val("");
-        $("#edit_selling_price").val("");
-        $("#edit_quantity").val("");
-        $("#edit_reorder_point").val("");
+        editProductDeleteRows();
         clearEditErrors();
+        clearEditInputs() ;
     })
+
+    function clearEditErrors() 
+    {
+        for(var i = 1; i <= editProductRowCount; i++) 
+        {
+            $("#edit_product_name_error" + i).text("");
+            $("#edit_brand_error" + i).text("");
+            $("#edit_color_error" + i).text("");
+            $("#edit_selling_price_error" + i).text("");
+            $("#edit_quantity_error" + i).text("");
+            $("#edit_reorder_point_error" + i).text("");
+        }
+    }
+    function clearEditInputs() 
+    {
+        for(var i = 1; i <= editProductRowCount; i++) {
+            $("#edit_product_name" + i).val("");
+            $("#edit_brand" + i).val("");
+            $("#edit_color" + i).val("");
+            $("#edit_selling_price" + i).val("");
+            $("#edit_quantity" + i).val("");
+            $("#edit_reorder_point" + i).val("");        
+        }
+    }
 
     // delete data
     $("#delete_button").on("click", function () 
     {
         var count = table.rows(".selected").data().length;
-        var data = table.rows( { selected: true } ).data();
+        var data = table.rows(".selected").data();
         var tempProductId = [];
         //if only one item is selected
         if(count == 1) 
@@ -304,154 +688,6 @@ $(document).ready(function ()
         $("#delete_modal_button").prop("disabled", true);
         $("#delete_modal").modal("hide");
     })
-
-    $("#add_product_add_row_button").on("click", addProductAddRow);
-
-    $("#add_product_delete_row_button").on("click", addProductDeleteRow);
-
-    function addProductAddRow() {
-    
-        rowCount++;
-        
-        $("#add_product_table td:last").text("");
-        
-        $("#add_product_table tr:last").after("<tr><td>" + 
-        "<input type=\"text\" class=\"form-control-file\" id=\"add_product_name" + rowCount + "\">" +
-        "<p class=\"text-danger\" id=\"add_product_name_error" + rowCount + "\"></p>" +
-        "</td><td>" +
-    
-        "<input type=\"text\" class=\"form-control-file\" id=\"add_brand" + rowCount + "\">" +
-        "<p class=\"text-danger\" id=\"add_brand_error" + rowCount + "\"></p>" +
-        "</td><td>" +
-    
-        "<input type=\"text\" class=\"form-control-file\" id=\"add_color" + rowCount + "\">" +
-        "<p class=\"text-danger\" id=\"add_color_error" + rowCount + "\"></p>" +
-        "</td><td>" +
-        
-        "<input type=\"text\" class=\"form-control-file\" id=\"add_selling_price" + rowCount + "\">" +
-        "<p class=\"text-danger\" id=\"add_selling_price_error" + rowCount + "\"></p>" +
-        "</td><td>" +
-        
-        "<input type=\"text\" class=\"form-control-file\" id=\"add_buying_price" + rowCount + "\">" +
-        "<p class=\"text-danger\" id=\"add_buying_price_error" + rowCount + "\"></p>" +
-        "</td><td>" +
-        
-        "<input type=\"text\" class=\"form-control-file\" id=\"add_quantity" + rowCount + "\">" +
-        "<p class=\"text-danger\" id=\"add_quantity_error" + rowCount + "\"></p>" +
-        "</td><td>" +
-        
-        "<input type=\"text\" class=\"form-control-file\" id=\"add_reorder_point" + rowCount + "\">" +
-        "<p class=\"text-danger\" id=\"add_reorder_point_error" + rowCount + "\"></p>" +
-        "</td><td>" +
-    
-        "<div class=\"d-flex\">" +
-        "<button type=\"button\" class=\"btn btn-secondary mr-2\" id=\"add_product_add_row_button\"><span class=\"fas fa-plus\"></span></button>" +
-        "<button type=\"button\" class=\"btn btn-secondary\" id=\"add_product_delete_row_button\"><span class=\"fas fa-trash\"></span></button>" +
-        
-        "</div></td></tr>");
-    
-        $("#add_product_add_row_button").on("click", addProductAddRow);
-        $("#add_product_delete_row_button").on("click", addProductDeleteRow);
-        
-        if(rowCount == 1) {
-            $("#add_product_delete_row_button").prop("disabled", false);
-        }
-    
-    }
-    
-    function addProductDeleteRow() {
-    
-        rowCount--;
-    
-        $("#add_product_table tr:last").remove();
-        $("#add_product_table td:last").remove();
-        $("#add_product_table tr:last").append("<td>" +
-            "<div class=\"d-flex\">" +
-            "<button type=\"button\" class=\"btn btn-secondary mr-2\" id=\"add_product_add_row_button\"><span class=\"fas fa-plus\"></span></button>" +
-            "<button type=\"button\" class=\"btn btn-secondary\" id=\"add_product_delete_row_button\"><span class=\"fas fa-trash\"></span></button>" +
-            "</div></td>");
-    
-         $("#add_product_add_row_button").on("click", addProductAddRow);
-         $("#add_product_delete_row_button").on("click", addProductDeleteRow);
-    
-         if(rowCount == 1) {
-            $("#add_product_delete_row_button").prop("disabled", true);
-        }
-    }
-
-    async function checkAddInputErrors() 
-    {
-        var ProductName, Brand, Color, BuyingPrice, SellingPrice, Quantity, ReorderPoint;
-        var value;
-        var err = false;
-        ProductNameTaken = [];
-        for(var i = 1; i <= rowCount; i++) 
-        {
-            ProductName = $("#add_product_name" + i).val();
-            Brand = $("#add_brand" + i).val();
-            Color = $("#add_color" + i).val();
-            BuyingPrice = $("#add_buying_price" + i).val();
-            SellingPrice = $("#add_selling_price" + i).val();
-            Quantity = $("#add_quantity" + i).val();
-            ReorderPoint = $("#add_reorder_point" + i).val();
-            ProductNameTaken[i-1] = false;
-            if(ProductName != "") {
-                value = await isProductAvailable(ProductName, Color);
-            }
-
-            if(value == "unavailable" || ProductName == "" || Brand == "" || Color == "" ||
-                !checkNumberInput(BuyingPrice) || !checkNumberInput(SellingPrice) || 
-                !checkNumberInput(Quantity) || !checkNumberInput(ReorderPoint)) 
-            {
-                if(value == "unavailable") 
-                {
-                    ProductNameTaken[i-1] = true;
-                }
-                else 
-                {
-                    ProductNameTaken[i-1] = false;
-                }
-                err = true;
-            }
-        }
-        return err;
-    }
-
-    function setAddInputErrors() 
-    {
-        for(var i = 1; i <= rowCount; i++)
-        {
-            if($("#add_product_name" + i).val() == "" || ProductNameTaken[i - 1] == true) 
-            {
-                $("#add_product_name_error" + i).text("Unavailable!");
-            }
-            if($("#add_brand" + i).val() == "") 
-            {
-                $("#add_brand_error" + i).text("Unavailable!");
-            }
-            if($("#add_color" + i).val() == "") 
-            {
-                $("#add_color_error" + i).text("Unavailable!");
-            }
-            if(!checkNumberInput($("#add_buying_price" + i).val())) 
-            {
-                $("#add_buying_price_error" + i).text("Unavailable!");
-            }
-            if(!checkNumberInput($("#add_selling_price" + i).val())) 
-            {
-                $("#add_selling_price_error" + i).text("Unavailable!");
-            }
-            if(!checkNumberInput($("#add_quantity" + i).val())) 
-            {
-                $("#add_quantity_error" + i).text("Unavailable!");
-            }
-            if(!checkNumberInput($("#add_reorder_point" + i).val())) 
-            {
-                $("#add_reorder_point_error" + i).text("Unavailable!");
-            }
-        }
-
-    }
 
     function getAvailability(Quantity, ReorderPoint) 
     {
@@ -497,41 +733,6 @@ $(document).ready(function ()
                 reject("Error occured");
             }); 
         });
-    }
-
-    function clearAddErrors() 
-    {
-        for(var i = 1; i <= rowCount; i++) {
-            $("#add_product_name_error" + i).text("");
-            $("#add_brand_error" + i).text("");
-            $("#add_color_error" + i).text("");
-            $("#add_buying_price_error" + i).text("");
-            $("#add_selling_price_error" + i).text("");
-            $("#add_quantity_error" + i).text("");
-            $("#add_reorder_point_error" + i).text("");
-        }
-    }
-
-    function clearAddInputs() 
-    {
-        for(var i = 1; i <= rowCount; i++) {
-            $("#add_product_name" + i).val("");
-            $("#add_brand" + i).val("");
-            $("#add_color" + i).val("");
-            $("#add_buying_price" + i).val("");
-            $("#add_selling_price" + i).val("");
-            $("#add_quantity" + i).val("");
-            $("#add_reorder_point" + i).val("");        
-        }
-    }
-
-    function clearEditErrors() 
-    {
-        $("#edit_product_name_error").text("");
-        $("#edit_brand_error").text("");
-        $("#edit_selling_price_error").text("");
-        $("#edit_quantity_error").text("");
-        $("#edit_reorder_point_error").text("");
     }
 
     function getCurrentDate() {
