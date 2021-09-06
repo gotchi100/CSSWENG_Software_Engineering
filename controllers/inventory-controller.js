@@ -40,7 +40,8 @@ const inventoryController = {
         await Inventory.find()
         .then((result) => {
             for(var i = 0; i < result.length; i++){
-                if(result[i].ProductName.toLowerCase() == ProductName.toLowerCase() && result[i].Color.toLowerCase() == Color.toLowerCase()) {
+                if(result[i].ProductName.toLowerCase().trim() == ProductName.toLowerCase().trim() && 
+                    result[i].Color.toLowerCase().trim() == Color.toLowerCase().trim()) {
                     temp = true;
                 }
             }
@@ -51,9 +52,8 @@ const inventoryController = {
                 res.send(null)
             }
         })
-
     },
-
+    
     PostInventoryViewAddOneProduct: async (req, res) => { 
 
         await Inventory.find()
