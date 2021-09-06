@@ -1,20 +1,11 @@
-const mongoose = require('mongoose');
-const Inventory = require('../models/inventory');
-
-//connect to mongodb
-const dbURI = 'mongodb+srv://cssweng_s13_group_2:cssweng_s13_group_2@wardrobechoicesmnl.fbjkw.mongodb.net/Database?retryWrites=true&w=majority'
-
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then((result) => console.log('connected to db'))
-    .catch((err) => console.log(err));
-
+const db = require('../models/inventoryDB.js');
 
 const inventoryController = {
 
     View: {
         GetView: (req, res) => {
 
-            Inventory.find()
+            db.Inventory.find()
             .then((ProductList) => {
     
                 res.render('inventory-view', {ProductList});
@@ -23,7 +14,7 @@ const inventoryController = {
 
         AddOneProduct: async (req, res) => { 
     
-            await Inventory.find()
+            await db.Inventory.find()
             .then((ProductList) => {
     
                 // generate new id based on the highest id on the database
@@ -38,7 +29,7 @@ const inventoryController = {
                 var temp = req.body.ProductInfo;
     
                 // store the new product details
-                const inventory = new Inventory({
+                const inventory = new db.Inventory({
                     ProductId: next_id,
                     ProductName: temp[0].ProductName,
                     Brand: temp[0].Brand,
@@ -58,7 +49,7 @@ const inventoryController = {
     
         AddManyProduct: async (req, res) => { 
     
-            await Inventory.find()
+            await db.Inventory.find()
             .then((ProductList) => {
     
                 // generate new id based on the highest id on the database
@@ -75,7 +66,7 @@ const inventoryController = {
                     next_id++;
                 }
     
-                Inventory.insertMany(req.body.ProductInfo).then((result) => {
+                db.Inventory.insertMany(req.body.ProductInfo).then((result) => {
                     res.status(200).send(result);
                     console.log("Product added to inventory database:\n" + result);
                 })
@@ -86,7 +77,7 @@ const inventoryController = {
     
             var temp = req.body.ProductInfo;
     
-            await Inventory.updateOne({ProductId: temp[0].ProductId}, 
+            await db.Inventory.updateOne({ProductId: temp[0].ProductId}, 
                                         {ProductName: temp[0].ProductName, 
                                             Brand: temp[0].Brand, 
                                             Color: temp[0].Color, 
@@ -120,7 +111,7 @@ const inventoryController = {
                 });
             }   
     
-            Inventory.bulkWrite(tempArr).then((result) => {
+            db.Inventory.bulkWrite(tempArr).then((result) => {
                 console.log("Products updated in the database");
                 res.status(200).send(temp);
             })
@@ -130,7 +121,7 @@ const inventoryController = {
     Pricelist: {
         GetPricelist: (req, res) => {
     
-            Inventory.find()
+            db.Inventory.find()
             .then((ProductList) => {
     
                 res.render('inventory-pricelist', {ProductList});
@@ -141,7 +132,7 @@ const inventoryController = {
     
             var temp = req.body.ProductInfo;
     
-            await Inventory.updateOne({ProductId: temp[0].ProductId}, 
+            await db.Inventory.updateOne({ProductId: temp[0].ProductId}, 
                                         {ProductName: temp[0].ProductName, 
                                             Brand: temp[0].Brand, 
                                             Color: temp[0].Color, 
@@ -173,7 +164,7 @@ const inventoryController = {
                 });
             }   
     
-            Inventory.bulkWrite(tempArr).then((result) => {
+            db.Inventory.bulkWrite(tempArr).then((result) => {
                 console.log("Products updated in the database");
                 res.status(200).send(temp);
             })
@@ -184,7 +175,7 @@ const inventoryController = {
     DeleteOneProduct: async (req, res) => {
     
         var ProductId = req.body.tempProductId;
-        const deleted_count = await Inventory.deleteOne({ProductId: ProductId}).exec();
+        const deleted_count = await db.Inventory.deleteOne({ProductId: ProductId}).exec();
         console.log(deleted_count);
         res.status(200).send();
     },
@@ -192,17 +183,17 @@ const inventoryController = {
     DeleteManyProduct: async (req, res) => {
 
         var ProductId = JSON.parse(req.body.ProductId)
-        const deleted_count = await Inventory.deleteMany({ProductId: {$in: ProductId}}).exec();
+        const deleted_count = await db.Inventory.deleteMany({ProductId: {$in: ProductId}}).exec();
         console.log(deleted_count);
         res.status(200).send();
     },
 
     GetIsProductAvailable: async (req, res) => {
-    
+
         var ProductName = req.query.ProductName;
         var Color = req.query.Color;
         var temp = false;
-        await Inventory.find()
+        await db.Inventory.find()
         .then((result) => {
             for(var i = 0; i < result.length; i++){
                 if(result[i].ProductName.toLowerCase().trim() == ProductName.toLowerCase().trim() && 

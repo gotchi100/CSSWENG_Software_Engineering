@@ -30,3 +30,7 @@ table.dataTable tr th.select-checkbox.selected::after {
     border: 6px solid black !important;
     border-radius: 3px !important;
 }
+
+.bg-secondary {
+    background-color: #b1b3b4!important;
+}

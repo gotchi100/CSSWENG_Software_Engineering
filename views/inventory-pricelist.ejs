@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="/style/dashboard.css">
-    <%- include('./partials/head.ejs') %>
     <%- include('./partials/bootstrap-link.ejs') %>
     <%- include('./partials/table-link.ejs') %>
+    <%- include('./partials/head.ejs') %>
 </head>
 <body>
 
@@ -64,7 +64,7 @@
     </div>
 
      <!-- inventory pricelist edit -->
-     <div class="modal fade" id="edit_modal" role="dialog" tabindex="-1">
+     <div class="modal fade" id="edit_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
 
@@ -128,7 +128,7 @@
     </div>
 
     <!-- inventory view edit product error pop-up -->
-    <div class="modal fade" id="edit_error_modal" role="dialog" tabindex="-1">
+    <div class="modal fade" id="edit_error_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-confirm">
             <div class="modal-content">
 
@@ -151,7 +151,7 @@
     </div>
 
      <!-- inventory view delete product pop-up -->
-     <div class="modal fade" id="delete_modal" role="dialog" tabindex="-1">
+     <div class="modal fade" id="delete_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-confirm">
             <div class="modal-content">
 
