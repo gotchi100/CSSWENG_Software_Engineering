@@ -36,6 +36,8 @@
                 <th></th>
                 <th scope="col">Product ID</th>
                 <th scope="col">Product Name</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Color</th>
                 <th scope="col">SRP</th>
                 <th scope="col">Buying Price</th>
             </thead>
@@ -45,6 +47,8 @@
                         <td></td>
                         <td><%= ProductList[i].ProductId %></td>
                         <td><%= ProductList[i].ProductName %></td>
+                        <td><%= ProductList[i].Brand %></td>
+                        <td><%= ProductList[i].Color %></td>
                         <td><%= ProductList[i].SellingPrice %></td>
                         <td><%= ProductList[i].BuyingPrice %></td>
                     </tr>
@@ -77,6 +81,8 @@
                             <tr>
                                 <th scope="col">Product ID</th>
                                 <th scope="col">Product Name</th>
+                                <th scope="col">Brand</th>
+                                <th scope="col">Color</th>
                                 <th scope="col">SRP</th>
                                 <th scope="col">Buying Price</th>
                             </tr>
@@ -84,21 +90,29 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <th>
-                                    <input type="number" class="form-control" id="edit_product_id" disabled>
-                                </th>
-                                <th>
-                                    <input type="text" class="form-control" id="edit_product_name">
-                                    <p class="text-danger" id="edit_product_name_error"></p>
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="edit_selling_price">
-                                    <p class="text-danger" id="edit_selling_price_error"></p>
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control" id="edit_buying_price">
-                                    <p class="text-danger" id="edit_buying_price_error"></p>
-                                </th>
+                                <td>
+                                    <input type="number" class="form-control-file" id="edit_product_id1" disabled>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control-file" id="edit_product_name1">
+                                    <p class="text-danger" id="edit_product_name_error1"></p>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control-file" id="edit_brand1">
+                                    <p class="text-danger" id="edit_brand_error1"></p>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control-file" id="edit_color1">
+                                    <p class="text-danger" id="edit_color_error1"></p>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control-file" id="edit_selling_price1">
+                                    <p class="text-danger" id="edit_selling_price_error1"></p>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control-file" id="edit_buying_price1">
+                                    <p class="text-danger" id="edit_buying_price_error1"></p>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

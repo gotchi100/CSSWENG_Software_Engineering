@@ -200,12 +200,14 @@ $(document).ready(function ()
     // edit data in database
     $("#edit_modal_button").on("click", function () 
     {
+        $("#edit_product_button").prop("disabled", false);
         editProductAddRows();
         editProductPopulateInputs();
     });
 
     $("#edit_product_button").on("click", async function () 
     {
+        $("#edit_product_button").prop("disabled", true);
         var checkError = await checkEditInputErrors();
         checkDuplicate = checkEditDuplicates();
 
@@ -251,7 +253,7 @@ $(document).ready(function ()
 
             if(editProductRowCount == 1)
             {
-                $.post("/inventory-edit-one-product", {ProductInfo}, function(data, status) 
+                $.post("/inventory-view-edit-one-product", {ProductInfo}, function(data, status) 
                 {
                     console.log("POST - Edit One Product - Status: " + status);
             
@@ -268,7 +270,7 @@ $(document).ready(function ()
             }
             else
             {
-                $.post("/inventory-edit-many-product", {ProductInfo}, function(data, status) 
+                $.post("/inventory-view-edit-many-product", {ProductInfo}, function(data, status) 
                 {
                     console.log("POST - Edit Many Product - Status: " + status);
             
@@ -287,15 +289,14 @@ $(document).ready(function ()
                     $("#edit_modal").modal("hide");
                 })
             }
-
-            
-
+            clearEditErrors();
         }
         
     });
     
     $("#close_edit_modal").on("click", function () 
     {
+        $("#edit_product_button").prop("disabled", false);
         editProductDeleteRows();
         clearEditErrors();
         clearEditInputs() ;
@@ -714,7 +715,8 @@ $(document).ready(function ()
             parsedName = parser.parseFromString(data[i-1][2], 'text/html').body.textContent
             parsedColor = parser.parseFromString(data[i-1][4], 'text/html').body.textContent
             // data[i-1][2] = Product Name column
-            if(ProductName == parsedName && Color == parsedColor)
+            if(ProductName.toLowerCase().trim() == parsedName.toLowerCase().trim() && 
+                Color.toLowerCase().trim() == parsedColor.toLowerCase().trim())
             {
                 value = "available";
             }
@@ -777,6 +779,7 @@ $(document).ready(function ()
 
     function setEditInputErrors() 
     {
+        $("#edit_product_button").prop("disabled", false);
         //if checkDuplicate is null, there are no duplicates on the form
         for(var i = 1; i <= editProductRowCount; i++)
         {

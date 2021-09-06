@@ -3,10 +3,7 @@ const mongoose = require('mongoose');
 
 const inventoryController = require('../controllers/inventory-controller');
 
-
-
 const router = express.Router();
-
 
 router.get('/login', (req, res) => {
     res.render('login');
@@ -24,23 +21,30 @@ router.get('/dashboard', (req, res) => {
     res.render('dashboard');
 });
 
-router.get('/inventory-view', inventoryController.GetInventoryView);
+// inventory view
+router.get('/inventory-view', inventoryController.View.GetView);
 
+router.post('/inventory-add-one-product', inventoryController.View.AddOneProduct);
+
+router.post('/inventory-add-many-products', inventoryController.View.AddManyProduct);
+
+router.post('/inventory-view-edit-one-product', inventoryController.View.UpdateOneProduct);
+
+router.post('/inventory-view-edit-many-product', inventoryController.View.UpdateManyProduct);
+
+// inventory pricelist
+router.get('/inventory-pricelist', inventoryController.Pricelist.GetPricelist);
+
+router.post('/inventory-pricelist-edit-one-product', inventoryController.Pricelist.UpdateOneProduct);
+
+router.post('/inventory-pricelist-edit-many-product', inventoryController.Pricelist.UpdateManyProduct);
+
+// other inventory functions used by both view and pricelist
 router.get('/is-product-available', inventoryController.GetIsProductAvailable);
 
-router.post('/inventory-add-one-product', inventoryController.PostInventoryViewAddOneProduct);
+router.post('/inventory-delete-one-product', inventoryController.DeleteOneProduct);
 
-router.post('/inventory-add-many-products', inventoryController.PostInventoryViewAddManyProduct);
-
-router.post('/inventory-edit-one-product', inventoryController.PostInventoryViewUpdateOneProduct);
-
-router.post('/inventory-edit-many-product', inventoryController.PostInventoryViewUpdateManyProduct);
-
-router.post('/inventory-delete-one-product', inventoryController.PostInventoryViewDeleteOneProduct);
-
-router.post('/inventory-delete-many-products', inventoryController.PostInventoryViewDeleteManyProduct);
-
-router.get('/inventory-pricelist', inventoryController.GetInventoryPricelist);
+router.post('/inventory-delete-many-products', inventoryController.DeleteManyProduct);
 
 router.get('/sales-customer-po-form', (req, res) => {
     res.render('sales-customer-po-form');
