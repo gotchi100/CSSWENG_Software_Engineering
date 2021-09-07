@@ -1,6 +1,6 @@
 const express = require('express');
 const router = require('./routes/routes');
-const inventoryDB = require('./models/inventoryDB.js');
+const database = require('./models/database.js');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -28,7 +28,7 @@ app.use((req, res) => {
 });
 
 // connects to inventory database
-inventoryDB.connect();
+database.connect();
 
 app.listen(_Port, () => {
     console.log('Server is running!');

@@ -63,7 +63,7 @@ router.get('/reorder-supplier-po-form', (req, res) => {
 });
 
 router.get('/reorder-add-supplier', (req, res) => {
-    res.render('reorder-supplier-order-tracker');
+    res.render('reorder-add-supplier');
 });
 
 router.get('/reorder-supplier-order-list', (req, res) => {

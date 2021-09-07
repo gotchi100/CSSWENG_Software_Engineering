@@ -34,3 +34,22 @@ table.dataTable tr th.select-checkbox.selected::after {
 .bg-secondary {
     background-color: #b1b3b4!important;
 }
+
+#supplier_add_product_table > tbody > tr > td > input {
+    line-height: normal !important;
+}
+
+#supplier_add_product_table > tbody > tr > td {
+    vertical-align: middle;
+}
+
+#supplier_add_supplier_table > tbody > tr > td {
+    padding: 0.30rem !important;
+    vertical-align: middle;
+}
+
+#supplier_add_supplier_table > tbody > tr > td > input {
+    line-height: 2 !important;
+    padding-left: 15px;
+    padding-right: 15px;
+}
