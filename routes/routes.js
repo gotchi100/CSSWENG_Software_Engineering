@@ -66,8 +66,6 @@ router.get('/reorder-supplier-form', reorderController.Supplier.GetSupplierForm)
 
 router.get('/get-supplier-info', reorderController.Supplier.FindSupplier);
 
-router.get('/get-po-number', reorderController.SupplierPO.GetPONumber);
-
 router.post('/reorder-add-supplier', reorderController.Supplier.AddSupplier);
 
 router.post('/reorder-add-supplier-po', reorderController.SupplierPO.AddSupplierPO);

@@ -90,20 +90,6 @@ const reorderController = {
             supplierPO.save();
             console.log("Supplier PO added to supplierPO database:\n" + supplierPO);
             res.status(200).send(supplierPO);
-        },
-
-        GetPONumber: async (req, res) => {
-            await db.SupplierPO.find()
-                .then((SupplierPOList) => {
-                    var next_PO = 0;
-                    for(var i = 0; i < SupplierPOList.length; i++) {
-                        if(SupplierPOList[i].PO > next_PO) {
-                            next_PO = SupplierPOList[i].PO;
-                        }
-                    }
-                    next_PO += 1;
-                    res.send(next_PO);
-                })
         }
     }
 
