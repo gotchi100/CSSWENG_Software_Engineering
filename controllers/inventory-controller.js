@@ -188,7 +188,7 @@ const inventoryController = {
         res.status(200).send();
     },
 
-    GetIsProductAvailable: async (req, res) => {
+    IsProductAvailable: async (req, res) => {
 
         var ProductName = req.query.ProductName;
         var Color = req.query.Color;

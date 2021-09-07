@@ -1,14 +1,70 @@
 $(document).ready(function () 
 {
     var addProductRowCount = 1;
+    var checkDuplicate;
 
-
-    $("#clear_item_button").on("click", clearAllInputs);
+    $("#clear_item_button").on("click", function() {
+        clearErrors();
+        clearAllInputs();
+        while(addProductRowCount != 1)
+        {
+            addProductDeleteRow();
+        }
+    });
 
     $("#add_item_button").on("click", addProductAddRow);
-    
-    $("#delete_item_button").on("click", addProductDeleteRow);
 
+    $("#delete_item_button").on("click", addProductDeleteRow);
+    
+    $("#close_error_modal").on("click", setInputErrors);
+
+    $("#submit_button").on("click", function() {
+
+        var checkError = checkErrors();
+        checkDuplicate = checkAddDuplicates();
+        if(checkError == true || checkDuplicate) 
+        {
+            if(checkError == true && checkDuplicate)
+            {
+                $("#error_modal_text").text("Please fill in all the fields and avoid using the same product names!");
+                clearErrors();
+                $("#error_modal").modal("show");
+            }
+            else if(checkError == true)
+            {
+                $("#error_modal_text").text("Please fill in all the fields!");
+                clearErrors();
+                $("#error_modal").modal("show");
+            }
+            else if(checkDuplicate)
+            {
+                $("#error_modal_text").text("Please avoid using the same product names!");
+                clearErrors();
+                $("#error_modal").modal("show");
+            }
+        }
+        else
+        {
+            var SupplierInfo = {
+                Name: $("#supplier_name").val().trim(),
+                Number: $("#supplier_number").val().trim(),
+                Email: $("#supplier_email").val().trim(),
+                Address: $("#supplier_address").val().trim(),
+                Products: []
+            };
+
+            for(var i = 1; i <= addProductRowCount; i++) 
+            {
+                SupplierInfo.Products.push($("#product_name" + i).val().trim());
+            }
+
+            $.post("/reorder-add-supplier", {SupplierInfo}, function(data, status) 
+            {
+                console.log("POST - Add One Supplier - Status: " + status);
+            });
+        }
+    });
+    
     function addProductAddRow() 
     {
         addProductRowCount++;
@@ -68,6 +124,107 @@ $(document).ready(function ()
         $("#supplier_number").val("");
         for(var i = 1; i <= addProductRowCount; i++) {
             $("#product_name" + i).val(""); 
+        }
+    }
+
+    function checkErrors()
+    {
+        var Name = $("#supplier_name").val().trim();
+        var Number = $("#supplier_number").val().trim();
+        var Email = $("#supplier_email").val().trim();
+        var Address = $("#supplier_address").val().trim();
+        var err = false;
+
+        if(Name == "" || Number == "" || Email == "" || Address == "")
+        {
+            err = true;
+        }
+        for(var i = 1; i <= addProductRowCount; i++)
+        {
+            if($("#product_name" + i).val().trim() == "")
+            {
+                err = true;
+            }
+        }
+        return err;
+    }
+    function checkAddDuplicates()
+    {
+        var data = [];
+
+        for(var k = 1; k <= addProductRowCount; k++)
+        {
+            data.push($("#product_name" + k).val().toLowerCase().trim());
+        }
+        
+        var duplicatePos = [];
+        var result = [];
+
+        data.forEach((product, index) => {
+            duplicatePos[product] = duplicatePos[product] || [];
+            duplicatePos[product].push(index);
+        });
+
+        Object.keys(duplicatePos).forEach(function(value) {
+            var posArray = duplicatePos[value];
+            if (posArray.length > 1) {
+                result = result.concat(posArray);
+            }
+        });
+
+        if(result.length > 0)
+        {
+            return result;
+        }
+        else
+        {
+            return null;
+        }
+    };
+
+    function clearErrors()
+    {
+        $("#supplier_name").removeClass("input-border-error");
+        $("#supplier_number").removeClass("input-border-error");
+        $("#supplier_email").removeClass("input-border-error");
+        $("#supplier_address").removeClass("input-border-error");
+        for(var i = 1; i <= addProductRowCount; i++)
+        {
+            $("#product_name" + i).removeClass("input-border-error");
+        }
+    }
+
+    function setInputErrors() 
+    {
+        if($("#supplier_name").val().trim() == "")
+        {
+            $("#supplier_name").addClass("input-border-error");
+        }
+        if($("#supplier_number").val().trim() == "")
+        {
+            $("#supplier_number").addClass("input-border-error");
+        }
+        if($("#supplier_email").val().trim() == "")
+        {
+            $("#supplier_email").addClass("input-border-error");
+        }
+        if($("#supplier_address").val().trim() == "")
+        {
+            $("#supplier_address").addClass("input-border-error");
+        }
+        for(var i = 1; i <= addProductRowCount; i++)
+        {
+            if(checkDuplicate)
+            {
+                if(checkDuplicate.includes(i-1))
+                {
+                    $("#product_name" + i).addClass("input-border-error");
+                }
+            }
+            else if($("#product_name" + i).val().trim() == "")
+            {
+                $("#product_name" + i).addClass("input-border-error");
+            }
         }
     }
 });

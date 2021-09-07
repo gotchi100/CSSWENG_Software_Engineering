@@ -21,10 +21,13 @@ const database = {
         })
     },
 
+    // mongoose inventory model
     Inventory,
 
+    // mongoose supplier model
     Supplier,
 
+    // mongoose supplierPO model
     SupplierPO
 }
 

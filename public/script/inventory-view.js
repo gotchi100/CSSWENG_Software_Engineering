@@ -496,7 +496,7 @@ $(document).ready(function ()
             duplicatePos[product.ProductName + " " + product.Color] = duplicatePos[product.ProductName + " " + product.Color] || [];
             duplicatePos[product.ProductName + " " + product.Color].push(index);
         });
-        //check how much of same value in string
+        
         Object.keys(duplicatePos).forEach(function(value) {
             var posArray = duplicatePos[value];
             if (posArray.length > 1) {

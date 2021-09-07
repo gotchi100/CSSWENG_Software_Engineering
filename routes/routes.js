@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const inventoryController = require('../controllers/inventory-controller');
+const reorderController = require('../controllers/reorder-controller');
 
 const router = express.Router();
 
@@ -40,7 +41,7 @@ router.post('/inventory-pricelist-edit-one-product', inventoryController.Priceli
 router.post('/inventory-pricelist-edit-many-product', inventoryController.Pricelist.UpdateManyProduct);
 
 // other inventory functions used by both view and pricelist
-router.get('/is-product-available', inventoryController.GetIsProductAvailable);
+router.get('/is-product-available', inventoryController.IsProductAvailable);
 
 router.post('/inventory-delete-one-product', inventoryController.DeleteOneProduct);
 
@@ -58,13 +59,18 @@ router.get('/sales-customer-order-tracker', (req, res) => {
     res.render('sales-customer-order-tracker');
 });
 
-router.get('/reorder-supplier-po-form', (req, res) => {
-    res.render('reorder-supplier-po-form');
-});
+// reorder 
+router.get('/reorder-supplier-po-form', reorderController.SupplierPO.GetSupplierPOForm);
 
-router.get('/reorder-add-supplier', (req, res) => {
-    res.render('reorder-add-supplier');
-});
+router.get('/reorder-supplier-form', reorderController.Supplier.GetSupplierForm);
+
+router.get('/get-supplier-info', reorderController.Supplier.FindSupplier);
+
+router.get('/get-po-number', reorderController.SupplierPO.GetPONumber);
+
+router.post('/reorder-add-supplier', reorderController.Supplier.AddSupplier);
+
+router.post('/reorder-add-supplier-po', reorderController.SupplierPO.AddSupplierPO);
 
 router.get('/reorder-supplier-order-list', (req, res) => {
     res.render('reorder-supplier-order-list');

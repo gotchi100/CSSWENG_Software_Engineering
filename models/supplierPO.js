@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 mongoose.pluralize(null);
 
 const supplierPOSchema = new mongoose.Schema({
+    PO: Number,
     Supplier: {
-        PO: Number,
         Name: String,
         Number: String,
         Email: String,
