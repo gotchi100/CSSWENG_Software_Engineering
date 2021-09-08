@@ -3,12 +3,8 @@ mongoose.pluralize(null);
 
 const supplierPOSchema = new mongoose.Schema({
     PO: Number,
-    Supplier: {
-        Name: String,
-        Number: String,
-        Email: String,
-        Address: String
-    },
+    SupplierID: Number,
+    SupplierName: String,
     ModeOfPayment: String,
     Products: [{
         ProductName: String,

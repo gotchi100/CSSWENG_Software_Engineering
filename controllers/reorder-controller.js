@@ -75,12 +75,8 @@ const reorderController = {
 
             const supplierPO = new db.SupplierPO({
                 PO: temp.PO,
-                Supplier: {
-                    Name: temp.Supplier.Name ,
-                    Number: temp.Supplier.Number,
-                    Email: temp.Supplier.Email,
-                    Address: temp.Supplier.Address
-                },
+                SupplierID: temp.SupplierID,
+                SupplierName: temp.SupplierName,
                 ModeOfPayment: temp.ModeOfPayment,
                 Products: temp.Products,
                 DateOrdered: temp.DateOrdered,

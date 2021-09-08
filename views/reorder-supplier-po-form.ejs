@@ -34,8 +34,9 @@
                 <div class="form-info">
 
                     <div class="form-group row">
-                        <label for="select_supplier" class="col-2 col-form-label font-weight-bold">Supplier:</label>
+                        <label for="select_supplier" class="col-2 col-form-label font-weight-bold">Supplier Name:</label>
                         <select name="" id="select_supplier" class="col-2" autofocus>
+                            <option value = "">Select one</option>
                         <% for(var i = 0; i < SupplierList.length; i++) { %>
                             <option><%= SupplierList[i].Name %></option>
                         <% } %>
@@ -48,22 +49,23 @@
                         <input type="text" class="form-control-file col-2" id="supplier_po" value="<%= next_PO %>" readonly>
     
                         <label for="supplier_email" class="col-2 col-form-label font-weight-bold">Supplier Email:</label>
-                        <input type="text" class="form-control-file col-2" id="supplier_email" value="<%= SupplierList[0].Email %>" readonly>
+                        <input type="text" class="form-control-file col-2" id="supplier_email" readonly>
                         
                         <label for="supplier_address" class="col-2 col-form-label font-weight-bold">Supplier Address:</label>
-                        <input type="text" class="form-control-file col-2" id="supplier_address" value="<%= SupplierList[0].Address %>" readonly>
+                        <input type="text" class="form-control-file col-2" id="supplier_address" readonly>
     
                     </div>
     
                     <div class="form-group row">
-                        <label for="supplier_name" class="col-2 col-form-label font-weight-bold">Supplier Name:</label>
-                        <input type="text" class="form-control-file col-2" id="supplier_name" value="<%= SupplierList[0].Name %>" readonly>
+                        <label for="supplier_id" class="col-2 col-form-label font-weight-bold">Supplier ID:</label>
+                        <input type="text" class="form-control-file col-2" id="supplier_id" readonly>
 
                         <label for="supplier_number" class="col-2 col-form-label font-weight-bold">Supplier Number:</label>
-                        <input type="text" class="form-control-file col-2" id="supplier_number" value="<%= SupplierList[0].Number %>" readonly>
+                        <input type="text" class="form-control-file col-2" id="supplier_number" readonly>
                         
                         <label for="mode_of_payment" class="col-2 col-form-label font-weight-bold">Mode of Payment:</label>
                         <select name="mode_of_payment" id="mode_of_payment" class="col-2 form-control-file">
+                            <option value = "">Select one</option>
                             <option>Cash</option>
                             <option>Debit Card</option>
                             <option>Credit Card</option>
@@ -85,20 +87,18 @@
                     <tbody>
                         <tr>
                             <td>
-                                <select class="form-control-file " id="product_name1">
-                                <% for(var i = 0; i < SupplierList[0].Products.length; i++) { %>
-                                   <option><%= SupplierList[0].Products[i] %></option>
-                                <% } %>
+                                <select class="form-control-file" id="product_name1">
+                                    <option value = "">Select one</option>
                                 </select>
                             </td>
                             <td>
-                                <input type="number" class="form-control-file" id="unit_price1">
+                                <input type="number" class="form-control-file calculate-amount1" id="unit_price1">
                             </td>
                             <td>
-                                <input type="number" class="form-control-file" id="quantity1">
+                                <input type="number" class="form-control-file calculate-amount1" id="quantity1">
                             </td>
                             <td>
-                                <input type="number" class="form-control-file" id="amount1">
+                                <input type="number" class="form-control-file calculate-total1" id="amount1" readonly>
                             </td>
                             <td>
                                 <div class="d-flex justify-content-center">
@@ -111,16 +111,63 @@
 
                     <tfoot>
                         <tr>
-                            <th colspan="3" class="h4 text-right">Total: </th>
-                            <th colspan="2" class="h4"></th>
+                            <th colspan="3" class="h4 text-right">Total Amount: </th>
+                            <th colspan="2" class="h4 text-left" id="total_amount"></th>
                         </tr>
                     </tfoot>
                 </table>
             </form>
-            <button type="button" class="btn btn-secondary float-right" id="submit_button">Submit</button>
+            <button type="button" class="btn btn-secondary float-right" id="submit_button" >Submit</button>
         </div>        
     
     </div> 
+
+    <!-- error pop-up -->
+    <div class="modal fade" id="error_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-confirm">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p class="h3">Error!</p>
+                </div>
+                
+                <div class="modal-body text-center">
+                    
+				<p class="h6" id="error_modal_text"></p>
+                        
+                </div>
+
+                <div class="modal-footer">
+                    
+                    <button type="button" class="btn btn-secondary float-right mr-3" data-dismiss="modal" id="close_error_modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- add supplier po confirm pop-up -->
+     <!-- <div class="modal fade" id="confirm_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-confirm">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p class="h3">Are you sure?</p>
+                </div>
+                
+                <div class="modal-body text-center">
+                    
+				<p class="h6" id="delete_modal_text">Are you sure you want to permanently remove the selected product/s?</p>
+                        
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary float-right mr-3" data-dismiss="modal" id="cancel_confirm_modal_modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary float-right mr-3" id="submit_button">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+        
 
     <script src="/script/reorder-supplier-po-form.js"></script>
 

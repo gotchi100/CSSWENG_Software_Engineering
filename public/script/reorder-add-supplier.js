@@ -226,5 +226,6 @@ $(document).ready(function ()
                 $("#product_name" + i).addClass("input-border-error");
             }
         }
+        checkDuplicate = [];
     }
 });
