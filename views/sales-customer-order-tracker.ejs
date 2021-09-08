@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="/style/dashboard.css">
+    <%- include('./partials/head.ejs') %>
     <%- include('./partials/bootstrap-link.ejs') %>
     <%- include('./partials/table-link.ejs') %>
-    <%- include('./partials/head.ejs') %>
 </head>
 <body>
 
@@ -41,36 +41,16 @@
                 <th scope="col">Status</th>
             </thead>
             <tbody>
-                <tr>
-                    <td></td>
-                    <td scope="col">PO #</td>
-                    <td scope="col">Date Ordered</td>
-                    <td scope="col">Customer Name</td>
-                    <td scope="col">Status</td>
-                </tr>
-                
-                <tr>
-                    <td></td>
-                    <td scope="col">PO #</td>
-                    <td scope="col">Date Ordered</td>
-                    <td scope="col">Customer Name</td>
-                    <td scope="col">Status</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td scope="col">PO #</td>
-                    <td scope="col">Date Ordered</td>
-                    <td scope="col">Customer Name</td>
-                    <td scope="col">Status</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td scope="col">PO #</td>
-                    <td scope="col">Date Ordered</td>
-                    <td scope="col">Customer Name</td>
-                    <td scope="col">Status</td>
-                </tr>
-               
+                <% for(var i = 0; i < SalesList.length; i++) { %>
+
+                    <tr data-toggle="modal" data-id="<%= SalesList[i].CustomerPO %>" data-target="#details_modal">
+                        <td></td>
+                        <td><%= SalesList[i].CustomerPO %></td>
+                        <td><%= SalesList[i].DateOrdered %></td>
+                        <td><%= SalesList[i].CustomerName %></td>
+                        <td><%= SalesList[i].Status %></td>
+                    </tr>
+                <% } %>
             </tbody>
 
         </table>

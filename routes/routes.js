@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 
 const inventoryController = require('../controllers/inventory-controller');
 const reorderController = require('../controllers/reorder-controller');
+const salesController = require('../controllers/sales-controller');
 
 const router = express.Router();
 
@@ -47,17 +48,15 @@ router.post('/inventory-delete-one-product', inventoryController.DeleteOneProduc
 
 router.post('/inventory-delete-many-products', inventoryController.DeleteManyProduct);
 
-router.get('/sales-customer-po-form', (req, res) => {
-    res.render('sales-customer-po-form');
-});
+// sales po form
+router.get('/sales-customer-po-form', salesController.GetSalesPOFormView);
 
-router.get('/sales-customer-order-list', (req, res) => {
-    res.render('sales-customer-order-list');
-});
+router.post('/sales-add-po-form', salesController.PostSalesAddPO);
 
-router.get('/sales-customer-order-tracker', (req, res) => {
-    res.render('sales-customer-order-tracker');
-});
+// sales 
+router.get('/sales-customer-order-list', salesController.GetSalesListView);
+
+router.get('/sales-customer-order-tracker', salesController.GetSalesTrackView);
 
 // reorder 
 router.get('/reorder-supplier-po-form', reorderController.SupplierPO.GetSupplierPOForm);

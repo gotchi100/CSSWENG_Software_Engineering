@@ -2,9 +2,43 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="/style/dashboard.css">
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" >
+		$(document).ready(function() {
+			$("#sales_order_list_table tbody").on("click", "tr td", function () 
+			{
+				if ($(this).index() != 0) 
+				{    
+				/*
+					var po = $(this).closest("tr").children().eq(1).text();
+					alert(po);
+					<% for(var i = 0; i < SalesList.length; i++) { %>
+						if(po == <%= SalesList[i].CustomerPO %>){
+							var id = <%= SalesList[i].CustomerOrderID %>;
+							var name = <%= SalesList[i].CustomerName %>;
+							var ordered = <%= SalesList[i].DateOrdered %>;
+							var pickup = <%= SalesList[i].PickupDate %>;
+							var physical = <%= SalesList[i].Physical %>;
+							var online = <%= SalesList[i].Online %>;
+						}
+					<% } %>
+					*/
+					$("#details_modal").modal("show");
+					/*
+					$("#customer_po span").text(po);
+					$("#customer_order_id span").text(id);
+					$("#customer_name span").text(name);
+					$("#date_ordered span").text(ordered);
+					$("#pickup_date span").text(pickup);
+					$("#physical_checkbox span").text(physical);
+					$("#online_checkbox span").text(online);*/
+				}
+			});
+		})
+	</script>
+    <%- include('./partials/head.ejs') %>
     <%- include('./partials/bootstrap-link.ejs') %>
     <%- include('./partials/table-link.ejs') %>
-    <%- include('./partials/head.ejs') %>
 </head>
 <body>
 
@@ -29,7 +63,6 @@
             <br>
         </header>
     
-        
     <!-- data table -->
 
         <table class="table table-bordered text-center" id="sales_order_list_table">
@@ -42,42 +75,18 @@
                 <th scope="col">Status</th>
             </thead>
             <tbody>
-                <tr>
-                    <td></td>
-                    <td scope="col">PO #</td>
-                    <td scope="col">Date Ordered</td>
-                    <td scope="col">Customer Name</td>
-                    <td scope="col">Status</td>
-                </tr>
-                
-                <tr>
-                    <td></td>
-                    <td scope="col">PO #</td>
-                    <td scope="col">Date Ordered</td>
-                    <td scope="col">Customer Name</td>
-                    <td scope="col">Status</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td scope="col">PO #</td>
-                    <td scope="col">Date Ordered</td>
-                    <td scope="col">Customer Name</td>
-                    <td scope="col">Status</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td scope="col">PO #</td>
-                    <td scope="col">Date Ordered</td>
-                    <td scope="col">Customer Name</td>
-                    <td scope="col">Status</td>
-                </tr>
-                
+                <% for(var i = 0; i < SalesList.length; i++) { %>
 
-               
-               
+                    <tr id="sales">
+                        <td></td>
+                        <td><%= SalesList[i].CustomerPO %></td>
+                        <td><%= SalesList[i].DateOrdered %></td>
+                        <td><%= SalesList[i].CustomerName %></td>
+                        <td><%= SalesList[i].Status %></td>
+                    </tr>
+                <% } %>
             </tbody>
-
-        </table>
+		</table>
 
         <div class="container d-flex justify-content-end">
             <button type="button" class="btn btn-secondary m-2" id="delete_button" disabled>Delete</button>
@@ -169,17 +178,15 @@
                                 </tfoot>
                             </table>
 
-                            
                             <button type="button" class="btn btn-secondary float-right m-2" id="modal_edit_button">Edit</button>
                             <button type="button" class="btn btn-secondary float-right m-2" id="modal_delete_button">Delete</button>
-
-                        </form>
+						</form>
                     </div>        
                 </div>
             </div>
         </div>
     </div>
     
-    <script src="/script/customer-order-list.js"></script>
+    <script src="/script/sales-customer-order-list.js"></script>
 </body>
 </html>

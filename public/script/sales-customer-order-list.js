@@ -1,6 +1,6 @@
 $(document).ready(function () 
 {
-    let table = $("#sales_order_list_tracker_table").DataTable( 
+    let table = $("#sales_order_list_table").DataTable( 
     {
         columnDefs: [{
                     orderable: false,
@@ -55,21 +55,18 @@ $(document).ready(function ()
     });
 
     //an item in table is clicked
-    $("#sales_order_list_tracker_table tbody").on("click", "tr td", function () 
-    {
-        if ($(this).index() != 0) 
-        {    
-            $("#details_modal").modal("show");
-        }
-    });
+    
 
     //add
-    $("#proceed_button").on("click", function () 
+    $("#modal_edit_button").on("click", function () 
     {
-        $("#details_modal").modal("hide");
-        $("#tracker_status_onroute_modal").modal("show");
+        
     });
 
-    
+    /*
+			var po = $(this).closest("tr").children().eq(1).text();
+			
+			
+	*/
 
 });
