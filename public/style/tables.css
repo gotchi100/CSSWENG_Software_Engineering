@@ -55,6 +55,15 @@ table.dataTable tr th.select-checkbox.selected::after {
     padding-right: 15px;
 }
 
+#reorder_details_table > tbody > tr > td > input {
+    line-height: normal !important;
+}
+
+#reorder_details_table > tbody > tr > td {
+    padding: 0.50rem !important;
+    vertical-align: middle;
+}
+
 .input-border-error {
     border-color: red !important;
     border-width: 2px !important;

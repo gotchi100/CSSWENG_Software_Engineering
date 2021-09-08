@@ -5,40 +5,38 @@ const reorderController = {
     Supplier: {
 
         GetSupplierForm: (req, res) => {
-            res.render('reorder-add-supplier');
-        },
-        AddSupplier: async (req, res) => {
-
-            await db.Supplier.find()
-            .then((SupplierList) => {
-    
-                // generate new id based on the highest id on the database
-                var next_id = 0;
-                for(var i = 0; i < SupplierList.length; i++) {
-                    if(SupplierList[i].Id > next_id) {
-                        next_id = SupplierList[i].Id;
+            db.Supplier.find()
+                .then((SupplierList) => {
+                    var next_id = 0;
+                    for(var i = 0; i < SupplierList.length; i++) {
+                        if(SupplierList[i].Id > next_id) {
+                            next_id = SupplierList[i].Id;
+                        }
                     }
-                }
-                next_id += 1;
+                    next_id += 1;
 
-                var temp = req.body.SupplierInfo;
-    
-                // store the new supplier details
+                    res.render('reorder-add-supplier', {next_id});
+                })
+        },
 
-                const supplier = new db.Supplier({
-                    Id: next_id,
-                    Name: temp.Name,
-                    Number: temp.Number,
-                    Email: temp.Email,
-                    Address: temp.Address,
-                    Products: temp.Products
-                });
+        AddSupplier: (req, res) => {
+
+            var temp = req.body.SupplierInfo;
     
-                // save the details to the database
-                supplier.save()
-                console.log("Supplier added to supplier database:\n" + supplier);
-                res.status(200).send(supplier);
+            // store the new supplier details
+            const supplier = new db.Supplier({
+                Id: temp.Id,
+                Name: temp.Name,
+                Number: temp.Number,
+                Email: temp.Email,
+                Address: temp.Address,
+                Products: temp.Products
             });
+
+            // save the details to the database
+            supplier.save()
+            console.log("Supplier added to supplier database:\n" + supplier);
+            res.status(200).send(supplier);
         },
 
         FindSupplier: async (req, res) => {
@@ -51,7 +49,7 @@ const reorderController = {
     },
 
     SupplierPO: {
-        GetSupplierPOForm : (req, res) => {
+        GetSupplierPOForm: (req, res) => {
 
             db.Supplier.find()
                 .then((SupplierList) => {
@@ -86,6 +84,58 @@ const reorderController = {
             supplierPO.save();
             console.log("Supplier PO added to supplierPO database:\n" + supplierPO);
             res.status(200).send(supplierPO);
+        },
+
+        GetOrderList: (req, res) => {
+            db.SupplierPO.find()
+                .then((SupplierPOList) => {
+
+                    
+                    res.render('reorder-supplier-order-list', {SupplierPOList});
+
+                })
+        },
+
+        FindSupplierPO: async (req, res) => {
+
+            await db.SupplierPO.findOne({PO: req.query.PONumber})
+            .then((SupplierPOInfo) => {
+                db.Supplier.findOne({Id: SupplierPOInfo.SupplierID})
+                    .then((SupplierInfo) => {
+                        var result = {
+                            Supplier: SupplierInfo,
+                            SupplierPO: SupplierPOInfo
+                        }
+                        res.status(200).send(result);
+
+                    })
+            });
+        },
+
+        DeleteOnePO: async (req, res) => {
+            const deleted_count = await db.SupplierPO.deleteOne({PO: req.body.PONumber}).exec();
+            console.log(deleted_count);
+            res.status(200).send();
+        },
+
+        DeleteManyProduct: async (req, res) => {
+
+            var PONumber = JSON.parse(req.body.PONumberArr)
+            const deleted_count = await db.SupplierPO.deleteMany({PO: {$in: PONumber}}).exec();
+            console.log(deleted_count);
+            res.status(200).send();
+        },
+
+        UpdateOne: async (req, res) => {
+
+            var temp = req.body.SupplierPOInfo;
+    
+            await db.SupplierPO.updateOne({PO: temp.PONumber}, 
+                                        {Status: temp.Status}).exec()
+            .then(() => {
+                console.log("Product updated in the database");
+                res.status(200).send(temp);
+            })
         }
     }
 
