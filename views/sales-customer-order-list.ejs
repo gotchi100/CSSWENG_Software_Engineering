@@ -204,6 +204,43 @@
         </div>
     </div>
 	
+	<!-- sales customer order tracker status from packing to delivering -->
+    <div class="modal fade" id="delete_sale_modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" id="delete_sale_modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="container mt-3">
+                        <table class="table table-bordered mt-3" id="delete_sale_modal_table">
+                            <header class="text-center h4">Delete Sale</header>
+                            <thead>
+                                <tr>
+                                    <th>PO #</th>
+                                    <th>Date Ordered</th>
+                                    <th>Customer Name</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="string" class="form-control" id="delete_po1" readonly></td>
+                                    <td><input type="string" class="form-control" id="delete_date_ordered1" readonly></td>
+                                    <td><input type="string" class="form-control" id="delete_customer_name1" readonly></td>
+                                    <td><input type="string" class="form-control" id="delete_status1" readonly></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <button type="button" class="btn btn-secondary float-right m-2" id="delete_confirm_button">Confirm</button>
+
+                    </div>        
+                </div>
+            </div>
+        </div>
+    </div>
+	
     <script src="/script/sales-customer-order-list.js"></script>
 </body>
 </html>

@@ -59,6 +59,11 @@ const inventoryController = {
             // save the details to the database
             sales.save()
             console.log("Sale added to sales database:\n" + sales);
+        });
+		
+		Sales.find()
+        .then((SalesList) => {
+
             res.render('sales-customer-order-list', {SalesList, title: "Customer Order List"});
         });
     },
@@ -70,7 +75,6 @@ const inventoryController = {
 
             res.render('sales-customer-order-list', {SalesList, title: "Customer Order List"});
         });
-
     },
 	
 	GetIndividualSale: (req, res) => {
@@ -91,16 +95,38 @@ const inventoryController = {
         });
     },
 	
-	GetUpdateStatus: (req, res) => {
+	PostUpdateStatus: (req, res) => {
 		
-		var po = req.query.po
-		var type = req.query.type
+		var po = req.body.po
+		var type = req.body.type
 		if (type == "onroute") {
 			Sales.findOneAndUpdate({CustomerPO: po}, {Status: "delivering"}, {new: true}, function(err, result){});
 		}
 		else if (type == "delivering") {
 			Sales.findOneAndUpdate({CustomerPO: po}, {Status: "delivered"}, {new: true}, function(err, result){});
 		}
+		
+		Sales.find()
+		.then((SalesList) => {
+			
+			res.render('sales-customer-order-list', {SalesList, title: "Customer Order List"});
+		});
+    },
+	
+	PostDeleteOneSale: (req, res) => {
+    
+        var SalesPO = req.body.tempSalesPO;
+        Sales.deleteOne({CustomerPO: SalesPO}, function(err, result){
+			res.send(result);
+		});
+    },
+
+    PostDeleteManySales: (req, res) => {
+
+        var SalesPO = JSON.parse(req.body.SalesPO)
+		Sales.deleteMany({CustomerPO: {$in: SalesPO}}, function(err, result){
+			res.send(result);
+		});
     },
 }
 

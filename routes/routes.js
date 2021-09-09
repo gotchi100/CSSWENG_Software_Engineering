@@ -58,7 +58,11 @@ router.get('/sales-customer-order-list', salesController.GetSalesListView);
 
 router.get('/sales-get-sale', salesController.GetIndividualSale);
 
-router.get('/sales-update-status', salesController.GetUpdateStatus);
+router.post('/sales-update-status', salesController.PostUpdateStatus);
+
+router.post('/sales-delete-one-product', salesController.PostDeleteOneSale);
+
+router.post('/sales-delete-many-products', salesController.PostDeleteManySales);
 
 // reorder 
 router.get('/reorder-supplier-po-form', reorderController.SupplierPO.GetSupplierPOForm);

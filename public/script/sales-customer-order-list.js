@@ -24,7 +24,6 @@ $(document).ready(function ()
         table.rows().deselect();
         $("th.select-checkbox").removeClass("selected");
         $("#delete_button").prop("disabled", true);
-        $("#edit_button").prop("disabled", true);
     } 
     else 
     {
@@ -38,26 +37,22 @@ $(document).ready(function ()
             {
                 $("th.select-checkbox").removeClass("selected");
                 $("#delete_button").prop("disabled", false);
-				$("#edit_button").prop("disabled", false);
             }
             else if (table.rows({ selected: true}).count() == 0)
             {
                 $("th.select-checkbox").removeClass("selected");
                 $("#delete_button").prop("disabled", true);
-				$("#edit_button").prop("disabled", true);
             }
             else
             {
                 $("th.select-checkbox").removeClass("selected");
                 $("#delete_button").prop("disabled", false);
-				$("#edit_button").prop("disabled", false);
             }
         } 
         else 
         {
             $("th.select-checkbox").addClass("selected");
-            $("#delete_button").prop("disabled", true);
-			$("#edit_button").prop("disabled", true);
+            $("#delete_button").prop("disabled", false);
         }
     });
 
@@ -148,8 +143,8 @@ $(document).ready(function ()
     {
 		var po = $("#tracker_status_onroute_modal").find("#onroute_po").val();
 		$("#tracker_status_onroute_modal").modal("hide");
-		$.get('/sales-update-status', {po: po, type: "onroute"});
-		$.get('/sales-customer-order-list');
+		$.post('/sales-update-status', {po: po, type: "onroute"});
+		window.location.reload(true);
     });
 	
 	//change status to delivered
@@ -157,13 +152,56 @@ $(document).ready(function ()
     {
 		var po = $("#tracker_status_delivered_modal").find("#delivered_po").val();
 		$("#tracker_status_delivered_modal").modal("hide");
-		$.get('/sales-update-status', {po: po, type: "delivering"});
+		$.post('/sales-update-status', {po: po, type: "delivering"});
+		window.location.reload(true);
     });
 	
     //add
-    $("#edit_button").on("click", function () 
+    $("#delete_button").on("click", function () 
     {
-        
+		$("#delete_sale_modal_table").find("tbody").detach();
+		$("#delete_sale_modal_table").append($("<tbody>"));
+        var data = table.rows(".selected").data();
+		for(var i = 1; i <= data.length; i++)
+        {
+            $("#delete_sale_modal_table tbody").append(`<tr><td><input type="string" class="form-control" id="delete_po` + i + `" readonly></td><td><input type="string" class="form-control" id="delete_date_ordered` + i + `" readonly></td><td><input type="string" class="form-control" id="delete_customer_name` + i + `" readonly></td><td><input type="string" class="form-control" id="delete_status` + i + `" readonly></td></tr>`);
+        }
+		
+		for(var i = 0; i < data.length; i++)
+        {
+			$("#delete_sale_modal").modal("show");
+			$("#delete_sale_modal").find("#delete_po" + (i + 1)).val(data[i][1]);
+			$("#delete_sale_modal").find("#delete_date_ordered" + (i + 1)).val(data[i][2]);
+			$("#delete_sale_modal").find("#delete_customer_name" + (i + 1)).val(data[i][3]);
+			$("#delete_sale_modal").find("#delete_status" + (i + 1)).val(data[i][4]);
+		}
+    });
+	
+	$("#delete_confirm_button").on("click", function () 
+    {
+		var count = table.rows(".selected").data().length;
+        var data = table.rows(".selected").data();
+        var tempSalesPO = [];
+        //if only one item is selected
+        if(count == 1) 
+        {
+            tempSalesPO = data[0][1];
+			$("#delete_sale_modal").modal("hide");
+            $.post("/sales-delete-one-product", {tempSalesPO});
+        }
+        //if only multiple items are selected
+        else 
+        {
+            for(var i = 0; i < count; i++) 
+            {
+                tempSalesPO[i] = data[i][1];
+            }
+            var SalesPO = JSON.stringify(tempSalesPO);
+			$("#delete_sale_modal").modal("hide");
+            $.post("/sales-delete-many-products", {SalesPO});
+        }
+		
+		table.rows(".selected").remove().draw(false);
     });
 	
     function getCurrentDate() {
