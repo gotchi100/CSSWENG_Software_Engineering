@@ -101,8 +101,6 @@ const inventoryController = {
 		else if (type == "delivering") {
 			Sales.findOneAndUpdate({CustomerPO: po}, {Status: "delivered"}, {new: true}, function(err, result){});
 		}
-		
-		res.redirect('/');
     },
 }
 
