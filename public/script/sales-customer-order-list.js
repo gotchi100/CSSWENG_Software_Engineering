@@ -1,5 +1,7 @@
 $(document).ready(function () 
 {
+    getCurrentDate(); // get current date
+
     let table = $("#sales_order_list_table").DataTable( 
     {
         columnDefs: [{
@@ -79,5 +81,27 @@ $(document).ready(function ()
 			
 			
 	*/
+    function getCurrentDate() {
+        var months = new Array();
+        months[0] = "January";
+        months[1] = "February";
+        months[2] = "March";
+        months[3] = "April";
+        months[4] = "May";
+        months[5] = "June";
+        months[6] = "July";
+        months[7] = "August";
+        months[8] = "September";
+        months[9] = "October";
+        months[10] = "November";
+        months[11] = "December";
+      
+        var date = new Date();
+        var day = date.getDate();
+        var month = months[date.getMonth()];
+        var year = date.getFullYear();
+
+        $("#current-date").html(day + " " + month + " " + year);
+    };
 
 });

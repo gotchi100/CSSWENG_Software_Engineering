@@ -8,19 +8,19 @@ const salesController = require('../controllers/sales-controller');
 const router = express.Router();
 
 router.get('/login', (req, res) => {
-    res.render('login');
+    res.render('login', {title: "Login"});
 });
 
 router.get('/register', (req, res) => {
-    res.render('register');
+    res.render('register', {title: "Register"});
 });
 
 router.get('/', (req, res) => {
-    res.render('dashboard');
+    res.redirect('dashboard')
 });
 
 router.get('/dashboard', (req, res) => {
-    res.render('dashboard');
+    res.render('dashboard', {title: "Dashboard"});
 });
 
 // inventory view
@@ -55,9 +55,8 @@ router.post('/sales-add-po-form', salesController.PostSalesAddPO);
 
 // sales 
 router.get('/sales-customer-order-list', salesController.GetSalesListView);
-router.get('/sales-get-sale', salesController.GetIndividualSale);
 
-router.get('/sales-customer-order-tracker', salesController.GetSalesTrackView);
+router.get('/sales-get-sale', salesController.GetIndividualSale);
 
 // reorder 
 router.get('/reorder-supplier-po-form', reorderController.SupplierPO.GetSupplierPOForm);
@@ -81,11 +80,11 @@ router.post('/reorder-delete-many-po', reorderController.SupplierPO.DeleteManyPr
 router.post('/reorder-update-status', reorderController.SupplierPO.UpdateOne);
 
 router.get('/reports-total-sales-and-expenses', (req, res) => {
-    res.render('reports-total-sales-and-expenses');
+    res.render('reports-total-sales-and-expenses', {title: "Total Sales and Expenses Reports"});
 });
 
 router.get('/reports-shrinkages', (req, res) => {
-    res.render('reports-shrinkages');
+    res.render('reports-shrinkages', {title: "Shrinkages Reports"});
 });
 
 

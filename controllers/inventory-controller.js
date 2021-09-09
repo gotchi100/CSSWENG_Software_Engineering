@@ -8,7 +8,7 @@ const inventoryController = {
             db.Inventory.find()
             .then((ProductList) => {
     
-                res.render('inventory-view', {ProductList});
+                res.render('inventory-view', {ProductList, title: "Inventory View"});
             });
         },
 
@@ -124,7 +124,7 @@ const inventoryController = {
             db.Inventory.find()
             .then((ProductList) => {
     
-                res.render('inventory-pricelist', {ProductList});
+                res.render('inventory-pricelist', {ProductList, title: "Inventory Pricelist"});
             });
         },
 

@@ -15,7 +15,7 @@ const reorderController = {
                     }
                     next_id += 1;
 
-                    res.render('reorder-add-supplier', {next_id});
+                    res.render('reorder-add-supplier', {next_id, title: "Supplier Form"});
                 })
         },
 
@@ -62,7 +62,7 @@ const reorderController = {
                                 }
                             }
                             next_PO += 1;
-                            res.render('reorder-supplier-po-form', {SupplierList, next_PO});
+                            res.render('reorder-supplier-po-form', {SupplierList, next_PO, title: "Supplier PO Form"});
                         })
                 });
         },
@@ -91,7 +91,7 @@ const reorderController = {
                 .then((SupplierPOList) => {
 
                     
-                    res.render('reorder-supplier-order-list', {SupplierPOList});
+                    res.render('reorder-supplier-order-list', {SupplierPOList, title: "Supplier Order List"});
 
                 })
         },

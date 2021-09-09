@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="/style/dashboard.css">
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <%- include('./partials/bootstrap-link.ejs') %>
+    <%- include('./partials/table-link.ejs') %>
+    <%- include('./partials/head.ejs') %>
+
 	<script type="text/javascript" >
 		$(document).ready(function() {
 			$("#sales_order_list_table tbody").on("click", "tr td", function () 
@@ -63,9 +66,6 @@
 			});
 		})
 	</script>
-    <%- include('./partials/head.ejs') %>
-    <%- include('./partials/bootstrap-link.ejs') %>
-    <%- include('./partials/table-link.ejs') %>
 </head>
 <body>
 
@@ -85,8 +85,7 @@
             <br>
             Customer Order List
             <br>
-            As of today: xx, xxxx, xxxx
-            <br>
+            <p >As of today: <span id="current-date"></span></p>
             <br>
         </header>
     

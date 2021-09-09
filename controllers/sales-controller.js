@@ -19,7 +19,7 @@ const inventoryController = {
         .then((ProductList) => {
 			Sales.find()
 			.then((SalesList) => {
-				res.render('sales-customer-po-form', {ProductList: ProductList, SalesList: SalesList,});
+				res.render('sales-customer-po-form', {ProductList: ProductList, SalesList: SalesList, title: "Customer PO Form"});
 			});
 		});
 
@@ -59,7 +59,7 @@ const inventoryController = {
             // save the details to the database
             sales.save()
             console.log("Sale added to sales database:\n" + sales);
-            res.render('sales-customer-order-list', {SalesList});
+            res.render('sales-customer-order-list', {SalesList, title: "Customer Order List"});
         });
     },
 	
@@ -68,7 +68,7 @@ const inventoryController = {
         Sales.find()
         .then((SalesList) => {
 
-            res.render('sales-customer-order-list', {SalesList});
+            res.render('sales-customer-order-list', {SalesList, title: "Customer Order List"});
         });
 
     },

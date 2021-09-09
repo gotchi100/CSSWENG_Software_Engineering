@@ -2,11 +2,14 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="/style/dashboard.css">
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <%- include('./partials/bootstrap-link.ejs') %>
+    <%- include('./partials/table-link.ejs') %>
+    <%- include('./partials/head.ejs') %>
+
 	<script type="text/javascript" >
 		$(document).ready(function() {
 			$("#products").on("click", "#add_row_button", function() {
-				$("#products").last().append(`<tr><td><select class="custom-select" id="product_names" name="ProductNames" required><option value="" selected disabled hidden>Choose item</option><% for(var i = 0; i < ProductList.length; i++) { %><option value="<%= ProductList[i].ProductName %>" label="<%= ProductList[i].ProductName %>"><%= ProductList[i].SellingPrice %></option><% } %></select></td><td><input type="number" class="form-control" id="unit_price" name="ProductUnitPrices" readonly></td><td><input type="number" class="form-control" id="quantity" name="ProductQuantities" required></td><td><input type="number" class="form-control" id="amount" name="ProductPrices" readonly></td><td><button type="button" class="btn btn-secondary form-control font-weight-bold" id="add_row_button">+</button></td><tr>`);
+				$("#products").last().append(`<tr><td><select class="form-control-file" id="product_names" name="ProductNames" required><option value="" selected disabled hidden>Choose item</option><% for(var i = 0; i < ProductList.length; i++) { %><option value="<%= ProductList[i].ProductName %>" label="<%= ProductList[i].ProductName %>"><%= ProductList[i].SellingPrice %></option><% } %></select></td><td><input type="number" class="form-control-file" id="unit_price" name="ProductUnitPrices" readonly></td><td><input type="number" class="form-control-file" id="quantity" name="ProductQuantities" required></td><td><input type="number" class="form-control-file" id="amount" name="ProductPrices" readonly></td><td><button type="button" class="btn btn-secondary" id="add_row_button"><span class="fas fa-plus"></span></button></td><tr>`);
 			});
 			
 			$("#products").on("change", "#product_names", function() {
@@ -51,10 +54,6 @@
 			});
 		})
 	</script>
-    <%- include('./partials/head.ejs') %>
-    <%- include('./partials/bootstrap-link.ejs') %>
-    <%- include('./partials/table-link.ejs') %>
-	
 </head>
 <body>
 
@@ -84,7 +83,7 @@
                 <div class="form-info">
                     <div class="form-group row">
                         <label for="customer_po" class="col-2 col-form-label font-weight-bold">Customer-PO:</label>
-                        <input type="text" class="form-control col-2" id="customer_po" name="CustomerPO" value="<%= SalesList.length + 1%>" readonly>
+                        <input type="text" class="form-control-file col-2" id="customer_po" name="CustomerPO" value="<%= SalesList.length + 1%>" readonly>
     
                         <label for="customer_name" class="col-2 col-form-label font-weight-bold">Customer Name:</label>
                         <input type="text" class="form-control-file col-2" id="customer_name" name="CustomerName" required>
@@ -99,14 +98,14 @@
     
                         <div class="col-2 text-center">
                             <label for="physical_checkbox" class="form-check-label font-weight-bold mt-2">
-                                <input type="checkbox" class="form-check-input" id="physical_checkbox" name="Physical" style="width:20px;height:20px;">&nbsp&nbspPhysical
+                                <input type="checkbox" class="form-check-input" id="physical_checkbox" name="Physical" style="width:18px;height:18px;">&nbsp&nbspPhysical
                             </label>
                         </div>
                         
     
                         <div class="col-2 text-center">
                             <label for="online_checkbox" class="form-check-label font-weight-bold mt-2">
-                                <input type="checkbox" class="form-check-input" id="online_checkbox" name="Online" style="width:20px;height:20px;">&nbsp&nbspOnline
+                                <input type="checkbox" class="form-check-input" id="online_checkbox" name="Online" style="width:18px;height:18px;">&nbsp&nbspOnline
                             </label>    
                         </div>
                         
@@ -115,7 +114,7 @@
                     </div>
                 </div>
 
-                <table class="table table-bordered mt-5" id="products">
+                <table class="table table-bordered mt-5 sales-products-table text-center" id="products">
                     <thead>
                         <tr>
                             <th class="productname">Product Name</th>
@@ -128,7 +127,7 @@
                     <tbody>
                         <tr>
                             <td>
-                                <select class="custom-select" id="product_names" name="ProductNames" required>
+                                <select class="form-control-file" id="product_names" name="ProductNames" required>
 									<option value="" selected disabled hidden>Choose item</option>
 									<% for(var i = 0; i < ProductList.length; i++) { %>
 										<option value="<%= ProductList[i].ProductName %>" label="<%= ProductList[i].ProductName %>"><%= ProductList[i].SellingPrice %></option>
@@ -136,30 +135,30 @@
                                 </select>
                             </td>
                             <td>
-                                <input type="number" class="form-control" id="unit_price" name="ProductUnitPrices" readonly>
+                                <input type="number" class="form-control-file" id="unit_price" name="ProductUnitPrices" readonly>
                             </td>
                             <td>
-                                <input type="number" class="form-control" id="quantity" name="ProductQuantities" required>
+                                <input type="number" class="form-control-file" id="quantity" name="ProductQuantities" required>
                             </td>
                             <td>
-                                <input type="number" class="form-control" id="amount" name="ProductPrices" readonly>
+                                <input type="number" class="form-control-file" id="amount" name="ProductPrices" readonly>
                             </td>
-                            <td><button type="button" class="btn btn-secondary form-control font-weight-bold" id="add_row_button">+</button></td>
+                            <td><button type="button" class="btn btn-secondary" id="add_row_button"><span class="fas fa-plus"></span></button></td>
                         </tr>
                     
                     </tbody>
 
                     <tfoot>
                         <tr>
-                            <th colspan="3" class="h4 text-right">Total: </th>
-                            <th colspan="2" class="h4 text-right"><input type="number" class="form-control" id="total" name="TotalPrice" readonly></th>
+                            <th colspan="3" class="h4 text-right">Total Amount: </th>
+                            <th colspan="2" class="h4 text-left"><input type="number" class="form-control-file" id="total" name="TotalPrice" readonly></th>
                         </tr>
                         
                     </tfoot>
                     
                 </table>
 
-				<button type="submit" class="btn btn-secondary float-right font-weight-bold" id="add_item_button">Submit</button>
+				<button type="submit" class="btn btn-secondary float-right" id="add_item_button">Submit</button>
 				
             </form>
         </div>        

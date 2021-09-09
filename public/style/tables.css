@@ -35,6 +35,15 @@ table.dataTable tr th.select-checkbox.selected::after {
     background-color: #b1b3b4!important;
 }
 
+.sales-products-table >  tbody > tr > td > input {
+    line-height: normal !important;
+}
+
+.sales-products-table > tbody > tr > td {
+    padding: 0.30rem !important;
+    vertical-align: middle;
+}
+
 #supplier_add_po_table > tbody > tr > td > input {
     line-height: normal !important;
 }
