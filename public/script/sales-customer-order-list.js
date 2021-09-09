@@ -65,6 +65,7 @@ $(document).ready(function ()
     {
         $("#details_modal").modal("hide");
         $("#tracker_status_onroute_modal").modal("show");
+		$("#tracker_status_onroute_modal").find("#packing_po").text($("#details_modal").find("#customer_po").text());
     });
     
     //add

@@ -49,14 +49,17 @@ const inventoryController = {
                 DateOrdered: req.body.DateOrdered,
                 PickupDate: req.body.PickupDate,
                 ProductNames: req.body.ProductNames,
+				ProductUnitPrices: req.body.ProductUnitPrices,
                 ProductQuantities: req.body.ProductQuantities,
+				ProductPrices: req.body.ProductPrices,
+				TotalPrice: req.body.TotalPrice,
                 Status: "pending"
             });
 
             // save the details to the database
             sales.save()
             console.log("Sale added to sales database:\n" + sales);
-			res.redirect('/sales-customer-order-list');
+            res.render('sales-customer-order-list', {SalesList});
         });
     },
 	
@@ -70,14 +73,22 @@ const inventoryController = {
 
     },
 	
-	GetSalesTrackView: (req, res) => {
-
-        Sales.find()
-        .then((SalesList) => {
-
-            res.render('sales-customer-order-tracker', {SalesList});
+	GetIndividualSale: (req, res) => {
+		
+		var po = req.query.po;
+        Sales.findOne({CustomerPO: po}, function(err, result)
+		{
+			if(err)
+			{
+				console.log (err);
+				res.send();
+			}
+			else
+			{
+				console.log (result);
+				res.send(result);
+			}
         });
-
     },
 }
 

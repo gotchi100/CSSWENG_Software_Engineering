@@ -10,7 +10,10 @@ const salesSchema = new mongoose.Schema({
     DateOrdered: String,
     PickupDate: String,
     ProductNames: [String],
+	ProductUnitPrices: [Number],
 	ProductQuantities: [Number],
+	ProductPrices: [Number],
+	TotalPrice: Number,
 	Status: String
 });
 
