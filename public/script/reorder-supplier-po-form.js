@@ -4,70 +4,74 @@ $(document).ready(function ()
     var checkDuplicate;
     var nextPONumber = $("#supplier_po").val();
 
-    $("#submit_button").on("click", function() {
-
-        var checkError = checkErrors();
-        var checkSelectedSupplier = checkSupplier();
-        checkDuplicate = checkAddDuplicates();
-        if(checkSelectedSupplier || checkError == true || checkDuplicate) 
-        {
-            if(checkSelectedSupplier)
+    $("#submit_button").on("click", function() 
+    {
+        // var checkSelectedSupplier = checkSupplier();
+        // if(checkSelectedSupplier)
+        // {
+        //    $("#error_modal_text").text("Please select a supplier!");
+        //    $("#error_modal").modal("show");
+        // }
+       // else
+      //  {
+            if(addProductFieldsIncomplete() != true)
             {
-                $("#error_modal_text").text("Please select a supplier!");
-
-            }
-            else if(checkError == true && checkDuplicate)
-            {
-                $("#error_modal_text").text("Please fill in all the fields and avoid using the same product names!");
-            }
-            else if(checkError == true)
-            {
-                $("#error_modal_text").text("Please fill in all the fields!");
-            }
-            else if(checkDuplicate)
-            {
-                $("#error_modal_text").text("Please avoid using the same product names!");
-            }
-            clearErrors();
-            $("#confirm_modal").modal("hide");
-            $("#error_modal").modal("show");
-        }
-        else
-        {
-            var products = [];
-
-            for(var i = 1; i <= addProductRowCount; i++)
-            {
-                var temp = {
-                    ProductName: $("#product_name" + i + " :selected").text(),
-                    UnitPrice: $("#unit_price" + i).val(),
-                    Quantity: $("#quantity" + i).val(),
-                    Amount: $("#amount" + i).val()
-                };
-                products.push(temp);
-            }
-
-            var SupplierPOInfo = {
-                PO: $("#supplier_po").val(),
-                SupplierID: $("#supplier_id").val(),
-                SupplierName: $("#select_supplier :selected").text(),
-                ModeOfPayment: $("#mode_of_payment :selected").text(),
-                Products: products,
-                DateOrdered: getCurrentDate(),
-                Status: "Ordering"
-            };
-
-            nextPONumber = parseInt($("#supplier_po").val()) + 1;
-
-            $.post("/reorder-add-supplier-po", {SupplierPOInfo}, function(data, status) 
-            {
-                console.log("POST - Add One Supplier PO - Status: " + status);
+                checkDuplicate = checkAddDuplicates();
+                if(checkDuplicate) 
+                {
+                    if(checkDuplicate)
+                    {
+                        $("#error_modal_text").text("Please avoid using the same product names!");
+                    }
+                    clearErrors();
+                    $("#error_modal").modal("show");
+                }
+                else
+                {
+                    var products = [];
     
-                clearErrors();
-                clearInputs();
-                $("#confirm_modal").modal("hide");
-            });
+                    for(var i = 1; i <= addProductRowCount; i++)
+                    {
+                        var temp = {
+                            ProductName: $("#product_name" + i + " :selected").text(),
+                            UnitPrice: $("#unit_price" + i).val(),
+                            Quantity: $("#quantity" + i).val(),
+                            Amount: $("#amount" + i).val()
+                        };
+                        products.push(temp);
+                    }
+    
+                    var SupplierPOInfo = {
+                        PO: $("#supplier_po").val(),
+                        SupplierID: $("#supplier_id").val(),
+                        SupplierName: $("#select_supplier :selected").text(),
+                        ModeOfPayment: $("#mode_of_payment :selected").text(),
+                        Products: products,
+                        DateOrdered: getCurrentDate(),
+                        Status: "Ordering"
+                    };
+    
+                    nextPONumber = parseInt($("#supplier_po").val()) + 1;
+    
+                    $.post("/reorder-add-supplier-po", {SupplierPOInfo}, function(data, status) 
+                    {
+                        console.log("POST - Add One Supplier PO - Status: " + status);
+            
+                        $("#success_modal").modal("show");
+                    });
+             //   }
+            }
+    
+
         }
+        
+        
+    });
+
+    $("#success_close_button").on("click", function ()
+    {
+        clearErrors();
+        clearInputs();
     });
 
     $("#select_supplier").change(function ()
@@ -125,6 +129,22 @@ $(document).ready(function ()
     {
         $("tbody tr td").on("input", ".calculate-amount" + i, calculateAmount);
     }
+    function addProductFieldsIncomplete()
+    {
+        var UnitPrice, Quantity;
+
+        for(var i = 1; i <= addProductRowCount; i++)
+        {
+            UnitPrice = $("#unit_price" + i).val();
+            Quantity = $("#quantity" + i).val();
+
+            if(UnitPrice == "" || Quantity == "" ||  UnitPrice < 1 || Quantity < 1)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     function calculateAmount() 
     {
         var amount = [];
@@ -162,23 +182,23 @@ $(document).ready(function ()
         
         $("#supplier_add_po_table tbody td:last").text("");
         
-        $("#supplier_add_po_table tbody tr:last").after("<tr><td>" + 
-        "<select class=\"form-control-file\" id=\"product_name" + addProductRowCount + "\">" +
-        " </select>" +
-        "</td><td>" +
+        $("#supplier_add_po_table tbody tr:last").after('<tr><td>'+ 
+        '<select class="form-control-file" id="product_name' + addProductRowCount + '" required></select>' +
+        '</td><td>' +
 
-        "<input type=\"number\" class=\"form-control-file calculate-amount" + addProductRowCount + "\" id=\"unit_price" + addProductRowCount + "\"></input>" +
-        "</td><td>" +
+        '<input type="number" class="form-control-file calculate-amount' + addProductRowCount + '" id="unit_price' + addProductRowCount + '" min="1" required>' +
+        '</td><td>' +
 
-        "<input type=\"number\" class=\"form-control-file calculate-amount" + addProductRowCount + "\" id=\"quantity" + addProductRowCount + "\">" +
-        "</td><td>" +
+        '<input type="number" class="form-control-file calculate-amount' + addProductRowCount + '" id="quantity' + addProductRowCount + '" min="1" required>' +
+        '</td><td>' +
 
-        "<input type=\"number\" class=\"form-control-file\" id=\"amount" + addProductRowCount + "\"readonly></input>" +
-        "</td><td>" +
-        "<div class=\"d-flex justify-content-center\">" +
-        "<button type=\"button\" class=\"btn btn-secondary ml-2 mr-2\" id=\"add_item_button\"><span class=\"fas fa-plus\"></span></button>" +
-        "<button type=\"button\" class=\"btn btn-secondary\" id=\"delete_item_button\"><span class=\"fas fa-trash\"></span></button>" +
-        "</div></td></tr>");
+        '<input type="number" class="form-control-file" id="amount' + addProductRowCount + '" readonly>' +
+        '</td><td>' +
+
+        '<div class="d-flex justify-content-center">' +
+        '<button type="button" class="btn btn-secondary mr-2" id="add_item_button"><span class="fas fa-plus"></span></button>' +
+        '<button type="button" class="btn btn-secondary" id="delete_item_button"><span class="fas fa-trash"></span></button>' +
+        '</div></td></tr>');
     
         $("#product_name" + addProductRowCount).append($("#product_name1 > option").clone());
 
@@ -206,17 +226,15 @@ $(document).ready(function ()
     
         $("#supplier_add_po_table tbody tr:last").remove();
         $("#supplier_add_po_table tbody td:last").remove();
-        $("#supplier_add_po_table tbody tr:last").append("<td>" +
-        "<div class=\"d-flex justify-content-center\">" +
-        "<button type=\"button\" class=\"btn btn-secondary ml-2 mr-2\" id=\"add_item_button\"><span class=\"fas fa-plus\"></span></button>" +
-        "<button type=\"button\" class=\"btn btn-secondary\" id=\"delete_item_button\"><span class=\"fas fa-trash\"></span></button>" +
-        "</div></td></tr>");
+        $("#supplier_add_po_table tbody tr:last").append('<td>' +
+        '<div class="d-flex justify-content-center">' +
+        '<button type="button" class="btn btn-secondary mr-2" id="add_item_button"><span class="fas fa-plus"></span></button>' +
+        '<button type="button" class="btn btn-secondary" id="delete_item_button"><span class="fas fa-trash"></span></button>' +
+        '</div></td></tr>');
     
          $("#add_item_button").on("click", addProductAddRow);
          $("#delete_item_button").on("click", addProductDeleteRow);
 
-         
-    
          if(addProductRowCount == 1) {
             $("#delete_item_button").prop("disabled", true);
         }
@@ -224,13 +242,9 @@ $(document).ready(function ()
 
     function clearErrors()
     {
-        $("#select_supplier").removeClass("input-border-error");
-        $("#mode_of_payment").removeClass("input-border-error");
         for(var i = 1; i <= addProductRowCount; i++)
         {
             $("#product_name" + i).removeClass("input-border-error");
-            $("#unit_price" + i).removeClass("input-border-error");
-            $("#quantity" + i).removeClass("input-border-error");
         }
     }
 
@@ -250,72 +264,21 @@ $(document).ready(function ()
         }
     }
 
-    function checkSupplier() 
-    {
-        if($("#select_supplier :selected").val().trim() == "")
-        {
-            return true;
-        }
-        return false;
-    }
-
     function setInputErrors() 
     {
-        if($("#select_supplier :selected").val().trim() == "")
+        for(var i = 1; i <= addProductRowCount; i++)
         {
-            $("#select_supplier").addClass("input-border-error");
-        }
-        else
-        {
-            if($("#mode_of_payment :selected").val().trim() == "")
+            if(checkDuplicate)
             {
-                $("#mode_of_payment").addClass("input-border-error");
-            }
-            for(var i = 1; i <= addProductRowCount; i++)
-            {
-                if(checkDuplicate)
-                {
-                    if(checkDuplicate.includes(i-1))
-                    {
-                        $("#product_name" + i).addClass("input-border-error");
-                    }
-                }
-                else if($("#product_name" + i + " :selected").val().trim() == "")
+                if(checkDuplicate.includes(i-1))
                 {
                     $("#product_name" + i).addClass("input-border-error");
                 }
-                if($("#unit_price" + i).val().trim() == "" || $("#unit_price" + i).val().trim() < 0)
-                {
-                    $("#unit_price" + i).addClass("input-border-error");
-                }
-                if($("#quantity" + i).val().trim() == "" || $("#quantity" + i).val().trim() < 0)
-                {
-                    $("#quantity" + i).addClass("input-border-error");
-                }
-            }
-            checkDuplicate = [];
-        }
-        
-    }
-
-    function checkErrors()
-    {
-        var ModeOfPayment = $("#mode_of_payment :selected").val();
-        var err = false;
-
-        if(ModeOfPayment == "")
-        {
-            err = true;
-        }
-        for(var i = 1; i <= addProductRowCount; i++)
-        {
-            if($("#product_name" + i + " :selected").val().trim() == "" || $("#unit_price" + i).val().trim() == "" || $("#quantity" + i).val().trim() == "")
-            {
-                err = true;
             }
         }
-        return err;
+        checkDuplicate = [];
     }
+
     function checkAddDuplicates()
     {
         var data = [];
@@ -335,7 +298,7 @@ $(document).ready(function ()
 
         Object.keys(duplicatePos).forEach(function(value) {
             var posArray = duplicatePos[value];
-            if (posArray.length > 1) {
+            if (posArray.length > 1 && posArray[value] != "") {
                 result = result.concat(posArray);
             }
         });

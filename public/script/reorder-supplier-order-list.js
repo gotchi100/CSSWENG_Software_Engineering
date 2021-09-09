@@ -78,6 +78,15 @@ $(document).ready(function ()
                     $("#supplier_number").val(result.Supplier.Number);
                     $("#mode_of_payment").append("<option>" + result.SupplierPO.ModeOfPayment + "</option>")
 
+                    if(result.SupplierPO.Status == "Ordering")
+                    {
+                        $("#proceed_button").prop("disabled", false);
+                    }
+                    else
+                    {
+                        $("#proceed_button").prop("disabled", true);
+                    }
+
                     addProductRows(result.SupplierPO.Products.length);
                     populateTable(result.SupplierPO.Products);
                     
@@ -85,15 +94,9 @@ $(document).ready(function ()
                 }
                 else
                 {
-                    console.log("result not found")
-
+                    console.log("Result not found");
                 }
-
-
-
-            })
-
-             
+            });
         }
     });
 
@@ -116,6 +119,7 @@ $(document).ready(function ()
                 $("#proceed_date_ordered").text(result.SupplierPO.DateOrdered);
                 $("#proceed_supplier_name").text(result.SupplierPO.SupplierName);
                 $("#proceed_status").text(result.SupplierPO.Status);
+                $("#proceed_modal").modal("show");
             }
         });
     });
@@ -134,9 +138,10 @@ $(document).ready(function ()
                     Status: "Received"
 
                 }
-                table.row(i).remove().draw(false)
+                
                 $.post('/reorder-update-status', {SupplierPOInfo}, function()
-                { 
+                {
+                    table.row(i).remove().draw(false); 
                     table.row.add(["", PONumber, $("#proceed_date_ordered").text(), $("#proceed_supplier_name").text(), 
                                 "Recieved"]).draw(false);
 
@@ -182,12 +187,13 @@ $(document).ready(function ()
                 table.rows(".selected").remove().draw(false);
             })
         }
+        $("delete_modal").modal("hide");
     });
 
     // delete popup
     $("#delete_modal_button").on("click", function() 
     {
-        data = table.rows(".selected").data();
+        var data = table.rows(".selected").data();
         deletePopupAddRows(data.length);
 
         for(var i = 0; i < data.length; i++)

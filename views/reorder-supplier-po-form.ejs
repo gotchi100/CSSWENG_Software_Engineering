@@ -30,12 +30,12 @@
 
     <!-- supplier PO form -->
         <div class="container mt-5">
-            <form>
+            <form id="reorder-supplier-po-form" onsubmit="return false;">
                 <div class="form-info">
 
                     <div class="form-group row">
                         <label for="select_supplier" class="col-2 col-form-label font-weight-bold">Supplier Name:</label>
-                        <select name="" id="select_supplier" class="col-2" autofocus>
+                        <select name="" id="select_supplier" class="col-2" autofocus required>
                             <option value = "">Select one</option>
                         <% for(var i = 0; i < SupplierList.length; i++) { %>
                             <option><%= SupplierList[i].Name %></option>
@@ -64,7 +64,7 @@
                         <input type="text" class="form-control-file col-2" id="supplier_number" readonly>
                         
                         <label for="mode_of_payment" class="col-2 col-form-label font-weight-bold">Mode of Payment:</label>
-                        <select name="mode_of_payment" id="mode_of_payment" class="col-2 form-control-file">
+                        <select name="mode_of_payment" id="mode_of_payment" class="col-2 form-control-file" required>
                             <option value = "">Select one</option>
                             <option>Cash</option>
                             <option>Debit Card</option>
@@ -87,15 +87,15 @@
                     <tbody>
                         <tr>
                             <td>
-                                <select class="form-control-file" id="product_name1">
+                                <select class="form-control-file" id="product_name1" required>
                                     <option value = "">Select one</option>
                                 </select>
                             </td>
                             <td>
-                                <input type="number" class="form-control-file calculate-amount1" id="unit_price1">
+                                <input type="number" class="form-control-file calculate-amount1" id="unit_price1" min="1" required>
                             </td>
                             <td>
-                                <input type="number" class="form-control-file calculate-amount1" id="quantity1">
+                                <input type="number" class="form-control-file calculate-amount1" id="quantity1" min="1" required>
                             </td>
                             <td>
                                 <input type="number" class="form-control-file" id="amount1" readonly>
@@ -116,31 +116,30 @@
                         </tr>
                     </tfoot>
                 </table>
+                <button type="submit" class="btn btn-secondary float-right" id="submit_button">Submit</button>
             </form>
-            <button type="button" class="btn btn-secondary float-right" id="confirm_button" data-toggle="modal" data-target="#confirm_modal">Submit</button>
         </div>        
     
     </div> 
 
 
-     <!-- add supplier po confirm pop-up -->
-     <div class="modal fade" id="confirm_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
+     <!-- add supplier po success pop-up -->
+     <div class="modal fade" id="success_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-confirm">
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <p class="h3">Are you sure?</p>
+                    <p class="h3">Success!</p>
                 </div>
                 
                 <div class="modal-body text-center">
                     
-				<p class="h6" id="delete_modal_text">Are you sure you want to add this supplier PO?</p>
+				<p class="h6" id="success_modal_text">Supplier PO added!</p>
                         
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary float-right mr-3" data-dismiss="modal" id="cancel_confirm_modal_modal">Cancel</button>
-                    <button type="button" class="btn btn-secondary float-right mr-3" id="submit_button">Submit</button>
+                    <button type="button" class="btn btn-secondary float-right mr-3" data-dismiss="modal" id="success_close_button">Close</button>
                 </div>
             </div>
         </div>
