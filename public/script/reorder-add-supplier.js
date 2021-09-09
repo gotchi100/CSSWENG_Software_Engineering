@@ -2,6 +2,7 @@ $(document).ready(function ()
 {
     var addProductRowCount = 1;
     var checkDuplicate;
+    var nextIdNumber = $("#supplier_id").val();
 
     $("#clear_item_button").on("click", function() {
         clearErrors();
@@ -10,6 +11,7 @@ $(document).ready(function ()
         {
             addProductDeleteRow();
         }
+        $("#clear_modal").modal("hide");
     });
 
     $("#add_item_button").on("click", addProductAddRow);
@@ -27,25 +29,23 @@ $(document).ready(function ()
             if(checkError == true && checkDuplicate)
             {
                 $("#error_modal_text").text("Please fill in all the fields and avoid using the same product names!");
-                clearErrors();
-                $("#error_modal").modal("show");
             }
             else if(checkError == true)
             {
                 $("#error_modal_text").text("Please fill in all the fields!");
-                clearErrors();
-                $("#error_modal").modal("show");
             }
             else if(checkDuplicate)
             {
                 $("#error_modal_text").text("Please avoid using the same product names!");
-                clearErrors();
-                $("#error_modal").modal("show");
             }
+            clearErrors();
+            $("#confirm_modal").modal("hide");
+            $("#error_modal").modal("show");
         }
         else
         {
             var SupplierInfo = {
+                Id: $("#supplier_id").val().trim(),
                 Name: $("#supplier_name").val().trim(),
                 Number: $("#supplier_number").val().trim(),
                 Email: $("#supplier_email").val().trim(),
@@ -58,9 +58,20 @@ $(document).ready(function ()
                 SupplierInfo.Products.push($("#product_name" + i).val().trim());
             }
 
+            nextPONumber = parseInt($("#supplier_po").val()) + 1;
+
             $.post("/reorder-add-supplier", {SupplierInfo}, function(data, status) 
             {
                 console.log("POST - Add One Supplier - Status: " + status);
+
+                clearErrors();
+                clearAllInputs();
+                while(addProductRowCount != 1)
+                {
+                    addProductDeleteRow();
+                }
+                $("#supplier_id").val(nextIdNumber);
+                $("#confirm_modal").modal("hide");
             });
         }
     });

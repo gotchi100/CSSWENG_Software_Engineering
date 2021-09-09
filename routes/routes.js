@@ -69,9 +69,15 @@ router.post('/reorder-add-supplier', reorderController.Supplier.AddSupplier);
 
 router.post('/reorder-add-supplier-po', reorderController.SupplierPO.AddSupplierPO);
 
-router.get('/reorder-supplier-order-list', (req, res) => {
-    res.render('reorder-supplier-order-list');
-});
+router.get('/reorder-supplier-order-list', reorderController.SupplierPO.GetOrderList);
+
+router.get('/reorder-get-one-supplier-po', reorderController.SupplierPO.FindSupplierPO);
+
+router.post('/reorder-delete-one-po', reorderController.SupplierPO.DeleteOnePO);
+
+router.post('/reorder-delete-many-po', reorderController.SupplierPO.DeleteManyProduct);
+
+router.post('/reorder-update-status', reorderController.SupplierPO.UpdateOne);
 
 router.get('/reorder-supplier-order-tracker', (req, res) => {
     res.render('reorder-supplier-order-tracker');

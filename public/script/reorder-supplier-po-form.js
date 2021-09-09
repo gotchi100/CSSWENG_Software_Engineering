@@ -14,28 +14,23 @@ $(document).ready(function ()
             if(checkSelectedSupplier)
             {
                 $("#error_modal_text").text("Please select a supplier!");
-                clearErrors();
-                $("#error_modal").modal("show");
 
             }
             else if(checkError == true && checkDuplicate)
             {
                 $("#error_modal_text").text("Please fill in all the fields and avoid using the same product names!");
-                clearErrors();
-                $("#error_modal").modal("show");
             }
             else if(checkError == true)
             {
                 $("#error_modal_text").text("Please fill in all the fields!");
-                clearErrors();
-                $("#error_modal").modal("show");
             }
             else if(checkDuplicate)
             {
                 $("#error_modal_text").text("Please avoid using the same product names!");
-                clearErrors();
-                $("#error_modal").modal("show");
             }
+            clearErrors();
+            $("#confirm_modal").modal("hide");
+            $("#error_modal").modal("show");
         }
         else
         {
@@ -67,13 +62,14 @@ $(document).ready(function ()
             $.post("/reorder-add-supplier-po", {SupplierPOInfo}, function(data, status) 
             {
                 console.log("POST - Add One Supplier PO - Status: " + status);
+    
+                clearErrors();
+                clearInputs();
+                $("#confirm_modal").modal("hide");
             });
         }
     });
 
-    $("#confirm_modal").on("click", function () {
-        $("#confirm_modal").modal("hide");
-    })
     $("#select_supplier").change(function ()
     {
         var Name = $("#select_supplier :selected").text();
@@ -82,15 +78,18 @@ $(document).ready(function ()
         {
             addProductDeleteRow();
         }
+        $("#unit_price1").val("");
+        $("#quantity1").val("");
+        $("#amount1").val("");
+        $("#total_amount").text("");
 
         if($("#select_supplier :selected").val() == "")
         {
-            $("#supplier_po").val("");
+            $("#supplier_po").val(nextPONumber);
             $("#supplier_id").val("");
             $("#supplier_number").val("");
             $("#supplier_email").val("");
             $("#supplier_address").val("");
-
             $("#product_name1 > option").remove();
             $("#product_name1").append("<option value = \"\">Select one</option>")
         }
@@ -141,18 +140,19 @@ $(document).ready(function ()
                     amount[i-1] *= parseFloat(inputVal);
                 }
             })
-            if(($("#unit_price" + i).val() == 1 && $("#quantity" + i).val() == 1 && amount[i-1] == 1) || 
-                ($("#unit_price" + i).val() == 1 && amount[i-1] == 1) || amount[i-1] != 1)
+            if(($("#unit_price" + i).val() == 1 && $("#quantity" + i).val() == 1 && amount[i-1] == 1) || amount[i-1] != 1)
             {
-                total += amount[i-1];
-            }
-            $("#amount" + i).val(amount[i-1]);
-            if($("#unit_price" + i).val() == "" && $("#quantity" + i).val() == "")
-            {
-                $("#amount" + i).val("");
+                if($("#quantity" + i).val() != "")
+                {
+                    total += amount[i-1];
+                    $("#amount" + i).val(amount[i-1]);
+                }
+                else
+                {
+                    $("#amount" + i).val(0);
+                }
             }
             $("#total_amount").text(total);
-
         }
         
     }
@@ -173,7 +173,7 @@ $(document).ready(function ()
         "<input type=\"number\" class=\"form-control-file calculate-amount" + addProductRowCount + "\" id=\"quantity" + addProductRowCount + "\">" +
         "</td><td>" +
 
-        "<input type=\"number\" class=\"form-control-file calculate-total" + addProductRowCount + "\" id=\"amount" + addProductRowCount + "\"readonly></input>" +
+        "<input type=\"number\" class=\"form-control-file\" id=\"amount" + addProductRowCount + "\"readonly></input>" +
         "</td><td>" +
         "<div class=\"d-flex justify-content-center\">" +
         "<button type=\"button\" class=\"btn btn-secondary ml-2 mr-2\" id=\"add_item_button\"><span class=\"fas fa-plus\"></span></button>" +
@@ -198,7 +198,6 @@ $(document).ready(function ()
     {
         if($("#total_amount").text() != "")
          {
-             console.log(parseFloat($("#total_amount").text()))
              var temp = parseFloat($("#total_amount").text()) - parseFloat($("#amount" + addProductRowCount).val());
              $("#total_amount").text(temp);
          }
@@ -237,15 +236,13 @@ $(document).ready(function ()
 
     function clearInputs()
     {
-       $("#select_supplier :selected").val("");
-        $("#supplier_po").val("");
-        $("#supplier_id").val("");
-        $("#supplier_number").val("");
-        $("#supplier_email").val("");
-        $("#supplier_address").val("");
+        $("#select_supplier").val("").change();
+        $("#mode_of_payment").val("");
 
-        $("#product_name1 > option").remove();
-        $("#product_name1").append("<option value = \"\">Select one</option>")
+        $("#unit_price1").val("");
+        $("#quantity1").val("");
+        $("#amount1").val("");
+        $("#total_amount").text("");
         
         while(addProductRowCount != 1)
         {

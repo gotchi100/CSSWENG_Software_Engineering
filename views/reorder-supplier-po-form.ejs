@@ -98,7 +98,7 @@
                                 <input type="number" class="form-control-file calculate-amount1" id="quantity1">
                             </td>
                             <td>
-                                <input type="number" class="form-control-file calculate-total1" id="amount1" readonly>
+                                <input type="number" class="form-control-file" id="amount1" readonly>
                             </td>
                             <td>
                                 <div class="d-flex justify-content-center">
@@ -117,11 +117,35 @@
                     </tfoot>
                 </table>
             </form>
-            <button type="button" class="btn btn-secondary float-right" id="submit_button" >Submit</button>
+            <button type="button" class="btn btn-secondary float-right" id="confirm_button" data-toggle="modal" data-target="#confirm_modal">Submit</button>
         </div>        
     
     </div> 
 
+
+     <!-- add supplier po confirm pop-up -->
+     <div class="modal fade" id="confirm_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-confirm">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p class="h3">Are you sure?</p>
+                </div>
+                
+                <div class="modal-body text-center">
+                    
+				<p class="h6" id="delete_modal_text">Are you sure you want to add this supplier PO?</p>
+                        
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary float-right mr-3" data-dismiss="modal" id="cancel_confirm_modal_modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary float-right mr-3" id="submit_button">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- error pop-up -->
     <div class="modal fade" id="error_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-confirm">
@@ -144,29 +168,6 @@
             </div>
         </div>
     </div>
-
-     <!-- add supplier po confirm pop-up -->
-     <!-- <div class="modal fade" id="confirm_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered modal-confirm">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <p class="h3">Are you sure?</p>
-                </div>
-                
-                <div class="modal-body text-center">
-                    
-				<p class="h6" id="delete_modal_text">Are you sure you want to permanently remove the selected product/s?</p>
-                        
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary float-right mr-3" data-dismiss="modal" id="cancel_confirm_modal_modal">Cancel</button>
-                    <button type="button" class="btn btn-secondary float-right mr-3" id="submit_button">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
         
 
     <script src="/script/reorder-supplier-po-form.js"></script>
