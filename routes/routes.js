@@ -79,10 +79,6 @@ router.post('/reorder-delete-many-po', reorderController.SupplierPO.DeleteManyPr
 
 router.post('/reorder-update-status', reorderController.SupplierPO.UpdateOne);
 
-router.get('/reorder-supplier-order-tracker', (req, res) => {
-    res.render('reorder-supplier-order-tracker');
-});
-
 router.get('/reports-total-sales-and-expenses', (req, res) => {
     res.render('reports-total-sales-and-expenses');
 });

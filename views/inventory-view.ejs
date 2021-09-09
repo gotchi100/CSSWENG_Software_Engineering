@@ -57,7 +57,7 @@
                         <% var Availability = ""; %>
                         <% if(ProductList[i].Quantity >= ProductList[i].ReorderPoint  + 10) {Availability = "High"; %>
                         <% }else if(ProductList[i].Quantity >= ProductList[i].ReorderPoint + 5) {Availability = "Medium"; %>
-                        <% }else if(ProductList[i].Quantity <= ProductList[i].ReorderPoint) {Availability = "Low";} %>
+                        <% }else if(ProductList[i].Quantity <= ProductList[i].ReorderPoint + 5) {Availability = "Low";} %>
                         <td><%= Availability %></td>
                     </tr>
                 <% } %>
@@ -114,7 +114,7 @@
                 <div class="modal-header bg-secondary border-0"></div>
                 
                 <div class="modal-body bg-secondary">
-                    <form id="inventory-add-product-form">
+                    <form id="inventory-add-product-form" onsubmit="return false;">
                         <table class="table table-bordered text-center bg-light" id="add_product_table">
                             <thead>
                                 <tr>
@@ -134,32 +134,28 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <input type="text" class="form-control-file" id="add_product_name1">
+                                        <input type="text" class="form-control-file" id="add_product_name1" required>
                                         <p class="text-danger text-error" id="add_product_name_error1"></p>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control-file" id="add_brand1">
+                                        <input type="text" class="form-control-file" id="add_brand1" required>
                                         <p class="text-danger text-error" id="add_brand_error1"></p>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control-file" id="add_color1">
+                                        <input type="text" class="form-control-file" id="add_color1" required>
                                         <p class="text-danger text-error" id="add_color_error1"></p>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control-file" id="add_selling_price1">
-                                        <p class="text-danger text-error" id="add_selling_price_error1"></p>
+                                        <input type="number" class="form-control-file" id="add_selling_price1" min="1" required>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control-file" id="add_buying_price1">
-                                        <p class="text-danger text-error" id="add_buying_price_error1"></p>
+                                        <input type="number" class="form-control-file" id="add_buying_price1" min="1" required>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control-file" id="add_quantity1">
-                                        <p class="text-danger text-error" id="add_quantity_error1"></p>
+                                        <input type="number" class="form-control-file" id="add_quantity1" min="1" required>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control-file" id="add_reorder_point1">
-                                        <p class="text-danger text-error" id="add_reorder_point_error1"></p>
+                                        <input type="number" class="form-control-file" id="add_reorder_point1" min="1" required>
                                     </td>
                                     <td>
                                         <div class="d-flex">
@@ -170,7 +166,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <button type="button" class="btn btn-light float-right" id="add_product_button">Add</button>
+                        <button type="submit" class="btn btn-light float-right" id="add_product_button">Add</button>
                         <button type="button" class="btn btn-light float-right mr-3" data-dismiss="modal" id="close_add_modal">Cancel</button>
                         
                     </form>
@@ -191,61 +187,57 @@
                 <div class="modal-header bg-secondary border-0"></div>
                 
                 <div class="modal-body bg-secondary">
-                     
-                    <table class="table table-bordered text-center bg-light" id="edit_product_table">
-
-                        <thead>
-                            <tr>
-                                <th colspan="7" class="h2">Edit Product</th>
-                            </tr>
-                            <tr>
-                                <th scope="col">Product ID</th>
-                                <th scope="col">Product Name</th>
-                                <th scope="col">Brand</th>
-                                <th scope="col">Color</th>
-                                <th scope="col">SRP</th>
-                                <th scope="col">QTY On Hand</th>
-                                <th scope="col">Reorder Point</th>
-                            </tr>
+                    <form id="inventory-edit-product-form" onsubmit="return false;">
+                        <table class="table table-bordered text-center bg-light" id="edit_product_table">
+                            <thead>
+                                <tr>
+                                    <th colspan="7" class="h2">Edit Product</th>
+                                </tr>
+                                <tr>
+                                    <th scope="col">Product ID</th>
+                                    <th scope="col">Product Name</th>
+                                    <th scope="col">Brand</th>
+                                    <th scope="col">Color</th>
+                                    <th scope="col">SRP</th>
+                                    <th scope="col">QTY On Hand</th>
+                                    <th scope="col">Reorder Point</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="text" class="form-control-file" id="edit_product_id1" disabled>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control-file" id="edit_product_name1" required>
+                                        <p class="text-danger" id="edit_product_name_error1"></p>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control-file" id="edit_brand1" required>
+                                        <p class="text-danger" id="edit_brand_error1"></p>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control-file" id="edit_color1" required>
+                                        <p class="text-danger" id="edit_color_error1"></p>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control-file" id="edit_selling_price1" min="1" required>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control-file" id="edit_quantity1" min="1" required>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control-file" id="edit_reorder_point1" min="1" required>
+                                    </td>
+                                </tr>
                             
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <input type="text" class="form-control-file" id="edit_product_id1" disabled>
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control-file" id="edit_product_name1">
-                                    <p class="text-danger" id="edit_product_name_error1"></p>
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control-file" id="edit_brand1">
-                                    <p class="text-danger" id="edit_brand_error1"></p>
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control-file" id="edit_color1">
-                                    <p class="text-danger" id="edit_color_error1"></p>
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control-file" id="edit_selling_price1">
-                                    <p class="text-danger" id="edit_selling_price_error1"></p>
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control-file" id="edit_quantity1">
-                                    <p class="text-danger" id="edit_quantity_error1"></p>
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control-file" id="edit_reorder_point1">
-                                    <p class="text-danger" id="edit_reorder_point_error1"></p>
-                                </td>
-                            </tr>
-                        
-                        </tbody>
-            
-                    </table>
+                            </tbody>
+                
+                        </table>
+                        <button type="submit" class="btn btn-light float-right" id="edit_product_button">Edit</button>
+                        <button type="button" class="btn btn-light float-right mr-3" data-dismiss="modal" id="close_edit_modal">Cancel</button>
+                    </form>
                     
-                    <button type="button" class="btn btn-light float-right" id="edit_product_button">Edit</button>
-                    <button type="button" class="btn btn-light float-right mr-3" data-dismiss="modal" id="close_edit_modal">Cancel</button>
                     
                 </div>
 
@@ -300,25 +292,42 @@
         </div>
     </div>
 
-     <!-- inventory view delete product pop-up -->
-     <div class="modal fade" id="delete_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered modal-confirm">
+    <!-- inventory view delete product pop-up -->
+    <div class="modal fade" id="delete_modal" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
-
-                <div class="modal-header">
-                    <p class="h3">Are you sure?</p>
-                </div>
-                
-                <div class="modal-body text-center">
+                <div class="modal-header bg-secondary border-0"></div>
+                <div class="modal-body bg-secondary">
+                    <table class="table table-bordered text-center bg-light" id="delete_modal_table">
+                        <thead>
+                            <tr>
+                                <th colspan="6" class="h2">Delete Product</th>
+                            </tr>
+                            <tr>
+                                <th scope="col">Product ID</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Brand</th>
+                                <th scope="col">Color</th>
+                                <th scope="col">QTY On Hand</th>
+                                <th scope="col">Reorder Point</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="delete_product_id1"></td>
+                                <td id="delete_product_name1"></td>
+                                <td id="delete_brand1"></td>
+                                <td id="delete_color1"></td>
+                                <td id="delete_quantity1"></td>
+                                <td id="delete_reorder_point1"></td>
+                            </tr>
+                        </tbody>
+                    </table>
                     
-				<p class="h6" id="delete_modal_text">Are you sure you want to permanently remove the selected product/s?</p>
-                        
+                    <button type="button" class="btn btn-light float-right ml-3" id="delete_button">Delete</button>
+                    <button type="button" class="btn btn-light float-right" data-dismiss="modal" id="cancel_delete_modal_button">Cancel</button>
                 </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary float-right mr-3" data-dismiss="modal" id="cancel_delete_modal">Cancel</button>
-                    <button type="button" class="btn btn-secondary float-right mr-3" id="delete_button">Delete</button>
-                </div>
+                <div class="modal-footer bg-secondary border-0"></div>
             </div>
         </div>
     </div>
