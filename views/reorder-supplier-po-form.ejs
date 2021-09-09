@@ -36,7 +36,7 @@
                     <div class="form-group row">
                         <label for="select_supplier" class="col-2 col-form-label font-weight-bold">Supplier Name:</label>
                         <select name="" id="select_supplier" class="col-2" autofocus required>
-                            <option value = "">Select one</option>
+                            <option value = "" hidden>Select one</option>
                         <% for(var i = 0; i < SupplierList.length; i++) { %>
                             <option><%= SupplierList[i].Name %></option>
                         <% } %>
@@ -65,7 +65,7 @@
                         
                         <label for="mode_of_payment" class="col-2 col-form-label font-weight-bold">Mode of Payment:</label>
                         <select name="mode_of_payment" id="mode_of_payment" class="col-2 form-control-file" required>
-                            <option value = "">Select one</option>
+                            <option value = "" hidden>Select one</option>
                             <option>Cash</option>
                             <option>Debit Card</option>
                             <option>Credit Card</option>
@@ -88,7 +88,7 @@
                         <tr>
                             <td>
                                 <select class="form-control-file" id="product_name1" required>
-                                    <option value = "">Select one</option>
+                                    <option value = "" hidden>Select one</option>
                                 </select>
                             </td>
                             <td>

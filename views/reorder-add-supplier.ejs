@@ -30,7 +30,7 @@
 
     <!-- add supplier -->
         <div class="container mt-5">
-            <form>
+            <form id="add-supplier-form" onsubmit="return false;">
                 <div class="form-info">
 
                     <div class="form-group row">
@@ -38,19 +38,19 @@
                         <input type="text" class="form-control-file col-2" id="supplier_id" value="<%= next_id %>" readonly>
                         
                         <label for="supplier_email" class="col-2 col-form-label font-weight-bold">Supplier Number:</label>
-                        <input type="text" class="form-control-file col-2" id="supplier_number" >
+                        <input type="text" class="form-control-file col-2" id="supplier_number" required>
     
                         <label for="supplier_number" class="col-2 col-form-label font-weight-bold">Supplier Email:</label>
-                        <input type="text" class="form-control-file col-2" id="supplier_email" >
+                        <input type="text" class="form-control-file col-2" id="supplier_email" required>
                     </div>
     
                     <div class="form-group row">
 
                         <label for="supplier_name" class="col-2 col-form-label font-weight-bold">Supplier Name:</label>
-                        <input type="text" class="form-control-file col-2" id="supplier_name" >
+                        <input type="text" class="form-control-file col-2" id="supplier_name" required>
 
                         <label for="supplier_address" class="col-2 col-form-label font-weight-bold">Supplier Address:</label>
-                        <input type="text" class="form-control-file col-6" id="supplier_address" >
+                        <input type="text" class="form-control-file col-6" id="supplier_address" required>
                     </div>
                 </div>
 
@@ -68,7 +68,7 @@
                                 <p class="col-form-label font-weight-bold text-right mr-2" id="product_number1">1.</p>
                             </td>
                             <td style="width: 75%">
-                                <input type="text" class="form-control-file" id="product_name1" >
+                                <input type="text" class="form-control-file" id="product_name1" required>
                             </td>
                             <td style="width: 15%">
                                 <div class="d-flex justify-content-start">
@@ -79,36 +79,35 @@
                         </tr>
                     </tbody>
                 </table>
+                <button type="submit" class="btn btn-secondary float-right m-2" id="submit_button">Submit</button>
+                <button type="button" class="btn btn-secondary float-right m-2" id="clear_confirm_button" data-toggle="modal" data-target="#clear_modal">Clear</button>
+                <a class="btn btn-secondary float-right m-2" href="reorder-supplier-po-form" role="button" id="back_button">Back</a>
             </form>
-            <button type="button" class="btn btn-secondary float-right m-2" id="submit_confirm_button" data-toggle="modal" data-target="#confirm_modal">Submit</button>
-            <button type="button" class="btn btn-secondary float-right m-2" id="clear_confirm_button" data-toggle="modal" data-target="#clear_modal">Clear</button>
-            <a class="btn btn-secondary float-right m-2" href="reorder-supplier-po-form" role="button" id="back_button">Back</a>
         </div>        
         
-     <!-- add supplier confirm pop-up -->
-     <div class="modal fade" id="confirm_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
+     <!-- add supplier success pop-up -->
+     <div class="modal fade" id="success_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-confirm">
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <p class="h3">Are you sure?</p>
+                    <p class="h3">Success!</p>
                 </div>
                 
                 <div class="modal-body text-center">
                     
-				<p class="h6" id="confirm_modal_text">Are you sure you want to add this supplier?</p>
+				<p class="h6" id="success_modal_text">Supplier added!</p>
                         
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary float-right mr-3" data-dismiss="modal" id="cancel_confirm_modal">Cancel</button>
-                    <button type="button" class="btn btn-secondary float-right mr-3" id="submit_button">Submit</button>
+                    <button type="button" class="btn btn-secondary float-right" id="close_success_modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- add supplier confirm pop-up -->
+    <!-- add supplier clear pop-up -->
     <div class="modal fade" id="clear_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-confirm">
             <div class="modal-content">
@@ -119,7 +118,7 @@
                 
                 <div class="modal-body text-center">
                     
-				<p class="h6" id="clear_modal_text">Are you sure you want to clear all the information on the form?</p>
+				    <p class="h6" id="clear_modal_text">Are you sure you want to clear all the information on the form?</p>
                         
                 </div>
 

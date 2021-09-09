@@ -78,3 +78,9 @@ table.dataTable tr th.select-checkbox.selected::after {
     border-width: 2px !important;
     border-style: inset !important;
 }
+
+.form-control-file {
+    height: calc(1.5em + .75rem + 2px) !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}

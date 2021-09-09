@@ -95,7 +95,7 @@ $(document).ready(function ()
             $("#supplier_email").val("");
             $("#supplier_address").val("");
             $("#product_name1 > option").remove();
-            $("#product_name1").append("<option value = \"\">Select one</option>")
+            $("#product_name1").append("<option value = \"\" hidden>Select one</option>")
         }
         else
         {
@@ -108,7 +108,7 @@ $(document).ready(function ()
                 $("#supplier_address").val(result.Address);
         
                 $("#product_name1 > option").remove();
-                $("#product_name1").append("<option value = \"\">Select one</option>")
+                $("#product_name1").append("<option value = \"\" hidden>Select one</option>")
                 for(var i = 0; i < result.Products.length; i++)
                 {
                     $("#product_name1").append("<option>" + result.Products[i] + "</option>")
@@ -131,10 +131,16 @@ $(document).ready(function ()
     }
     function addProductFieldsIncomplete()
     {
-        var UnitPrice, Quantity;
+        var UnitPrice, Quantity, ModeOfPayment;
+    
+        if($("#mode_of_payment :selected").val() == "")
+        {
+            return true;
+        }
 
         for(var i = 1; i <= addProductRowCount; i++)
         {
+
             UnitPrice = $("#unit_price" + i).val();
             Quantity = $("#quantity" + i).val();
 
