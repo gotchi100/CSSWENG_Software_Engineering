@@ -17,9 +17,11 @@ const inventoryController = {
 
 		Inventory.find()
         .then((ProductList) => {
-
-            res.render('sales-customer-po-form', {ProductList});
-        });
+			Sales.find()
+			.then((SalesList) => {
+				res.render('sales-customer-po-form', {ProductList: ProductList, SalesList: SalesList,});
+			});
+		});
 
     },
 	

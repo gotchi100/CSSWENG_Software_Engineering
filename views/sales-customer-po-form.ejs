@@ -8,16 +8,16 @@
 			$("#products").on("click", "#add_row_button", function() {
 				$("#products").last().append(`<tr><td><select class="custom-select" id="product_names" name="ProductNames" required><option value="" selected disabled hidden>Choose item</option><% for(var i = 0; i < ProductList.length; i++) { %><option value="<%= ProductList[i].ProductName %>" label="<%= ProductList[i].ProductName %>"><%= ProductList[i].SellingPrice %></option><% } %></select></td><td><input type="number" class="form-control" id="unit_price" readonly></td><td><input type="number" class="form-control" id="quantity" name="ProductQuantities" required></td><td><input type="number" class="form-control" id="amount" readonly></td><td><button type="button" class="btn btn-secondary form-control font-weight-bold" id="add_row_button">+</button></td><tr>`);
 			});
-					
+			
 			$("#products").on("change", "#product_names", function() {
 				$(this).closest("tr").find("#unit_price").val(parseInt($(this).closest("tr").find("#product_names option:selected").text()));
 				$(this).closest("tr").find("#amount").val($(this).closest("tr").find("#unit_price").val() * $(this).closest("tr").find("#quantity").val()).trigger("change");
 			});
-					
+			
 			$("#products").on("keyup", "#quantity", function() {
 				$(this).closest("tr").find("#amount").val($(this).closest("tr").find("#unit_price").val() * $(this).val()).trigger("change");
 			});
-					
+			
 			$("#products").on("change", "#amount", function() {
 				var sum = 0;
 
@@ -26,6 +26,28 @@
 				});
 				
 				$("#total").html(sum);
+			});
+			
+			$(document).on("change", "#physical_checkbox", function() {
+				if (this.checked)
+				{
+					$("#online_checkbox").prop("disabled", true);
+				}
+				else
+				{
+					$("#online_checkbox").prop("disabled", false);
+				}
+			});
+			
+			$(document).on("change", "#online_checkbox", function() {
+				if (this.checked)
+				{
+					$("#physical_checkbox").prop("disabled", true);
+				}
+				else
+				{
+					$("#physical_checkbox").prop("disabled", false);
+				}
 			});
 		})
 	</script>
@@ -62,7 +84,7 @@
                 <div class="form-info">
                     <div class="form-group row">
                         <label for="customer_po" class="col-2 col-form-label font-weight-bold">Customer-PO:</label>
-                        <input type="text" class="form-control-file col-2" id="customer_po" name="CustomerPO" required>
+                        <input type="text" class="form-control col-2" id="customer_po" name="CustomerPO" value="<%= SalesList.length + 1%>" readonly>
     
                         <label for="customer_name" class="col-2 col-form-label font-weight-bold">Customer Name:</label>
                         <input type="text" class="form-control-file col-2" id="customer_name" name="CustomerName" required>

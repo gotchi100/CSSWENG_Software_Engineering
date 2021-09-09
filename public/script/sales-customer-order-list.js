@@ -22,6 +22,7 @@ $(document).ready(function ()
         table.rows().deselect();
         $("th.select-checkbox").removeClass("selected");
         $("#delete_button").prop("disabled", true);
+        $("#edit_button").prop("disabled", true);
     } 
     else 
     {
@@ -35,30 +36,39 @@ $(document).ready(function ()
             {
                 $("th.select-checkbox").removeClass("selected");
                 $("#delete_button").prop("disabled", false);
+				$("#edit_button").prop("disabled", false);
             }
             else if (table.rows({ selected: true}).count() == 0)
             {
                 $("th.select-checkbox").removeClass("selected");
                 $("#delete_button").prop("disabled", true);
+				$("#edit_button").prop("disabled", true);
             }
             else
             {
                 $("th.select-checkbox").removeClass("selected");
                 $("#delete_button").prop("disabled", false);
+				$("#edit_button").prop("disabled", false);
             }
         } 
         else 
         {
             $("th.select-checkbox").addClass("selected");
             $("#delete_button").prop("disabled", true);
+			$("#edit_button").prop("disabled", true);
         }
     });
 
-    //an item in table is clicked
+   
+    //proceed
+    $("#proceed_button").on("click", function () 
+    {
+        $("#details_modal").modal("hide");
+        $("#tracker_status_onroute_modal").modal("show");
+    });
     
-
     //add
-    $("#modal_edit_button").on("click", function () 
+    $("#edit_button").on("click", function () 
     {
         
     });
