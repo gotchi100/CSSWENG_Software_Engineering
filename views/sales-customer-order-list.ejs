@@ -5,67 +5,6 @@
     <%- include('./partials/bootstrap-link.ejs') %>
     <%- include('./partials/table-link.ejs') %>
     <%- include('./partials/head.ejs') %>
-
-	<script type="text/javascript" >
-		$(document).ready(function() {
-			$("#sales_order_list_table tbody").on("click", "tr td", function () 
-			{
-				if ($(this).index() != 0) 
-				{   
-					var po = $(this).closest("tr").children().eq(1).text();
-					$.get('/sales-get-sale', {po: po}, function(result) {
-						var id = result.CustomerOrderID;
-						var name = result.CustomerName;
-						var ordered = result.DateOrdered;
-						var pickup = result.PickupDate;
-						var physical = result.Physical;
-						var online = result.Online;
-						var products = result.ProductNames;
-						var unitprices = result.ProductUnitPrices;
-						var quantities = result.ProductQuantities;
-						var prices = result.ProductPrices;
-						var total = result.TotalPrice
-						
-						$("#details_modal").modal("show");
-						$("#sales_products").find("tbody").detach();
-						$("#sales_products").append($("<tbody>")); 
-						$("#customer_po").val(po);
-						$("#customer_order_id").val(id);
-						$("#customer_name").val(name);
-						$("#date_ordered").val(ordered);
-						$("#pickup_date").val(pickup);
-						
-						if(physical == "on")
-						{
-							$("#physical_checkbox").prop("checked", true);
-							$("#online_checkbox").prop("checked", false);
-						}
-						else if(online == "on")
-						{
-							$("#online_checkbox").prop("checked", true);
-							$("#physical_checkbox").prop("checked", false);
-						}
-						else
-						{
-							$("#physical_checkbox").prop("checked", false);
-							$("#online_checkbox").prop("checked", false);
-						}
-						
-						for(var i = 0; i < products.length; i++) 
-						{ 
-							$("#sales_products").last().append(`<tr><td><input type="string" class="form-control" id="products_name" readonly></td><td><input type="number" class="form-control" id="products_unit_price" readonly></td><td><input type="number" class="form-control" id="products_quantity" readonly></td><td><input type="number" class="form-control" id="products_amount" readonly></td></tr>`);
-							$("#sales_products tbody").children().eq(i).find("#products_name").val(products[i]);
-							$("#sales_products tbody").children().eq(i).find("#products_unit_price").val(unitprices[i]);
-							$("#sales_products tbody").children().eq(i).find("#products_quantity").val(quantities[i]);
-							$("#sales_products tbody").children().eq(i).find("#products_amount").val(prices[i]);
-						}
-						
-						$("#total").val(total);
-					});
-				}
-			});
-		})
-	</script>
 </head>
 <body>
 
@@ -102,7 +41,6 @@
             </thead>
             <tbody>
                 <% for(var i = 0; i < SalesList.length; i++) { %>
-
                     <tr id="sales">
                         <td></td>
                         <td><%= SalesList[i].CustomerPO %></td>
@@ -214,10 +152,10 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td id="packing_po"></td>
-                                    <td id="packing_date_ordered"></td>                                        
-                                    <td id="packing_customer_name"></td>
-                                    <td id="packing_status"></td>
+                                    <td><input type="string" class="form-control" id="onroute_po" readonly></td>
+                                    <td><input type="string" class="form-control" id="onroute_date_ordered" readonly></td>
+                                    <td><input type="string" class="form-control" id="onroute_customer_name" readonly></td>
+                                    <td><input type="string" class="form-control" id="onroute_status" readonly></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -251,15 +189,15 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td></td>
-                                    <td></td>                                        
-                                    <td></td>
-                                    <td>Delivering</td>
+                                    <td><input type="string" class="form-control" id="delivered_po" readonly></td>
+                                    <td><input type="string" class="form-control" id="delivered_date_ordered" readonly></td>
+                                    <td><input type="string" class="form-control" id="delivered_customer_name" readonly></td>
+                                    <td><input type="string" class="form-control" id="delivered_status" readonly></td>
                                 </tr>
                             </tbody>
                         </table>
                         
-                        <button type="button" class="btn btn-secondary float-right m-2" id="onroute_confirm_button">Confirm</button>
+                        <button type="button" class="btn btn-secondary float-right m-2" id="delivered_confirm_button">Confirm</button>
 
                     </div>        
                 </div>

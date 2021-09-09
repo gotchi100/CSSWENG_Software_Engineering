@@ -53,7 +53,7 @@ const inventoryController = {
                 ProductQuantities: req.body.ProductQuantities,
 				ProductPrices: req.body.ProductPrices,
 				TotalPrice: req.body.TotalPrice,
-                Status: "pending"
+                Status: "packing"
             });
 
             // save the details to the database
@@ -89,6 +89,20 @@ const inventoryController = {
 				res.send(result);
 			}
         });
+    },
+	
+	GetUpdateStatus: (req, res) => {
+		
+		var po = req.query.po
+		var type = req.query.type
+		if (type == "onroute") {
+			Sales.findOneAndUpdate({CustomerPO: po}, {Status: "delivering"}, {new: true}, function(err, result){});
+		}
+		else if (type == "delivering") {
+			Sales.findOneAndUpdate({CustomerPO: po}, {Status: "delivered"}, {new: true}, function(err, result){});
+		}
+		
+		res.redirect('/');
     },
 }
 

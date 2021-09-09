@@ -58,6 +58,8 @@ router.get('/sales-customer-order-list', salesController.GetSalesListView);
 
 router.get('/sales-get-sale', salesController.GetIndividualSale);
 
+router.get('/sales-update-status', salesController.GetUpdateStatus);
+
 // reorder 
 router.get('/reorder-supplier-po-form', reorderController.SupplierPO.GetSupplierPOForm);
 
