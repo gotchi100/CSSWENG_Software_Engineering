@@ -38,7 +38,9 @@ $(document).ready(function ()
     
                 $.post('/submit-register', {AccountInfo}, function(data, status)
                 {
-                    console.log("Post - Register - Status: " + status)
+                    console.log("Post - Register - Status: " + status);
+
+                    $("#success_modal").modal("show");
                 });
     
             }

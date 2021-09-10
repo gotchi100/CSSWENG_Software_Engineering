@@ -10,13 +10,13 @@
     <section class="container-fluid">
         <section class="row justify-content-center">
             <section class="form-container bg-secondary">
-                <form>
+                <form onsubmit="return false;">
                     <header class="h3 text-center mb-4">Sign in</header>
                     <div class="form-group">
-                      <input type="email" class="form-control-file" id="username" placeholder="Username">
+                      <input type="text" class="form-control-file" id="username" placeholder="Username" required>
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control-file" id="password" placeholder="Password">
+                      <input type="password" class="form-control-file" id="password" placeholder="Password" minlength="8" required>
                     </div>
                     <p class="text-center">Don't have an account?  <a href="register">Register here</a></p>
                     <button type="submit" class="btn btn-light btn-block" id="login_button">Login</button>
@@ -26,7 +26,31 @@
            
         </section>
     </section>
+
+    <!-- error pop-up -->
+    <div class="modal fade" id="error_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-confirm">
+            <div class="modal-content">
+  
+                <div class="modal-header">
+                    <p class="h3">Error!</p>
+                </div>
+                
+                <div class="modal-body text-center">
+                    
+                <p class="h6" id="error_modal_text"></p>
+                        
+                </div>
+  
+                <div class="modal-footer">
+                    
+                    <button type="button" class="btn btn-secondary float-right mr-3" data-dismiss="modal" id="close_error_modal">Close</button>
+                </div>
+            </div>
+        </div>
+      </div>
     
+    <script src="/script/login.js"></script>
     
         
    

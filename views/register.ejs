@@ -12,7 +12,7 @@
             <section class="form-container bg-secondary row">
                 <section class="col-6">
                     <img src="/images/logo.png" class="mt-5 register-logo">
-                    <button type="submit" class="btn btn-light btn-block mt-5" id="back_button">Back</button>
+                    <a href="login" class="btn btn-light btn-block mt-5">Back</a>
                 </section>
                 <section class="col-6">
                     <form onsubmit="return false;">
@@ -28,7 +28,7 @@
                             <p id="username_error" class="text-danger text-center"></p>
                           </div>
                           <div class="form-group">
-                            <input type="email" class="form-control-file" id="email" placeholder="Email Address" required>
+                            <input type="text" class="form-control-file" id="email" placeholder="Email Address" required>
                             <p id="email_error" class="text-danger text-center"></p>
                           </div>
                           <div class="form-group">
@@ -41,7 +41,6 @@
                             <input type="password" class="form-control-file" id="confirm_password" placeholder="Confirm Password" minlength="8" required>
                             <p id="confirm_password_error" class="text-danger text-center"></p>
                           </div>
-                          <p class="text-center">Already have an account? <a href="login">Login</a></p>
                         <button type="submit" class="btn btn-light btn-block" id="register_button">Register</button>
                     </form>
                 </section>
@@ -71,7 +70,30 @@
               </div>
           </div>
       </div>
-  </div>
+    </div>
+
+    <!-- error pop-up -->
+    <div class="modal fade" id="success_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered modal-confirm">
+          <div class="modal-content">
+
+              <div class="modal-header">
+                  <p class="h3">Success!</p>
+              </div>
+              
+              <div class="modal-body text-center">
+                  
+              <p class="h6" id="success_modal_text">User account created!</p>
+                      
+              </div>
+
+              <div class="modal-footer">
+                  
+              <a href="login" type="button" class="btn btn-secondary float-right mr-3" id="close_success_modal">Close</a>
+              </div>
+          </div>
+      </div>
+    </div>
     
         <script src="/script/register.js"></script>
    

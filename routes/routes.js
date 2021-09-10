@@ -9,9 +9,9 @@ const accountController = require('../controllers/account-controller');
 
 const router = express.Router();
 
-router.get('/login', (req, res) => {
-    res.render('login', {title: "Login"});
-});
+router.get('/login', accountController.Login.GetLoginForm);
+
+router.get('/check-login-information', accountController.Login.CheckInformation);
 
 router.get('/register', accountController.Register.GetRegisterForm);
 
