@@ -57,7 +57,7 @@ const inventoryController = {
 				newquantity = 0;
 				productname = sales.ProductNames[i];
 				firstquantity = sales.ProductQuantities[i];
-				await db.Inventory.findOne({ProductName: productname}, function (err, result)
+				db.Inventory.findOne({ProductName: productname}, function (err, result)
 				{
 					if(err)
 					{
