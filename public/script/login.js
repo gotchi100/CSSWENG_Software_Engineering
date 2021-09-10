@@ -17,7 +17,7 @@ $(document).ready(function ()
                     $("#error_modal_text").text("Password is incorrect!");
                     $("#error_modal").modal("show");
                 }
-                else if(result == "invalidemail")
+                else if(result == "invalidusername")
                 {
                     $("#error_modal_text").text("Username does not exist!");
                     $("#error_modal").modal("show");
