@@ -5,9 +5,9 @@ const inventoryController = {
 	GetSalesPOFormView: (req, res) => {
 		if(req.session.username)
 		{
-			Inventory.find()
+			db.Inventory.find()
 			.then((ProductList) => {
-				Sales.find()
+				db.Sales.find()
 				.then((SalesList) => {
 					res.render('sales-customer-po-form', {ProductList: ProductList, SalesList: SalesList, title: "Customer PO Form"});
 				});
@@ -114,7 +114,7 @@ const inventoryController = {
 	GetSalesListView: (req, res) => {
 		if(req.session.username)
 		{
-			Sales.find()
+			db.Sales.find()
 			.then((SalesList) => {
 	
 				res.render('sales-customer-order-list', {SalesList, title: "Customer Order List"});
