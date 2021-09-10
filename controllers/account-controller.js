@@ -47,7 +47,14 @@ const accountController = {
     Login: {
 
         GetLoginForm: (req, res) => {
-            res.render('login', {title: "Login"})
+            if(req.session.username)
+            {
+                res.redirect('dashboard');
+            }
+            else
+            {
+                res.render('login', {title: "Login"});
+            }
         },
 
         CheckInformation: async (req, res) => {
@@ -60,6 +67,8 @@ const accountController = {
                     {
                         bcrypt.compare(temp.Password, User.Password, function(err, result) {
                             if(result) {
+                                req.session.username = temp.Username;
+                                console.log('Successfully logged in');
                                 res.send("success");
                             }
                             else {

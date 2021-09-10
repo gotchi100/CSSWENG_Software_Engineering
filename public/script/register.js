@@ -93,13 +93,17 @@ $(document).ready(function ()
         }
     });
 
+    $("#close_success_modal_button").on("click", function()
+    {
+        window.location.href = '/';
+    });
+
     async function isUsernameAvailable()
     {
         var username = $("#username").val().toLowerCase();
         var err = true;
         await $.get('/check-register-username', {username}, function(result)
         {
-            console.log(result.Username)
             if(result.Username)
             {
                 err = false;

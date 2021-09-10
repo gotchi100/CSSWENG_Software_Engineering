@@ -2,16 +2,21 @@ const db = require('../models/database.js');
 
 const inventoryController = {
 	
-	GetSalesPOFormView: async (req, res) => {
-
-		db.Inventory.find()
-        .then((ProductList) => {
-			db.Sales.find()
-			.then((SalesList) => {
-				res.render('sales-customer-po-form', {ProductList: ProductList, SalesList: SalesList, title: "Customer PO Form"});
+	GetSalesPOFormView: (req, res) => {
+		if(req.session.username)
+		{
+			Inventory.find()
+			.then((ProductList) => {
+				Sales.find()
+				.then((SalesList) => {
+					res.render('sales-customer-po-form', {ProductList: ProductList, SalesList: SalesList, title: "Customer PO Form"});
+				});
 			});
-		});
-
+		}
+		else
+		{
+			res.render('login', {title: "Login"});
+		}  
     },
 	
 	PostSalesAddPO: async (req, res) => { 
@@ -88,15 +93,6 @@ const inventoryController = {
 		res.redirect('/sales-customer-order-list');
     },
 	
-	GetSalesListView: async (req, res) => {
-
-        db.Sales.find()
-        .then((SalesList) => {
-
-            res.render('sales-customer-order-list', {SalesList, title: "Customer Order List"});
-        });
-    },
-	
 	GetIndividualProduct: async (req, res) => {
 
 		var productname = req.query.productname;
@@ -113,6 +109,21 @@ const inventoryController = {
 				res.send(result);
 			}
         });
+	},
+
+	GetSalesListView: (req, res) => {
+		if(req.session.username)
+		{
+			Sales.find()
+			.then((SalesList) => {
+	
+				res.render('sales-customer-order-list', {SalesList, title: "Customer Order List"});
+			});
+		}
+		else
+		{
+			res.render('login', {title: "Login"});
+		}
     },
 	
 	GetIndividualSale: async (req, res) => {

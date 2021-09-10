@@ -26,7 +26,9 @@ const database = {
     // mongoose inventory model
     Inventory,
 
+    // mongoose sales model
     Sales,
+
     // mongoose supplier model
     Supplier,
 

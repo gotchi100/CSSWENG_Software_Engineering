@@ -5,11 +5,18 @@ const inventoryController = {
     View: {
         GetView: (req, res) => {
 
-            db.Inventory.find()
-            .then((ProductList) => {
-    
-                res.render('inventory-view', {ProductList, title: "Inventory View"});
-            });
+            if(req.session.username)
+            {         
+                db.Inventory.find()
+                .then((ProductList) => {
+                    res.render('inventory-view', {ProductList, title: "Inventory View"});
+                    
+                });
+            }
+            else
+            {
+                res.render('login', {title: "Login"});
+            }  
         },
 
         AddOneProduct: async (req, res) => { 
@@ -120,12 +127,18 @@ const inventoryController = {
 
     Pricelist: {
         GetPricelist: (req, res) => {
-    
-            db.Inventory.find()
-            .then((ProductList) => {
-    
-                res.render('inventory-pricelist', {ProductList, title: "Inventory Pricelist"});
-            });
+            if(req.session.username)
+            {
+                db.Inventory.find()
+                .then((ProductList) => {
+        
+                    res.render('inventory-pricelist', {ProductList, title: "Inventory Pricelist"});
+                });
+            }
+            else
+            {
+                res.render('login', {title: "Login"});
+            }     
         },
 
         UpdateOneProduct: async(req, res) => {
