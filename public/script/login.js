@@ -5,6 +5,8 @@ $(document).ready(function ()
     {
         if(checkInputs() != true)
         {
+            $("#password").removeClass("input-border-error");
+            $("#username").removeClass("input-border-error");
             var LoginInfo = {
                 Username: $("#username").val().toLowerCase().trim(),
                 Password: $("#password").val()
@@ -14,11 +16,15 @@ $(document).ready(function ()
                 console.log("credentials not found = " + result);
                 if(result == "invalidpassword")
                 {
+                    $("#username").removeClass("input-border-error");
+                    $("#password").addClass("input-border-error");
                     $("#error_modal_text").text("Password is incorrect!");
                     $("#error_modal").modal("show");
                 }
                 else if(result == "invalidusername")
                 {
+                    $("#username").addClass("input-border-error");
+                    $("#password").removeClass("input-border-error");
                     $("#error_modal_text").text("Username does not exist!");
                     $("#error_modal").modal("show");
                 }
