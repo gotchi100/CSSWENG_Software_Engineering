@@ -101,7 +101,7 @@ $(document).ready(function ()
 						
 				for(var i = 0; i < products.length; i++) 
 				{ 
-					$("#sales_products").last().append(`<tr><td><input type="string" class="form-control" id="products_name" readonly></td><td><input type="number" class="form-control" id="products_unit_price" readonly></td><td><input type="number" class="form-control" id="products_quantity" readonly></td><td><input type="number" class="form-control" id="products_amount" readonly></td></tr>`);
+					$("#sales_products").last().append(`<tr><td><input type="string" class="form-control-file" id="products_name" readonly></td><td><input type="number" class="form-control-file" id="products_unit_price" readonly></td><td><input type="number" class="form-control-file" id="products_quantity" readonly></td><td><input type="number" class="form-control-file" id="products_amount" readonly></td></tr>`);
 					$("#sales_products tbody").children().eq(i).find("#products_name").val(products[i]);
 					$("#sales_products tbody").children().eq(i).find("#products_unit_price").val(unitprices[i]);
 					$("#sales_products tbody").children().eq(i).find("#products_quantity").val(quantities[i]);

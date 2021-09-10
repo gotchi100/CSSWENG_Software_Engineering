@@ -228,14 +228,14 @@ $(document).ready(function ()
         for(var i = 2; i <= length; i++)
         {
             deleteRowCount++;
-            $("#delete_modal_table tbody tr:last").after("<tr>" +
-                "<td id=\"delete_product_id" + deleteRowCount + "\"></td>" +
-                "<td id=\"delete_product_name" + deleteRowCount + "\"></td>" +
-                "<td id=\"delete_brand" + deleteRowCount + "\"></td>" +
-                "<td id=\"delete_color" + deleteRowCount + "\"></td>" +
-                "<td id=\"delete_buying_price" + deleteRowCount + "\"></td>" +
-                "<td id=\"delete_selling_price" + deleteRowCount + "\"></td>" +
-                "</tr>");
+            $("#delete_modal_table tbody tr:last").after('<tr>' +
+                '<td id="delete_product_id' + deleteRowCount +'"></td>' +
+                '<td id="delete_product_name' + deleteRowCount +'"></td>' +
+                '<td id="delete_brand' + deleteRowCount +'"></td>' +
+                '<td id="delete_color' + deleteRowCount +'"></td>' +
+                '<td id="delete_buying_price' + deleteRowCount +'"></td>' +
+                '<td id="delete_selling_price' + deleteRowCount +'"></td>' +
+                '</tr>');
         }
     }
 

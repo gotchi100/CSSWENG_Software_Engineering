@@ -14,12 +14,106 @@
         
         <div class="row mb-2">
             <div class="col-8 h3">
-                Report: Shrinkages
+                    Report: Total Shrinkages
             </div>
         </div>
-        
+
+        <div class="container">
+            
+            <div class="report-timeline p-3 bg-secondary">
+                
+                <header class="h3 pb-2 text-center">
+                    Timeline
+                </header>
+                
+                <form id="shrinkages-timeline-form" class="form-inline justify-content-center" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="start_range" class="font-weight-bold">Start range:</label>
+                        <input type="date" class="form-control-file ml-3" id="start_range" required>
+                        <label for="end_range" class="font-weight-bold ml-3">End range:</label>
+                        <input type="date" class="form-control-file ml-3" id="end_range" required disabled>
+                        
+                        <button type="submit" class="btn btn-secondary ml-3" id="generate_report">Generate Report</button>
+                        <button type="button" class="btn btn-secondary ml-3" id="print_report_button" disabled>Print Generated Report</button>
+                    </div>
+                </form>
+                
+            </div>
+            
+            <div id="report_wrapper">
+                <div class="d-flex flex-column">
+                    <div class="h5 bg-secondary mt-2 p-2">
+                        Generated Report
+                    </div>
+                    
+                    <div class="h5 report-info d-flex justify-content-between p-2">
+                        <div class="d-flex flex-column mt-3 ml-3">
+                            <img src="./images/logo.png" class="report-logo mb-4">
+                            <p>Wardrobe Choices Mnl</p>
+                            <p>Company Address</p>
+                            <p>Company Number</p>
+                            <p>Company Email</p>
+                        </div>
+                        <div class="text-right mr-3">
+                            <p>Total Shrinkages Report</p>
+                            <p>From: <span id="date_from"></span></p>
+                            <p>To: <span id="date_to"></span></p>
+                            <p>Generated On: <span id="current_date"></span></p>
+                        </div>
+                    </div>
+
+                    <table class="table table-bordered text-center" id="report_table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Adjusted Date</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Brand</th>
+                                <th scope="col">Original Quantity</th>
+                                <th scope="col">Adjusted Quantity</th>
+                                <th scope="col">Difference</th>
+                                <th scope="col">Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="date1"></td>
+                                <td id="product_name1"></td>
+                                <td id="brand1"></td>
+                                <td id="original_quantity1"></td>
+                                <td id="adjusted_quantity1"></td>
+                                <td id="difference1"></td>
+                                <td id="cost1"></td>
+                            </tr>
+
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="6" class="text-right">Total Cost: </th>
+                                <th colspan="1" class="text-center" id="total_amount"></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+            </div>
+
+            <div class="d-flex">
+                <div class="h6">
+                    Prepared by: 
+                    <br> 
+                    Company Owner/Manager
+                </div>
+                <div class="h6 ml-5">
+                    Noted by: 
+                    <br> 
+                    Company Owner/Manager            
+                </div>
+            </div>
+        </div>
     
     </div>
+
+    <script src="/script/reports-shrinkages.js"></script>
     
 </body>
 </html>

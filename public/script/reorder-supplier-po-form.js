@@ -6,66 +6,54 @@ $(document).ready(function ()
 
     $("#submit_button").on("click", function() 
     {
-        // var checkSelectedSupplier = checkSupplier();
-        // if(checkSelectedSupplier)
-        // {
-        //    $("#error_modal_text").text("Please select a supplier!");
-        //    $("#error_modal").modal("show");
-        // }
-       // else
-      //  {
-            if(addProductFieldsIncomplete() != true)
+        if(addProductFieldsIncomplete() != true)
+        {
+            checkDuplicate = checkAddDuplicates();
+            if(checkDuplicate) 
             {
-                checkDuplicate = checkAddDuplicates();
-                if(checkDuplicate) 
+                if(checkDuplicate)
                 {
-                    if(checkDuplicate)
-                    {
-                        $("#error_modal_text").text("Please avoid using the same product names!");
-                    }
-                    clearErrors();
-                    $("#error_modal").modal("show");
+                    $("#error_modal_text").text("Please avoid using the same product names!");
                 }
-                else
-                {
-                    var products = [];
-    
-                    for(var i = 1; i <= addProductRowCount; i++)
-                    {
-                        var temp = {
-                            ProductName: $("#product_name" + i + " :selected").text(),
-                            UnitPrice: $("#unit_price" + i).val(),
-                            Quantity: $("#quantity" + i).val(),
-                            Amount: $("#amount" + i).val()
-                        };
-                        products.push(temp);
-                    }
-    
-                    var SupplierPOInfo = {
-                        PO: $("#supplier_po").val(),
-                        SupplierID: $("#supplier_id").val(),
-                        SupplierName: $("#select_supplier :selected").text(),
-                        ModeOfPayment: $("#mode_of_payment :selected").text(),
-                        Products: products,
-                        DateOrdered: getCurrentDate(),
-                        Status: "Ordering"
-                    };
-    
-                    nextPONumber = parseInt($("#supplier_po").val()) + 1;
-    
-                    $.post("/reorder-add-supplier-po", {SupplierPOInfo}, function(data, status) 
-                    {
-                        console.log("POST - Add One Supplier PO - Status: " + status);
-            
-                        $("#success_modal").modal("show");
-                    });
-             //   }
+                clearErrors();
+                $("#error_modal").modal("show");
             }
-    
+            else
+            {
+                var products = [];
 
-        }
+                for(var i = 1; i <= addProductRowCount; i++)
+                {
+                    var temp = {
+                        ProductName: $("#product_name" + i + " :selected").text(),
+                        UnitPrice: $("#unit_price" + i).val(),
+                        Quantity: $("#quantity" + i).val(),
+                        Amount: $("#amount" + i).val()
+                    };
+                    products.push(temp);
+                }
+
+                var SupplierPOInfo = {
+                    PO: $("#supplier_po").val(),
+                    SupplierID: $("#supplier_id").val(),
+                    SupplierName: $("#select_supplier :selected").text(),
+                    ModeOfPayment: $("#mode_of_payment :selected").text(),
+                    Products: products,
+                    TotalPrice: $("#total_amount").text(),
+                    DateOrdered: getCurrentDate(),
+                    Status: "Ordering"
+                };
+
+                nextPONumber = parseInt($("#supplier_po").val()) + 1;
+
+                $.post("/reorder-add-supplier-po", {SupplierPOInfo}, function(data, status) 
+                {
+                    console.log("POST - Add One Supplier PO - Status: " + status);
         
-        
+                    $("#success_modal").modal("show");
+                });
+            }
+        }      
     });
 
     $("#success_close_button").on("click", function ()
@@ -95,7 +83,7 @@ $(document).ready(function ()
             $("#supplier_email").val("");
             $("#supplier_address").val("");
             $("#product_name1 > option").remove();
-            $("#product_name1").append("<option value = \"\" hidden>Select one</option>")
+            $("#product_name1").append('<option value = "" hidden>Select one</option>');
         }
         else
         {
@@ -108,10 +96,10 @@ $(document).ready(function ()
                 $("#supplier_address").val(result.Address);
         
                 $("#product_name1 > option").remove();
-                $("#product_name1").append("<option value = \"\" hidden>Select one</option>")
+                $("#product_name1").append('<option value = "" hidden>Select one</option>');
                 for(var i = 0; i < result.Products.length; i++)
                 {
-                    $("#product_name1").append("<option>" + result.Products[i] + "</option>")
+                    $("#product_name1").append("<option>" + result.Products[i] + "</option>");
                 }
             }); 
         }

@@ -12,6 +12,7 @@ const supplierPOSchema = new mongoose.Schema({
         Quantity: Number,
         Amount: Number
     }],
+    TotalPrice: Number,
     DateOrdered: String,
     Status: String
 });

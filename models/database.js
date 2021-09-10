@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const Inventory = require('./inventory.js');
+const Sales = require('./sales.js');
 const Supplier = require('./supplier.js');
 const SupplierPO = require('./supplierPO.js');
+const Account = require('./account.js');
 
 // url to connect to mongodb
 const dbURI = 'mongodb+srv://cssweng_s13_group_2:cssweng_s13_group_2@wardrobechoicesmnl.fbjkw.mongodb.net/Database?retryWrites=true&w=majority'
@@ -24,11 +26,17 @@ const database = {
     // mongoose inventory model
     Inventory,
 
+    Sales,
     // mongoose supplier model
     Supplier,
 
     // mongoose supplierPO model
-    SupplierPO
+    SupplierPO,
+
+    // mongoose account model
+    Account,
+
+
 }
 
 module.exports = database;

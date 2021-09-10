@@ -187,7 +187,7 @@ $(document).ready(function ()
                 table.rows(".selected").remove().draw(false);
             })
         }
-        $("delete_modal").modal("hide");
+        $("#delete_modal").modal("hide");
     });
 
     // delete popup
@@ -217,12 +217,12 @@ $(document).ready(function ()
         for(var i = 2; i <= length; i++)
         {
             deleteRowCount++;
-            $("#delete_modal_table tbody tr:last").after("<tr>" +
-                "<td id=\"supplier_po" + deleteRowCount + "\"></td>" +
-                "<td id=\"date_ordered" + deleteRowCount + "\"></td>" +
-                "<td id=\"supplier_name" + deleteRowCount + "\"></td>" +
-                "<td id=\"status" + deleteRowCount + "\"></td>" +
-                "</tr>");
+            $("#delete_modal_table tbody tr:last").after('<tr>' +
+                '<td id="supplier_po' + deleteRowCount + '"></td>' +
+                '<td id="date_ordered' + deleteRowCount + '"></td>' +
+                '<td id="supplier_name' + deleteRowCount + '"></td>' +
+                '<td id="status' + deleteRowCount + '"></td>' +
+                '</tr>');
         }
     }
 
@@ -268,19 +268,19 @@ $(document).ready(function ()
         for(var i = 2; i <= length; i++)
         {
             productsRowCount++;
-            $("#reorder_details_table tbody tr:last").after("<tr><td>" + 
-            "<select class=\"form-control-file\" id=\"product_name" + productsRowCount + "\">" +
-            " </select>" +
-            "</td><td>" +
+            $("#reorder_details_table tbody tr:last").after('<tr><td>' + 
+            '<select class="form-control-file" id="product_name' + productsRowCount + '">' +
+            ' </select>' +
+            '</td><td>' +
     
-            "<input type=\"number\" class=\"form-control-file\" id=\"unit_price" + productsRowCount + "\"readonly></input>" +
-            "</td><td>" +
+            '<input type="number" class="form-control-file" id="unit_price' + productsRowCount + '"readonly></input>' +
+            '</td><td>' +
     
-            "<input type=\"number\" class=\"form-control-file\" id=\"quantity" + productsRowCount + "\"readonly>" +
-            "</td><td>" +
+            '<input type="number" class="form-control-file" id="quantity' + productsRowCount + '"readonly>' +
+            '</td><td>' +
     
-            "<input type=\"number\" class=\"form-control-file\" id=\"amount" + productsRowCount + "\"readonly></input>" +
-            "</td></tr>");
+            '<input type="number" class="form-control-file" id="amount' + productsRowCount + '"readonly></input>' +
+            '</td></tr>');
         }
     }
 

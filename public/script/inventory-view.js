@@ -364,14 +364,14 @@ $(document).ready(function ()
         for(var i = 2; i <= length; i++)
         {
             deleteRowCount++;
-            $("#delete_modal_table tbody tr:last").after("<tr>" +
-                "<td id=\"delete_product_id" + deleteRowCount + "\"></td>" +
-                "<td id=\"delete_product_name" + deleteRowCount + "\"></td>" +
-                "<td id=\"delete_brand" + deleteRowCount + "\"></td>" +
-                "<td id=\"delete_color" + deleteRowCount + "\"></td>" +
-                "<td id=\"delete_quantity" + deleteRowCount + "\"></td>" +
-                "<td id=\"delete_reorder_point" + deleteRowCount + "\"></td>" +
-                "</tr>");
+            $("#delete_modal_table tbody tr:last").after('<tr>' +
+                '<td id="delete_product_id' + deleteRowCount + '"></td>' +
+                '<td id="delete_product_name' + deleteRowCount + '"></td>' +
+                '<td id="delete_brand' + deleteRowCount + '"></td>' +
+                '<td id="delete_color' + deleteRowCount + '"></td>' +
+                '<td id="delete_quantity' + deleteRowCount + '"></td>' +
+                '<td id="delete_reorder_point' + deleteRowCount + '"></td>' +
+                '</tr>');
         }
     }
 
@@ -416,6 +416,9 @@ $(document).ready(function ()
     }
     function addProductAddRow() 
     {
+        if(addProductRowCount == 1) {
+            $("#add_product_delete_row_button").prop("disabled", false);
+        }
         addProductRowCount++;
         
         $("#add_product_table td:last").text("");
@@ -447,15 +450,13 @@ $(document).ready(function ()
         
         '<div class="d-flex">' +
         '<button type="button" class="btn btn-secondary mr-2" id="add_product_add_row_button"><span class="fas fa-plus"></span></button>' +
-        '<button type="button" class="btn btn-secondary" id="add_product_delete_row_button" disabled><span class="fas fa-trash"></span></button>' +
+        '<button type="button" class="btn btn-secondary" id="add_product_delete_row_button"><span class="fas fa-trash"></span></button>' +
         '</div></td></tr>');
     
         $("#add_product_add_row_button").on("click", addProductAddRow);
         $("#add_product_delete_row_button").on("click", addProductDeleteRow);
         
-        if(addProductRowCount == 1) {
-            $("#add_product_delete_row_button").prop("disabled", false);
-        }
+        
     
     };
     
@@ -465,11 +466,11 @@ $(document).ready(function ()
     
         $("#add_product_table tr:last").remove();
         $("#add_product_table td:last").remove();
-        $("#add_product_table tr:last").append("<td>" +
-            "<div class=\"d-flex\">" +
-            "<button type=\"button\" class=\"btn btn-secondary mr-2\" id=\"add_product_add_row_button\"><span class=\"fas fa-plus\"></span></button>" +
-            "<button type=\"button\" class=\"btn btn-secondary\" id=\"add_product_delete_row_button\"><span class=\"fas fa-trash\"></span></button>" +
-            "</div></td>");
+        $("#add_product_table tr:last").append('<td>' +
+        '<div class="d-flex">' +
+        '<button type="button" class="btn btn-secondary mr-2" id="add_product_add_row_button"><span class="fas fa-plus"></span></button>' +
+        '<button type="button" class="btn btn-secondary" id="add_product_delete_row_button"><span class="fas fa-trash"></span></button>' +
+        '</div></td>');
     
          $("#add_product_add_row_button").on("click", addProductAddRow);
          $("#add_product_delete_row_button").on("click", addProductDeleteRow);

@@ -77,6 +77,7 @@ const reorderController = {
                 SupplierName: temp.SupplierName,
                 ModeOfPayment: temp.ModeOfPayment,
                 Products: temp.Products,
+                TotalPrice: temp.TotalPrice,
                 DateOrdered: temp.DateOrdered,
                 Status: temp.Status
             });

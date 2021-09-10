@@ -84,3 +84,27 @@ table.dataTable tr th.select-checkbox.selected::after {
     padding-left: 10px !important;
     padding-right: 10px !important;
 }
+
+.register-logo {
+    height: 200px;
+    width: 200px;
+}
+
+.report-logo {
+    height: 100px;
+    width: 100px;
+}
+
+.report-info p{
+    margin-bottom: 0.5rem !important;
+    font-size:large;
+}
+
+.timeline-label {
+    font-size: large !important;
+    padding-left: 20px !important;
+}
+
+#shrinkages-timeline-form > div > input{
+    width: auto !important;
+}

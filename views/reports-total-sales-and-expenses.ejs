@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="/style/dashboard.css">
     <%- include('./partials/bootstrap-link.ejs') %>
+    <%- include('./partials/table-link.ejs') %>
     <%- include('./partials/head.ejs') %>
 </head>
 <body>
@@ -17,9 +18,107 @@
                     Report: Total Sales/Total Expenses
             </div>
         </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <div class="report-timeline p-3 bg-secondary">
+                        <header class="h3 text-center p-2">
+                            Timeline
+                        </header>
+                        <form id="timeline-form" onsubmit="return false;">
+                            <div class="form-group row">
+                                <label for="start_range" class="col-5 col-form-label timeline-label font-weight-bold">Start range:</label>
+                                <input type="date" class="form-control-file col-6" id="start_range" required>
+                            </div>
+                            <div class="form-group row">
+                                <label for="end_range" class="col-5 col-form-label timeline-label font-weight-bold">End range:</label>
+                                <input type="date" class="form-control-file col-6" id="end_range" required disabled>
+                            </div>
+                            <div class="form-group row">
+                                <label for="report_type" class="col-5 col-form-label timeline-label font-weight-bold">Report type:</label>
+                                <select name="report_type" id="report_type" class="col-6 form-control-file" required>
+                                    <option value = "" hidden>Select one</option>
+                                    <option>Sales Report</option>
+                                    <option>Expenses Report</option>
+                                </select>
+                            </div>
+                            <div class="d-flex flex-column justify-content-center">
+                                <button type="submit" class="btn btn-secondary" id="generate_report">Generate Report</button>
+                                <button type="button" class="btn btn-secondary mt-3" id="print_report_button" disabled>Print Generated Report</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="col-8" id="report_wrapper">
+                    <div class="d-flex flex-column">
+                        <div class="h5 bg-secondary p-2">
+                            Generated Report
+                        </div>
+                        
+                        <div class="h5 report-info d-flex justify-content-between p-2">
+                            <div class="d-flex flex-column mt-3 ml-3">
+                                <img src="./images/logo.png" class="report-logo mb-4">
+                                <p>Wardrobe Choices Mnl</p>
+                                <p>Company Address</p>
+                                <p>Company Number</p>
+                                <p>Company Email</p>
+                            </div>
+                            <div class="text-right mr-3">
+                                <p>Total <span id="chosen_type1">(Sales/Expenses)</span> Report</p>
+                                <p>From: <span id="date_from"></span></p>
+                                <p>To: <span id="date_to"></span></p>
+                                <p>Generated On: <span id="current_date"></span></p>
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered text-center" id="report_table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col"><span id="chosen_type2">Customer/Supplier</span> Name</th>
+                                    <th scope="col"><span id="chosen_type3">Amount/Cost</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td id="date1"></td>
+                                    <td id="name1"></td>
+                                    <td id="amount1"></td>
+                                </tr>
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="2" class="text-right">Total <span id="chosen_type4">Amount/Cost</span>: </th>
+                                    <th colspan="1" class="text-center" id="total_amount"></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div class="d-flex">
+                            <div class="h6">
+                                Prepared by: 
+                                <br> 
+                                Company Owner/Manager
+                            </div>
+                            <div class="h6 ml-5">
+                                Noted by: 
+                                <br> 
+                                Company Owner/Manager            
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
         
     
     </div>
+    
+    <script src="/script/reports-total-sales-and-expenses.js"></script>
     
 </body>
 </html>

@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const inventoryController = require('../controllers/inventory-controller');
 const reorderController = require('../controllers/reorder-controller');
 const salesController = require('../controllers/sales-controller');
+const reportController = require('../controllers/report-controller');
+const accountController = require('../controllers/account-controller');
 
 const router = express.Router();
 
@@ -11,9 +13,13 @@ router.get('/login', (req, res) => {
     res.render('login', {title: "Login"});
 });
 
-router.get('/register', (req, res) => {
-    res.render('register', {title: "Register"});
-});
+router.get('/register', accountController.Register.GetRegisterForm);
+
+router.get('/check-register-email', accountController.Register.CheckEmail);
+
+router.get('/check-register-username', accountController.Register.CheckUsername);
+
+router.post('/submit-register', accountController.Register.SignUp);
 
 router.get('/', (req, res) => {
     res.redirect('dashboard')
@@ -85,13 +91,16 @@ router.post('/reorder-delete-many-po', reorderController.SupplierPO.DeleteManyPr
 
 router.post('/reorder-update-status', reorderController.SupplierPO.UpdateOne);
 
-router.get('/reports-total-sales-and-expenses', (req, res) => {
-    res.render('reports-total-sales-and-expenses', {title: "Total Sales and Expenses Reports"});
-});
+// report
+router.get('/reports-total-sales-and-expenses', reportController.GetSalesAndExpensesView);
 
-router.get('/reports-shrinkages', (req, res) => {
-    res.render('reports-shrinkages', {title: "Shrinkages Reports"});
-});
+router.get('/get-sales-report', reportController.Sales.GetReport);
+
+router.get('/get-expenses-report', reportController.Expenses.GetReport);
+
+router.get('/reports-shrinkages', reportController.Shrinkages.GetView);
+
+router.get('/get-shrinkages-report', reportController.Shrinkages.GetReport);
 
 
 
