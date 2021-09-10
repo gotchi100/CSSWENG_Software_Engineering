@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+const Controller = require('../controllers/controller');
 const inventoryController = require('../controllers/inventory-controller');
 const reorderController = require('../controllers/reorder-controller');
 const salesController = require('../controllers/sales-controller');
@@ -21,13 +22,11 @@ router.get('/check-register-username', accountController.Register.CheckUsername)
 
 router.post('/submit-register', accountController.Register.SignUp);
 
-router.get('/', (req, res) => {
-    res.redirect('dashboard')
-});
+router.get('/', Controller.GetIndex);
 
-router.get('/dashboard', (req, res) => {
-    res.render('dashboard', {title: "Dashboard"});
-});
+router.get('/dashboard', Controller.GetDashboard);
+
+router.get('/logout', Controller.Logout);
 
 // inventory view
 router.get('/inventory-view', inventoryController.View.GetView);

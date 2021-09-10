@@ -5,18 +5,25 @@ const reorderController = {
     Supplier: {
 
         GetSupplierForm: (req, res) => {
-            db.Supplier.find()
-                .then((SupplierList) => {
-                    var next_id = 0;
-                    for(var i = 0; i < SupplierList.length; i++) {
-                        if(SupplierList[i].Id > next_id) {
-                            next_id = SupplierList[i].Id;
+            if(req.session.username)
+            {
+                db.Supplier.find()
+                    .then((SupplierList) => {
+                        var next_id = 0;
+                        for(var i = 0; i < SupplierList.length; i++) {
+                            if(SupplierList[i].Id > next_id) {
+                                next_id = SupplierList[i].Id;
+                            }
                         }
-                    }
-                    next_id += 1;
-
-                    res.render('reorder-add-supplier', {next_id, title: "Supplier Form"});
-                })
+                        next_id += 1;
+    
+                        res.render('reorder-add-supplier', {next_id, title: "Supplier Form"});
+                    });
+            }
+            else
+            {
+                res.render('login', {title: "Login"});
+            }     
         },
 
         AddSupplier: (req, res) => {
@@ -50,21 +57,27 @@ const reorderController = {
 
     SupplierPO: {
         GetSupplierPOForm: (req, res) => {
-
-            db.Supplier.find()
-                .then((SupplierList) => {
-                    db.SupplierPO.find()
-                        .then((SupplierPOList) => {
-                            var next_PO = 0;
-                            for(var i = 0; i < SupplierPOList.length; i++) {
-                                if(SupplierPOList[i].PO > next_PO) {
-                                    next_PO = SupplierPOList[i].PO;
+            if(req.session.username)
+            {
+                db.Supplier.find()
+                    .then((SupplierList) => {
+                        db.SupplierPO.find()
+                            .then((SupplierPOList) => {
+                                var next_PO = 0;
+                                for(var i = 0; i < SupplierPOList.length; i++) {
+                                    if(SupplierPOList[i].PO > next_PO) {
+                                        next_PO = SupplierPOList[i].PO;
+                                    }
                                 }
-                            }
-                            next_PO += 1;
-                            res.render('reorder-supplier-po-form', {SupplierList, next_PO, title: "Supplier PO Form"});
-                        })
-                });
+                                next_PO += 1;
+                                res.render('reorder-supplier-po-form', {SupplierList, next_PO, title: "Supplier PO Form"});
+                            })
+                    });
+            }
+            else
+            {
+                res.render('login', {title: "Login"});
+            }   
         },
     
         AddSupplierPO: (req, res) => {
@@ -88,13 +101,17 @@ const reorderController = {
         },
 
         GetOrderList: (req, res) => {
-            db.SupplierPO.find()
-                .then((SupplierPOList) => {
-
-                    
-                    res.render('reorder-supplier-order-list', {SupplierPOList, title: "Supplier Order List"});
-
-                })
+            if(req.session.username)
+            {
+                db.SupplierPO.find()
+                    .then((SupplierPOList) => {
+                        res.render('reorder-supplier-order-list', {SupplierPOList, title: "Supplier Order List"});
+                    });
+            }
+            else
+            {
+                res.render('login', {title: "Login"});
+            }   
         },
 
         FindSupplierPO: async (req, res) => {

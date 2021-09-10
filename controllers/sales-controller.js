@@ -14,14 +14,20 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 const inventoryController = {
 	
 	GetSalesPOFormView: (req, res) => {
-
-		Inventory.find()
-        .then((ProductList) => {
-			Sales.find()
-			.then((SalesList) => {
-				res.render('sales-customer-po-form', {ProductList: ProductList, SalesList: SalesList, title: "Customer PO Form"});
+		if(req.session.username)
+		{
+			Inventory.find()
+			.then((ProductList) => {
+				Sales.find()
+				.then((SalesList) => {
+					res.render('sales-customer-po-form', {ProductList: ProductList, SalesList: SalesList, title: "Customer PO Form"});
+				});
 			});
-		});
+		}
+		else
+		{
+			res.render('login', {title: "Login"});
+		}  
 
     },
 	
@@ -69,12 +75,18 @@ const inventoryController = {
     },
 	
 	GetSalesListView: (req, res) => {
-
-        Sales.find()
-        .then((SalesList) => {
-
-            res.render('sales-customer-order-list', {SalesList, title: "Customer Order List"});
-        });
+		if(req.session.username)
+		{
+			Sales.find()
+			.then((SalesList) => {
+	
+				res.render('sales-customer-order-list', {SalesList, title: "Customer Order List"});
+			});
+		}
+		else
+		{
+			res.render('login', {title: "Login"});
+		}  
     },
 	
 	GetIndividualSale: (req, res) => {

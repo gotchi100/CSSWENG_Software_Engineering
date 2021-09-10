@@ -3,7 +3,14 @@ const db = require('../models/database.js');
 const reportController = {
     
     GetSalesAndExpensesView: (req, res) => {
-        res.render('reports-total-sales-and-expenses', {title: "Total Sales and Expenses Reports"});
+        if(req.session.username)
+            {
+                res.render('reports-total-sales-and-expenses', {title: "Total Sales and Expenses Reports"});
+            }
+            else
+            {
+                res.render('login', {title: "Login"});
+            }  
     },
 
     Sales: {
@@ -29,7 +36,14 @@ const reportController = {
     Shrinkages: {
 
         GetView: (req, res) => {
-            res.render('reports-shrinkages', {title: "Shrinkages Reports"});
+            if(req.session.username)
+            {
+                res.render('reports-shrinkages', {title: "Shrinkages Reports"});
+            }
+            else
+            {
+                res.render('login', {title: "Login"});
+            }  
         },
 
         GetReport: (req, res) => {
