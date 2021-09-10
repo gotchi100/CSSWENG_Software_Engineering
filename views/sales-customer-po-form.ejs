@@ -23,7 +23,7 @@
 			
 			$("#products").on("change", "#amount", function() {
 				var sum = 0;
-
+				
 				$("#products #amount").each(function (){
 					sum += parseInt($(this).val());
 				});
@@ -51,6 +51,22 @@
 				{
 					$("#physical_checkbox").prop("disabled", false);
 				}
+			});
+			
+			$(document).on("change", "#quantity", function() {
+				var productname = $(this).closest("tr").find("#product_names option:selected").val();
+				var quantity = $(this).val();
+				$.get("/sales-get-product", {productname: productname}, function(result) {
+					if (quantity > result.Quantity)
+					{
+						$("#add_sale_button").prop("disabled", true);
+						alert("Product: " + productname + " exceeds the available inventory.");
+					}
+					else
+					{
+						$("#add_sale_button").prop("disabled", false);
+					}
+				});
 			});
 		})
 	</script>
@@ -158,11 +174,10 @@
                     
                 </table>
 
-				<button type="submit" class="btn btn-secondary float-right" id="add_item_button">Submit</button>
+				<button type="submit" class="btn btn-secondary float-right" id="add_sale_button">Submit</button>
 				
             </form>
         </div>        
-    </div> 
-	
+    </div>
 </body>
 </html>

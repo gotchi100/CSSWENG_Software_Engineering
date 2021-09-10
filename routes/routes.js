@@ -62,6 +62,8 @@ router.post('/sales-add-po-form', salesController.PostSalesAddPO);
 // sales 
 router.get('/sales-customer-order-list', salesController.GetSalesListView);
 
+router.get('/sales-get-product', salesController.GetIndividualProduct);
+
 router.get('/sales-get-sale', salesController.GetIndividualSale);
 
 router.post('/sales-update-status', salesController.PostUpdateStatus);

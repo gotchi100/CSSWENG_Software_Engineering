@@ -1,23 +1,12 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const Sales = require('../models/sales');
-const Inventory = require('../models/inventory');
-
-//connect to mongodb
-const dbURI = 'mongodb+srv://cssweng_s13_group_2:cssweng_s13_group_2@wardrobechoicesmnl.fbjkw.mongodb.net/Database?retryWrites=true&w=majority'
-
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then((result) => console.log('connected to db'))
-    .catch((err) => console.log(err));
-
+const db = require('../models/database.js');
 
 const inventoryController = {
 	
-	GetSalesPOFormView: (req, res) => {
+	GetSalesPOFormView: async (req, res) => {
 
-		Inventory.find()
+		db.Inventory.find()
         .then((ProductList) => {
-			Sales.find()
+			db.Sales.find()
 			.then((SalesList) => {
 				res.render('sales-customer-po-form', {ProductList: ProductList, SalesList: SalesList, title: "Customer PO Form"});
 			});
@@ -25,9 +14,9 @@ const inventoryController = {
 
     },
 	
-	PostSalesAddPO: (req, res) => { 
+	PostSalesAddPO: async (req, res) => { 
 
-        Sales.find()
+        db.Sales.find()
         .then((SalesList) => {
 
             // generate new id based on the highest id on the database
@@ -40,7 +29,7 @@ const inventoryController = {
             next_id += 1;
 
             // store the new po details
-            const sales = new Sales({
+            const sales = new db.Sales({
 				CustomerPO: req.body.CustomerPO,
                 CustomerOrderID: req.body.CustomerOrderID,
                 CustomerName: req.body.CustomerName,
@@ -55,32 +44,63 @@ const inventoryController = {
 				TotalPrice: req.body.TotalPrice,
                 Status: "packing"
             });
-
+			
+			for(var i = 0; i < sales.ProductNames.length; i++) {
+				
+				firstquantity = 0;
+				secondquantity = 0;
+				newquantity = 0;
+				productname = sales.ProductNames[i];
+				firstquantity = sales.ProductQuantities[i];
+				await db.Inventory.findOne({ProductName: productname}, function (err, result)
+				{
+					if(err)
+					{
+						console.log (err);
+						res.send();
+					}
+					else
+					{
+						secondquantity = result.Quantity;
+						newquantity = secondquantity - firstquantity;
+						db.Inventory.findOneAndUpdate({ProductName: productname}, {Quantity: newquantity}, {new: true}, function(err, result)
+						{
+							if(err)
+							{
+								console.log (err);
+								res.send();
+							}
+							else
+							{
+								console.log (result);
+								res.send(result);
+							}
+						});
+					}
+				});
+			}
+			
             // save the details to the database
             sales.save()
             console.log("Sale added to sales database:\n" + sales);
         });
 		
-		Sales.find()
+		res.redirect('/sales-customer-order-list');
+    },
+	
+	GetSalesListView: async (req, res) => {
+
+        db.Sales.find()
         .then((SalesList) => {
 
             res.render('sales-customer-order-list', {SalesList, title: "Customer Order List"});
         });
     },
 	
-	GetSalesListView: (req, res) => {
+	GetIndividualProduct: async (req, res) => {
 
-        Sales.find()
-        .then((SalesList) => {
-
-            res.render('sales-customer-order-list', {SalesList, title: "Customer Order List"});
-        });
-    },
-	
-	GetIndividualSale: (req, res) => {
-		
-		var po = req.query.po;
-        Sales.findOne({CustomerPO: po}, function(err, result)
+		var productname = req.query.productname;
+        db.Inventory.findOne({ProductName: productname}, function (err, result)
 		{
 			if(err)
 			{
@@ -95,36 +115,54 @@ const inventoryController = {
         });
     },
 	
-	PostUpdateStatus: (req, res) => {
+	GetIndividualSale: async (req, res) => {
+		
+		var po = req.query.po;
+        db.Sales.findOne({CustomerPO: po}, function(err, result)
+		{
+			if(err)
+			{
+				console.log (err);
+				res.send();
+			}
+			else
+			{
+				console.log (result);
+				res.send(result);
+			}
+        });
+    },
+	
+	PostUpdateStatus: async (req, res) => {
 		
 		var po = req.body.po
 		var type = req.body.type
 		if (type == "onroute") {
-			Sales.findOneAndUpdate({CustomerPO: po}, {Status: "delivering"}, {new: true}, function(err, result){});
+			db.Sales.findOneAndUpdate({CustomerPO: po}, {Status: "delivering"}, {new: true}, function(err, result){});
 		}
 		else if (type == "delivering") {
-			Sales.findOneAndUpdate({CustomerPO: po}, {Status: "delivered"}, {new: true}, function(err, result){});
+			db.Sales.findOneAndUpdate({CustomerPO: po}, {Status: "delivered"}, {new: true}, function(err, result){});
 		}
 		
-		Sales.find()
+		db.Sales.find()
 		.then((SalesList) => {
 			
 			res.render('sales-customer-order-list', {SalesList, title: "Customer Order List"});
 		});
     },
 	
-	PostDeleteOneSale: (req, res) => {
+	PostDeleteOneSale: async (req, res) => {
     
         var SalesPO = req.body.tempSalesPO;
-        Sales.deleteOne({CustomerPO: SalesPO}, function(err, result){
+        db.Sales.deleteOne({CustomerPO: SalesPO}, function(err, result){
 			res.send(result);
 		});
     },
 
-    PostDeleteManySales: (req, res) => {
+    PostDeleteManySales: async (req, res) => {
 
         var SalesPO = JSON.parse(req.body.SalesPO)
-		Sales.deleteMany({CustomerPO: {$in: SalesPO}}, function(err, result){
+		db.Sales.deleteMany({CustomerPO: {$in: SalesPO}}, function(err, result){
 			res.send(result);
 		});
     },
