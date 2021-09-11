@@ -57,9 +57,9 @@
                         <td><%= ProductList[i].Quantity %></td>
                         <td><%= ProductList[i].ReorderPoint %></td>
                         <% var Availability = ""; %>
-                        <% if(ProductList[i].Quantity >= ProductList[i].ReorderPoint  + 10) {Availability = "High"; %>
-                        <% }else if(ProductList[i].Quantity >= ProductList[i].ReorderPoint + 5) {Availability = "Medium"; %>
-                        <% }else if(ProductList[i].Quantity <= ProductList[i].ReorderPoint + 5) {Availability = "Low";} %>
+                        <% if(ProductList[i].Quantity >= (ProductList[i].ReorderPoint + (0.49 * ProductList[i].ReorderPoint))) {Availability = "High"; %>
+                        <% }else if(ProductList[i].Quantity >= ProductList[i].ReorderPoint && ProductList[i].Quantity <= ProductList[i].ReorderPoint + (0.49 * ProductList[i].ReorderPoint)) {Availability = "Medium"; %>
+                        <% }else if(ProductList[i].Quantity < ProductList[i].ReorderPoint + 5) {Availability = "Low";} %>
                         <td><%= Availability %></td>
                     </tr>
                 <% } %>

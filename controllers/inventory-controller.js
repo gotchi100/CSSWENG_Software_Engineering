@@ -45,8 +45,7 @@ const inventoryController = {
                     SellingPrice: temp[0].SellingPrice,
                     OriginalQuantity: temp[0].Quantity,
                     Quantity: temp[0].Quantity,
-                    ReorderPoint: temp[0].ReorderPoint,
-                    DateAdjusted: temp[0].DateAdjusted
+                    ReorderPoint: temp[0].ReorderPoint
                 });
     
                 // save the details to the database
@@ -85,101 +84,45 @@ const inventoryController = {
         UpdateOneProduct: async(req, res) => {
     
             var temp = req.body.ProductInfo;
-            var equal = false;
-
-            if(temp[0].OriginalQuantity == temp[0].OldOriginalQuantity && temp[0].Quantity == temp[0].OldQuantity)
-            {
-                equal = true;
-            }             
-
-            if(equal)
-            {
-                await db.Inventory.updateOne({ProductId: temp[0].ProductId}, 
-                                            {ProductName: temp[0].ProductName, 
-                                                Brand: temp[0].Brand, 
-                                                Color: temp[0].Color, 
-                                                SellingPrice: temp[0].SellingPrice,
-                                                OriginalQuantity: temp[0].OriginalQuantity, 
-                                                Quantity: temp[0].Quantity, 
-                                                ReorderPoint: temp[0].ReorderPoint}).exec()
-                    .then(() => {
+            await db.Inventory.updateOne({ProductId: temp[0].ProductId}, 
+                                        {ProductName: temp[0].ProductName, 
+                                            Brand: temp[0].Brand, 
+                                            Color: temp[0].Color, 
+                                            SellingPrice: temp[0].SellingPrice,
+                                            OriginalQuantity: temp[0].OriginalQuantity, 
+                                            Quantity: temp[0].Quantity, 
+                                            ReorderPoint: temp[0].ReorderPoint}).exec()
+                .then(() => {
                     console.log("Product updated in the database");
                     res.status(200).send(temp);
-                    });
-            }
-            else
-            {
-                await db.Inventory.updateOne({ProductId: temp[0].ProductId}, 
-                                            {ProductName: temp[0].ProductName, 
-                                                Brand: temp[0].Brand, 
-                                                Color: temp[0].Color, 
-                                                SellingPrice: temp[0].SellingPrice,
-                                                OriginalQuantity: temp[0].OriginalQuantity, 
-                                                Quantity: temp[0].Quantity, 
-                                                ReorderPoint: temp[0].ReorderPoint,
-                                                DateAdjusted: temp[0].DateAdjusted}).exec()
-                    .then(() => {
-                    console.log("Product updated in the database");
-                    res.status(200).send(temp);
-                    });
-            }
-    
-            
+                });
         },
     
         UpdateManyProduct: async(req, res) => {
     
             var temp = req.body.ProductInfo;
-            var equal = false;
             var tempArr = [];
-            
-                    
     
             for(var i = 0; i < temp.length; i++)
             {
-                if(temp[i].OriginalQuantity == temp[i].OldOriginalQuantity && temp[i].Quantity == temp[i].OldQuantity)
-                {
-                    equal = true;
-                }   
-                if(equal)
-                {
-                    tempArr.push({
-                        updateOne: {
-                            "filter" : {ProductId: temp[i].ProductId},
-                            "update" : {ProductName: temp[i].ProductName, 
-                                Brand: temp[i].Brand, 
-                                Color: temp[i].Color, 
-                                SellingPrice: temp[i].SellingPrice, 
-                                OriginalQuantity: temp[i].OriginalQuantity, 
-                                Quantity: temp[i].Quantity, 
-                                ReorderPoint: temp[i].ReorderPoint}  
-                        }
-                    });
-                }
-                else
-                {
-                    tempArr.push({
-                        updateOne: {
-                            "filter" : {ProductId: temp[i].ProductId},
-                            "update" : {ProductName: temp[i].ProductName, 
-                                Brand: temp[i].Brand, 
-                                Color: temp[i].Color, 
-                                SellingPrice: temp[i].SellingPrice, 
-                                OriginalQuantity: temp[i].OriginalQuantity, 
-                                Quantity: temp[i].Quantity, 
-                                ReorderPoint: temp[i].ReorderPoint,
-                                DateAdjusted: temp[i].DateAdjusted}  
-                        }
-                    });
-                }
-                equal = false;
-                
+                tempArr.push({
+                    updateOne: {
+                        "filter" : {ProductId: temp[i].ProductId},
+                        "update" : {ProductName: temp[i].ProductName, 
+                            Brand: temp[i].Brand, 
+                            Color: temp[i].Color, 
+                            SellingPrice: temp[i].SellingPrice, 
+                            OriginalQuantity: temp[i].OriginalQuantity, 
+                            Quantity: temp[i].Quantity, 
+                            ReorderPoint: temp[i].ReorderPoint}  
+                    }
+                });
             }   
-    
             db.Inventory.bulkWrite(tempArr).then((result) => {
                 console.log("Products updated in the database");
                 res.status(200).send(temp);
             })
+        
         }
     },
 

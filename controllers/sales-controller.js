@@ -90,7 +90,7 @@ const inventoryController = {
 						newquantity = result.Quantity - quantity;
 						
 						(function (productname, newquantity) {
-							db.Inventory.updateOne({ProductName: productname}, {Quantity: newquantity, DateAdjusted: resultDate[0]}, function(err, result){});
+							db.Inventory.updateOne({ProductName: productname}, {Quantity: newquantity}, function(err, result){});
 						})(productname, newquantity);
 					});
 				})(productname, quantity);

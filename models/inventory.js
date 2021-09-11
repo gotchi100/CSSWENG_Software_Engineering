@@ -10,8 +10,7 @@ const inventorySchema = new mongoose.Schema({
     SellingPrice: Number,
     OriginalQuantity: Number,
     Quantity: Number,
-    ReorderPoint: Number,
-    DateAdjusted: String
+    ReorderPoint: Number
 });
 
 const Inventory = mongoose.model('Inventory', inventorySchema)

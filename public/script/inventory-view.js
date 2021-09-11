@@ -140,7 +140,6 @@ $(document).ready(function ()
                         OriginalQuantity: $("#add_quantity" + i).val(),
                         Quantity: $("#add_quantity" + i).val(),
                         ReorderPoint: $("#add_reorder_point" + i).val(),
-                        DateAdjusted: getAdjustedDate()
                     }
                     ProductInfo.push(temp);
                 }
@@ -247,8 +246,7 @@ $(document).ready(function ()
                         Quantity: $("#edit_quantity" + i).val(),
                         ReorderPoint: $("#edit_reorder_point" + i).val(),
                         OldOriginalQuantity: data[i-1][6],
-                        OldQuantity: data[i-1][7],
-                        DateAdjusted: getAdjustedDate()
+                        OldQuantity: data[i-1][7]
                     }
                     ProductInfo.push(temp);
                 }
@@ -846,13 +844,13 @@ $(document).ready(function ()
     };
     function getAvailability(Quantity, ReorderPoint) 
     {
-        if(Quantity > ReorderPoint + 10) 
+        if(Quantity > (ReorderPoint + (0.49 * ReorderPoint))) 
         {
             return "High"; 
-        }else if(Quantity > ReorderPoint + 5) 
+        }else if(Quantity >= ReorderPoint && Quantity <= ReorderPoint + (0.49 * ReorderPoint)) 
         {
             return "Medium"; 
-        }else if(Quantity <= ReorderPoint + 5) 
+        }else if(Quantity < ReorderPoint) 
         {
             return "Low";
         } 
@@ -900,23 +898,5 @@ $(document).ready(function ()
 
         $("#current-date").html(day + " " + month + " " + year);
     };
-    
-    function getAdjustedDate() 
-    {
-        var date = new Date();
-        var day = date.getDate();
-        var month = date.getMonth() + 1;
-        var year = date.getFullYear();
 
-        if(month < 10)
-        {
-            month = "0" + month;
-        }
-        if(day < 10)
-        {
-            day = "0" + day;
-        }
-        
-        return month + "/" + day + "/" + year;
-    };
 });
