@@ -34,17 +34,35 @@ $(document).ready(function ()
             {   
                 if(data)
                 {
-                    addTableRow(data.length);
-                    populateShrinkagesTableRow(data);
+                    var tempStart = new Date($("#start_range").val());
+                    var tempEnd = new Date($("#end_range").val());
+                    var count = countItemsInRange(data, tempStart.getTime(), tempEnd.getTime())
+                    addTableRow(count.length);
+                    populateShrinkagesTableRow(data, count);
                 }
             });
     
         }
     });
 
+    function countItemsInRange(data, start_range, end_range)
+    {
+        var ctr = [];
+        var temp;
+        for(var i = 0; i < data.length; i++)
+        {
+            temp = new Date(data[i].DateAdjusted);
+            if(temp.getTime() >= start_range && temp.getTime() <= end_range)
+            {
+                ctr.push(i);
+            }
+        }
+        return ctr;
+
+    }
+
     function clearReport()
     {
-        
         $("#date1").text("");
         $("#product_name1").text("");
         $("#brand1").text("");
@@ -77,19 +95,19 @@ $(document).ready(function ()
         }
     }
 
-    function populateShrinkagesTableRow(data)
+    function populateShrinkagesTableRow(data, ctr)
     {
         var totalAmount = 0;
-        for(var i = 0; i < data.length; i++)
+        for(var i = 0; i < ctr.length; i++)
         {
-            $("#date" + (i + 1)).text(data[i].DateAdjusted);
-            $("#product_name" + (i + 1)).text(data[i].ProductName);
-            $("#brand" + (i + 1)).text(data[i].Brand);
-            $("#original_quantity" + (i + 1)).text(data[i].OriginalQuantity);
-            $("#adjusted_quantity" + (i + 1)).text(data[i].Quantity);
-            var difference = data[i].OriginalQuantity - data[i].Quantity;
+            $("#date" + (i + 1)).text(data[ctr[i]].DateAdjusted);
+            $("#product_name" + (i + 1)).text(data[ctr[i]].ProductName);
+            $("#brand" + (i + 1)).text(data[ctr[i]].Brand);
+            $("#original_quantity" + (i + 1)).text(data[ctr[i]].OriginalQuantity);
+            $("#adjusted_quantity" + (i + 1)).text(data[ctr[i]].Quantity);
+            var difference = data[ctr[i]].OriginalQuantity - data[ctr[i]].Quantity;
             $("#difference" + (i + 1)).text(difference);
-            var cost = data[i].BuyingPrice * difference
+            var cost = data[ctr[i]].BuyingPrice * difference;
             $("#cost" + (i + 1)).text(cost);
             totalAmount += cost;
         }

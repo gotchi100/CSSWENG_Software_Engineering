@@ -233,6 +233,7 @@ $(document).ready(function ()
             else
             {
                 var ProductInfo = [];
+                var data = table.rows(".selected").data()
     
                 for(var i = 1; i <= editProductRowCount; i++) 
                 {
@@ -245,6 +246,8 @@ $(document).ready(function ()
                         OriginalQuantity: $("#edit_original_quantity" + i).val(),
                         Quantity: $("#edit_quantity" + i).val(),
                         ReorderPoint: $("#edit_reorder_point" + i).val(),
+                        OldOriginalQuantity: data[i-1][6],
+                        OldQuantity: data[i-1][7],
                         DateAdjusted: getAdjustedDate()
                     }
                     ProductInfo.push(temp);
