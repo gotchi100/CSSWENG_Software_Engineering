@@ -1,5 +1,6 @@
 const db = require('../models/database.js');
 
+
 const inventoryController = {
 	
 	GetSalesPOFormView: (req, res) => {
@@ -22,8 +23,8 @@ const inventoryController = {
 	PostSalesAddPO: async (req, res) => { 
 
         db.Sales.find()
-        .then((SalesList) => {
-
+		.then((SalesList) => {
+			
             // generate new id based on the highest id on the database
             var next_id = 0;
             for(var i = 0; i < SalesList.length; i++) {
@@ -57,7 +58,7 @@ const inventoryController = {
 				resultDate.push(month + "/" + day + "/" + year)
 
 			}
-			console.log(resultDate);
+			
             // store the new po details
             const sales = new db.Sales({
 				CustomerPO: req.body.CustomerPO,
@@ -79,44 +80,24 @@ const inventoryController = {
             sales.save()
             console.log("Sale added to sales database:\n" + sales);
 			
-			for(var i = 0; i < sales.ProductNames.length; i++) {
-				
-				firstquantity = 0;
-				secondquantity = 0;
-				newquantity = 0;
+			for(var i = 0; i < sales.ProductNames.length; i++)
+			{
 				productname = sales.ProductNames[i];
-				firstquantity = sales.ProductQuantities[i];
-				db.Inventory.findOne({ProductName: productname}, function (err, result)
-				{
-					if(err)
+				quantity = sales.ProductQuantities[i];
+				(function (productname, quantity) {
+					db.Inventory.findOne({ProductName: productname}, function (err, result)
 					{
-						console.log (err);
-						res.send();
-					}
-					else
-					{
-						secondquantity = result.Quantity;
-						newquantity = secondquantity - firstquantity;
-						db.Inventory.findOneAndUpdate({ProductName: productname}, {Quantity: newquantity}, {new: true}, function(err, result)
-						{
-							if(err)
-							{
-								console.log (err);
-								res.send();
-							}
-							else
-							{
-								console.log (result);
-								// added the redirect here because 2 response is not allowed
-								res.redirect('/sales-customer-order-list');
-							}
-						});
-					}
-				});
+						newquantity = result.Quantity - quantity;
+						
+						(function (productname, newquantity) {
+							db.Inventory.updateOne({ProductName: productname}, {Quantity: newquantity}, function(err, result){});
+						})(productname, newquantity);
+					});
+				})(productname, quantity);
 			}
 			
+			res.redirect('/sales-customer-order-list');
         });
-		
     },
 	
 	GetIndividualProduct: async (req, res) => {
@@ -191,7 +172,8 @@ const inventoryController = {
 	PostDeleteOneSale: async (req, res) => {
     
         var SalesPO = req.body.tempSalesPO;
-        db.Sales.deleteOne({CustomerPO: SalesPO}, function(err, result){
+		
+		db.Sales.deleteOne({CustomerPO: SalesPO}, function(err, result){
 			res.send(result);
 		});
     },
@@ -199,6 +181,7 @@ const inventoryController = {
     PostDeleteManySales: async (req, res) => {
 
         var SalesPO = JSON.parse(req.body.SalesPO)
+		
 		db.Sales.deleteMany({CustomerPO: {$in: SalesPO}}, function(err, result){
 			res.send(result);
 		});
