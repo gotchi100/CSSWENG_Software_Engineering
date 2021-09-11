@@ -135,6 +135,14 @@ $(document).ready(function ()
 				$("#tracker_status_delivered_modal").find("#delivered_customer_name").val(result.CustomerName);
 				$("#tracker_status_delivered_modal").find("#delivered_status").val(result.Status);
 			}
+			else if (result.Status == "completed")
+			{
+				$("#tracker_status_completed_modal").modal("show");
+				$("#tracker_status_completed_modal").find("#completed_po").val(po);
+				$("#tracker_status_completed_modal").find("#completed_date_ordered").val(result.DateOrdered);
+				$("#tracker_status_completed_modal").find("#completed_customer_name").val(result.CustomerName);
+				$("#tracker_status_completed_modal").find("#completed_status").val(result.Status);
+			}
 		});
     });
     
@@ -181,13 +189,14 @@ $(document).ready(function ()
     {
 		var count = table.rows(".selected").data().length;
         var data = table.rows(".selected").data();
+		var returned = $("#returned_checkbox").val();
         var tempSalesPO = [];
         //if only one item is selected
         if(count == 1) 
         {
             tempSalesPO = data[0][1];
 			$("#delete_sale_modal").modal("hide");
-            $.post("/sales-delete-one-product", {tempSalesPO});
+            $.post("/sales-delete-one-product", {tempSalesPO: tempSalesPO, returned: returned});
         }
         //if only multiple items are selected
         else 
@@ -198,7 +207,7 @@ $(document).ready(function ()
             }
             var SalesPO = JSON.stringify(tempSalesPO);
 			$("#delete_sale_modal").modal("hide");
-            $.post("/sales-delete-many-products", {SalesPO});
+            $.post("/sales-delete-many-products", {SalesPO: SalesPO, returned: returned});
         }
 		
 		table.rows(".selected").remove().draw(false);

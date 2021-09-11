@@ -35,10 +35,12 @@
 				if (this.checked)
 				{
 					$("#online_checkbox").prop("disabled", true);
+					$("#online_checkbox").prop("required", false);
 				}
 				else
 				{
 					$("#online_checkbox").prop("disabled", false);
+					$("#online_checkbox").prop("required", true);
 				}
 			});
 			
@@ -46,10 +48,12 @@
 				if (this.checked)
 				{
 					$("#physical_checkbox").prop("disabled", true);
+					$("#physical_checkbox").prop("required", false);
 				}
 				else
 				{
 					$("#physical_checkbox").prop("disabled", false);
+					$("#physical_checkbox").prop("required", true);
 				}
 			});
 			
@@ -123,14 +127,14 @@
     
                         <div class="col-2 text-center">
                             <label for="physical_checkbox" class="form-check-label font-weight-bold mt-2">
-                                <input type="checkbox" class="form-check-input" id="physical_checkbox" name="Physical" style="width:18px;height:18px;">&nbsp&nbspPhysical
+                                <input type="checkbox" class="form-check-input" id="physical_checkbox" name="Physical" style="width:18px;height:18px;" required>&nbsp&nbspPhysical
                             </label>
                         </div>
                         
     
                         <div class="col-2 text-center">
                             <label for="online_checkbox" class="form-check-label font-weight-bold mt-2">
-                                <input type="checkbox" class="form-check-input" id="online_checkbox" name="Online" style="width:18px;height:18px;">&nbsp&nbspOnline
+                                <input type="checkbox" class="form-check-input" id="online_checkbox" name="Online" style="width:18px;height:18px;" required>&nbsp&nbspOnline
                             </label>    
                         </div>
                         

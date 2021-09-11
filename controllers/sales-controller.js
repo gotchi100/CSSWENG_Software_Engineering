@@ -59,22 +59,31 @@ const inventoryController = {
 
 			}
 			
+			if(req.body.Physical)
+			{
+				var stat = "completed";
+			}
+			else if(req.body.Online)
+			{
+				var stat = "packing";
+			}
+			
             // store the new po details
-            const sales = new db.Sales({
+			const sales = new db.Sales({
 				CustomerPO: req.body.CustomerPO,
-                CustomerOrderID: req.body.CustomerOrderID,
-                CustomerName: req.body.CustomerName,
+				CustomerOrderID: req.body.CustomerOrderID,
+				CustomerName: req.body.CustomerName,
 				Physical: req.body.Physical,
 				Online: req.body.Online,
-                DateOrdered: resultDate[0],
-                PickupDate: resultDate[1],
-                ProductNames: req.body.ProductNames,
+				DateOrdered: resultDate[0],
+				PickupDate: resultDate[1],
+				ProductNames: req.body.ProductNames,
 				ProductUnitPrices: req.body.ProductUnitPrices,
-                ProductQuantities: req.body.ProductQuantities,
+				ProductQuantities: req.body.ProductQuantities,
 				ProductPrices: req.body.ProductPrices,
 				TotalPrice: req.body.TotalPrice,
-                Status: "packing"
-            });
+				Status: stat
+			});
 
             // save the details to the database
             sales.save()
@@ -84,16 +93,40 @@ const inventoryController = {
 			{
 				productname = sales.ProductNames[i];
 				quantity = sales.ProductQuantities[i];
-				(function (productname, quantity) {
-					db.Inventory.findOne({ProductName: productname}, function (err, result)
-					{
-						newquantity = result.Quantity - quantity;
-						
-						(function (productname, newquantity) {
-							db.Inventory.updateOne({ProductName: productname}, {Quantity: newquantity}, function(err, result){});
-						})(productname, newquantity);
-					});
-				})(productname, quantity);
+				if (sales.Physical)
+				{
+					(function (productname, quantity) {
+						db.Inventory.findOne({ProductName: productname}, function (err, result)
+						{
+							newquantity1 = result.ForecastQuantity - quantity;
+							newquantity2 = result.Quantity - quantity;
+							
+							(function (productname, newquantity1, newquantity2) {
+								db.Inventory.updateOne({ProductName: productname},
+								{
+									ForecastQuantity: newquantity1,
+									Quantity: newquantity2
+								}, function(err, result){});
+							})(productname, newquantity1, newquantity2);
+						});
+					})(productname, quantity);
+				}
+				else if (sales.Online)
+				{
+					(function (productname, quantity) {
+						db.Inventory.findOne({ProductName: productname}, function (err, result)
+						{
+							newquantity1 = result.ForecastQuantity - quantity;
+							
+							(function (productname, newquantity1) {
+								db.Inventory.updateOne({ProductName: productname},
+								{
+									ForecastQuantity: newquantity1
+								}, function(err, result){});
+							})(productname, newquantity1);
+						});
+					})(productname, quantity);
+				}
 			}
 			
 			res.redirect('/sales-customer-order-list');
@@ -159,6 +192,28 @@ const inventoryController = {
 			db.Sales.findOneAndUpdate({CustomerPO: po}, {Status: "delivering"}, {new: true}, function(err, result){});
 		}
 		else if (type == "delivering") {
+			db.Sales.findOne({CustomerPO: po}, function(err, result)
+			{
+				for(var i = 0; i < result.ProductNames.length; i++)
+				{
+					productname = result.ProductNames[i];
+					quantity = result.ProductQuantities[i];
+					(function (productname, quantity) {
+						db.Inventory.findOne({ProductName: productname}, function (err, resulti)
+						{
+							newquantity1 = resulti.Quantity - quantity;
+							
+							(function (productname, newquantity1) {
+								db.Inventory.updateOne({ProductName: productname},
+								{
+									Quantity: newquantity1
+								}, function(err, result){});
+							})(productname, newquantity1);
+						});
+					})(productname, quantity);
+				}
+			});
+			
 			db.Sales.findOneAndUpdate({CustomerPO: po}, {Status: "delivered"}, {new: true}, function(err, result){});
 		}
 		
@@ -171,20 +226,121 @@ const inventoryController = {
 	
 	PostDeleteOneSale: async (req, res) => {
     
-        var SalesPO = req.body.tempSalesPO;
+        var po = req.body.tempSalesPO;
+		var returned = req.body.returned;
 		
-		db.Sales.deleteOne({CustomerPO: SalesPO}, function(err, result){
-			res.send(result);
+		db.Sales.findOne({CustomerPO: po}, function(err, result)
+		{
+			if (result.Status == "packing" || result.Status == "delivering")
+			{
+				for(var i = 0; i < result.ProductNames.length; i++)
+				{
+					productname = result.ProductNames[i];
+					quantity = result.ProductQuantities[i];
+					(function (productname, quantity) {
+						db.Inventory.findOne({ProductName: productname}, function (err, resulti)
+						{
+							newquantity1 = resulti.ForecastQuantity + quantity;
+							
+							(function (productname, newquantity1) {
+								db.Inventory.updateOne({ProductName: productname},
+								{
+									ForecastQuantity: newquantity1
+								}, function(err, result){});
+							})(productname, newquantity1);
+						});
+					})(productname, quantity);
+				}
+			}
+			else if ((result.Status == "delivered" || result.Status == "completed") && returned)
+			{
+				for(var i = 0; i < result.ProductNames.length; i++)
+				{
+					productname = result.ProductNames[i];
+					quantity = result.ProductQuantities[i];
+					(function (productname, quantity) {
+						db.Inventory.findOne({ProductName: productname}, function (err, result)
+						{
+							newquantity1 = result.ForecastQuantity + quantity;
+							newquantity2 = result.Quantity + quantity;
+							
+							(function (productname, newquantity1, newquantity2) {
+								db.Inventory.updateOne({ProductName: productname},
+								{
+									ForecastQuantity: newquantity1,
+									Quantity: newquantity2
+								}, function(err, result){});
+							})(productname, newquantity1, newquantity2);
+						});
+					})(productname, quantity);
+				}
+			}
+			
+			db.Sales.deleteOne({CustomerPO: po}, function(err, result){
+				res.send(result);
+			});
 		});
     },
 
     PostDeleteManySales: async (req, res) => {
 
-        var SalesPO = JSON.parse(req.body.SalesPO)
+        var po = JSON.parse(req.body.SalesPO);
+		var returned = req.body.returned;
 		
-		db.Sales.deleteMany({CustomerPO: {$in: SalesPO}}, function(err, result){
-			res.send(result);
-		});
+		for(var i = 0; i < po.length; i++)
+		{
+			db.Sales.findOne({CustomerPO: po[i]}, function(err, result)
+			{
+				if (result.Status == "packing" || result.Status == "delivering")
+				{
+					for(var i = 0; i < result.ProductNames.length; i++)
+					{
+						productname = result.ProductNames[i];
+						quantity = result.ProductQuantities[i];
+						(function (productname, quantity) {
+							db.Inventory.findOne({ProductName: productname}, function (err, resulti)
+							{
+								newquantity1 = resulti.ForecastQuantity + quantity;
+								
+								(function (productname, newquantity1) {
+									db.Inventory.updateOne({ProductName: productname},
+									{
+										ForecastQuantity: newquantity1
+									}, function(err, result){});
+								})(productname, newquantity1);
+							});
+						})(productname, quantity);
+					}
+				}
+				else if ((result.Status == "delivered" || result.Status == "completed") && returned)
+				{
+					for(var i = 0; i < result.ProductNames.length; i++)
+					{
+						productname = result.ProductNames[i];
+						quantity = result.ProductQuantities[i];
+						(function (productname, quantity) {
+							db.Inventory.findOne({ProductName: productname}, function (err, result)
+							{
+								newquantity1 = result.ForecastQuantity + quantity;
+								newquantity2 = result.Quantity + quantity;
+								
+								(function (productname, newquantity1, newquantity2) {
+									db.Inventory.updateOne({ProductName: productname},
+									{
+										ForecastQuantity: newquantity1,
+										Quantity: newquantity2
+									}, function(err, result){});
+								})(productname, newquantity1, newquantity2);
+							});
+						})(productname, quantity);
+					}
+				}
+				
+				db.Sales.deleteOne({CustomerPO: po}, function(err, result){
+					res.send(result);
+				});
+			});
+		}
     },
 }
 
