@@ -164,7 +164,7 @@ $(document).ready(function ()
         var data = table.rows(".selected").data();
 		for(var i = 1; i <= data.length; i++)
         {
-            $("#delete_sale_modal_table tbody").append(`<tr><td><input type="string" class="form-control" id="delete_po` + i + `" readonly></td><td><input type="string" class="form-control" id="delete_date_ordered` + i + `" readonly></td><td><input type="string" class="form-control" id="delete_customer_name` + i + `" readonly></td><td><input type="string" class="form-control" id="delete_status` + i + `" readonly></td></tr>`);
+            $("#delete_sale_modal_table tbody").append(`<tr><td><input type="string" class="form-control-file" id="delete_po` + i + `" readonly></td><td><input type="string" class="form-control-file" id="delete_date_ordered` + i + `" readonly></td><td><input type="string" class="form-control-file" id="delete_customer_name` + i + `" readonly></td><td><input type="string" class="form-control-file" id="delete_status` + i + `" readonly></td></tr>`);
         }
 		
 		for(var i = 0; i < data.length; i++)

@@ -33,6 +33,31 @@ const inventoryController = {
             }
             next_id += 1;
 
+			var tempDate = [];
+			tempDate.push(req.body.DateOrdered);
+			tempDate.push(req.body.PickupDate);
+
+			var temp, day, month, year;
+			var resultDate = [];
+
+			for(var i = 0; i < tempDate.length; i++)
+			{
+				var temp = new Date(tempDate[i]);
+				var day = temp.getDate();
+				var month = temp.getMonth() + 1;
+				var year = temp.getFullYear();
+				if(month < 10)
+				{
+					month = "0" + month;
+				}
+				if(day < 10)
+				{
+					day = "0" + day;
+				}
+				resultDate.push(month + "/" + day + "/" + year)
+
+			}
+			console.log(resultDate);
             // store the new po details
             const sales = new db.Sales({
 				CustomerPO: req.body.CustomerPO,
@@ -40,8 +65,8 @@ const inventoryController = {
                 CustomerName: req.body.CustomerName,
 				Physical: req.body.Physical,
 				Online: req.body.Online,
-                DateOrdered: req.body.DateOrdered,
-                PickupDate: req.body.PickupDate,
+                DateOrdered: resultDate[0],
+                PickupDate: resultDate[1],
                 ProductNames: req.body.ProductNames,
 				ProductUnitPrices: req.body.ProductUnitPrices,
                 ProductQuantities: req.body.ProductQuantities,
@@ -49,6 +74,10 @@ const inventoryController = {
 				TotalPrice: req.body.TotalPrice,
                 Status: "packing"
             });
+
+            // save the details to the database
+            sales.save()
+            console.log("Sale added to sales database:\n" + sales);
 			
 			for(var i = 0; i < sales.ProductNames.length; i++) {
 				
@@ -78,19 +107,16 @@ const inventoryController = {
 							else
 							{
 								console.log (result);
-								res.send(result);
+								// added the redirect here because 2 response is not allowed
+								res.redirect('/sales-customer-order-list');
 							}
 						});
 					}
 				});
 			}
 			
-            // save the details to the database
-            sales.save()
-            console.log("Sale added to sales database:\n" + sales);
         });
 		
-		res.redirect('/sales-customer-order-list');
     },
 	
 	GetIndividualProduct: async (req, res) => {

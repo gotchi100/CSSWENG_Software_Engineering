@@ -68,6 +68,15 @@
 					}
 				});
 			});
+            $("#sales-add-po-form").on("input", "#date_ordered", function ()
+            {
+                var input = $(this).val();
+                $("#pickup_date").val("");
+                $("#pickup_date").prop("disabled", false);
+                $("#pickup_date").attr("min", input)
+            });
+
+
 		})
 	</script>
 </head>
@@ -105,7 +114,7 @@
                         <input type="text" class="form-control-file col-2" id="customer_name" name="CustomerName" required>
     
                         <label for="date_ordered" class="col-2 col-form-label font-weight-bold">Date Ordered:</label>
-                        <input type="text" class="form-control-file col-2" id="date_ordered" name="DateOrdered" required>
+                        <input type="date" class="form-control-file col-2" id="date_ordered" name="DateOrdered" required>
                     </div>
     
                     <div class="form-group row">
@@ -126,7 +135,7 @@
                         </div>
                         
                         <label for="pickup_date" class="col-2 col-form-label font-weight-bold">Pickup Date:</label>
-                        <input type="text" class="form-control-file col-form-label col-2" id="pickup_date" name="PickupDate" required>
+                        <input type="date" class="form-control-file col-form-label col-2" id="pickup_date" name="PickupDate" required disabled>
                     </div>
                 </div>
 
