@@ -31,6 +31,13 @@ table.dataTable tr th.select-checkbox.selected::after {
     border-radius: 3px !important;
 }
 
+.table thead th {
+    vertical-align: middle;
+}
+.table tbody td {
+    vertical-align: top;
+}
+
 .bg-secondary {
     background-color: #b1b3b4!important;
 }

@@ -34,8 +34,6 @@ $(document).ready(function ()
             {   
                 if(data)
                 {
-                    console.log(data.length);
-
                     addTableRow(data.length);
                     populateShrinkagesTableRow(data);
                 }
@@ -52,20 +50,19 @@ $(document).ready(function ()
         $("#brand1").text("");
         $("#original_quantity1").text("");
         $("#adjusted_quantity1").text("");
+        $("#difference").text("");
         $("#cost1").text("");
         while(tableRowCount != 1)
         {
             tableRowCount--;
             $("#report_table tbody tr:last").remove();
         }
-
     }
 
     function addTableRow(length)
     {
         for(var i = 1; i < length; i++)
         {
-            console.log("forloop");
             tableRowCount++;
             $("#report_table tbody tr:last").after('<tr>' +
             '<td id="date' + tableRowCount + '"></td>'+
@@ -85,11 +82,16 @@ $(document).ready(function ()
         var totalAmount = 0;
         for(var i = 0; i < data.length; i++)
         {
-            console.log("forloop");
-            $("#date" + (i + 1)).text(data[i].DateOrdered);
-            $("#name" + (i + 1)).text(data[i].CustomerName);
-            $("#amount" + (i + 1)).text(data[i].TotalPrice);
-            totalAmount += data[i].TotalPrice;
+            $("#date" + (i + 1)).text(data[i].DateAdjusted);
+            $("#product_name" + (i + 1)).text(data[i].ProductName);
+            $("#brand" + (i + 1)).text(data[i].Brand);
+            $("#original_quantity" + (i + 1)).text(data[i].OriginalQuantity);
+            $("#adjusted_quantity" + (i + 1)).text(data[i].Quantity);
+            var difference = data[i].OriginalQuantity - data[i].Quantity;
+            $("#difference" + (i + 1)).text(difference);
+            var cost = data[i].BuyingPrice * difference
+            $("#cost" + (i + 1)).text(cost);
+            totalAmount += cost;
         }
         $("#total_amount").text(totalAmount);
     }

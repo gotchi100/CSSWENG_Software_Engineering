@@ -47,17 +47,9 @@ const reportController = {
         },
 
         GetReport: (req, res) => {
-            db.SupplierPO.find()
-                .then((SupplierPOInfo) => {
-                    db.Inventory.find()
-                        .then((InventoryInfo) => {
-                            result = {
-                                SupplierPO: SupplierPOInfo,
-                                Inventory: InventoryInfo
-                            }
-                            res.status(200).send(result);
-                        });
-
+            db.Inventory.find()
+                .then((result) => {
+                    res.status(200).send(result);
                 })
         }
     }

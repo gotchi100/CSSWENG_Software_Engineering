@@ -137,8 +137,10 @@ $(document).ready(function ()
                         Color: $("#add_color" + i).val(),
                         BuyingPrice: $("#add_buying_price" + i).val(),
                         SellingPrice: $("#add_selling_price" + i).val(),
+                        OriginalQuantity: $("#add_quantity" + i).val(),
                         Quantity: $("#add_quantity" + i).val(),
-                        ReorderPoint: $("#add_reorder_point" + i).val()
+                        ReorderPoint: $("#add_reorder_point" + i).val(),
+                        DateAdjusted: getAdjustedDate()
                     }
                     ProductInfo.push(temp);
                 }
@@ -151,7 +153,7 @@ $(document).ready(function ()
             
                         var Availability = getAvailability(data.Quantity, data.ReorderPoint); 
                         table.row.add(["", data.ProductId, data.ProductName, data.Brand, data.Color, 
-                                    data.SellingPrice, data.Quantity, data.ReorderPoint, Availability]).draw(false);
+                                    data.SellingPrice, data.OriginalQuantity, data.Quantity, data.ReorderPoint, Availability]).draw(false);
                     });
                 }
                 else
@@ -165,7 +167,7 @@ $(document).ready(function ()
                         {
                             Availability = getAvailability(data[i].Quantity, data[i].ReorderPoint);
                             table.row.add(["", data[i].ProductId, data[i].ProductName, data[i].Brand, data[i].Color, 
-                                        data[i].SellingPrice, data[i].Quantity, data[i].ReorderPoint, Availability]).draw(false);
+                                        data[i].SellingPrice, data[i].OriginalQuantity, data[i].Quantity, data[i].ReorderPoint, Availability]).draw(false);
                         }
                     });
                 }
@@ -240,8 +242,10 @@ $(document).ready(function ()
                         Brand: $("#edit_brand" + i).val(),
                         Color: $("#edit_color" + i).val(),
                         SellingPrice: $("#edit_selling_price" + i).val(),
+                        OriginalQuantity: $("#edit_original_quantity" + i).val(),
                         Quantity: $("#edit_quantity" + i).val(),
-                        ReorderPoint: $("#edit_reorder_point" + i).val()
+                        ReorderPoint: $("#edit_reorder_point" + i).val(),
+                        DateAdjusted: getAdjustedDate()
                     }
                     ProductInfo.push(temp);
                 }
@@ -256,7 +260,7 @@ $(document).ready(function ()
                             
                         table.rows(".selected").remove().draw(false);
                         table.row.add(["", data[0].ProductId, data[0].ProductName, data[0].Brand, data[0].Color, 
-                                        data[0].SellingPrice, data[0].Quantity, data[0].ReorderPoint, Availability]).draw(false);
+                                        data[0].SellingPrice, data[0].OriginalQuantity, data[0].Quantity, data[0].ReorderPoint, Availability]).draw(false);
                     })
                 }
                 else
@@ -273,7 +277,7 @@ $(document).ready(function ()
                         {
                             Availability = getAvailability(data[i].Quantity, data[i].ReorderPoint); 
                             table.row.add(["", data[i].ProductId, data[i].ProductName, data[i].Brand, data[i].Color, 
-                                        data[i].SellingPrice, data[i].Quantity, data[i].ReorderPoint, Availability]).draw(false);
+                                        data[i].SellingPrice, data[i].OriginalQuantity, data[i].Quantity, data[i].ReorderPoint, Availability]).draw(false);
                         }
                     })
                 }
@@ -347,8 +351,8 @@ $(document).ready(function ()
             $("#delete_product_name" + (i + 1)).text(data[i][2]);
             $("#delete_brand" + (i + 1)).text(data[i][3]);
             $("#delete_color" + (i + 1)).text(data[i][4]);
-            $("#delete_quantity" + (i + 1)).text(data[i][6]);
-            $("#delete_reorder_point" + (i + 1)).text(data[i][7]);
+            $("#delete_quantity" + (i + 1)).text(data[i][7]);
+            $("#delete_reorder_point" + (i + 1)).text(data[i][8]);
         }
     });
 
@@ -643,6 +647,9 @@ $(document).ready(function ()
                 '<input type="number" class="form-control-file" id="edit_selling_price' + editProductRowCount + '" min="1" required>' +
                 '</td><td>' +
 
+                '<input type="number" class="form-control-file" id="edit_original_quantity' + editProductRowCount + '" min="1" required>' +
+                '</td><td>' +
+
                 '<input type="number" class="form-control-file" id="edit_quantity' + editProductRowCount + '" min="1" required>' +
                 '</td><td>' +
 
@@ -678,8 +685,9 @@ $(document).ready(function ()
             $("#edit_brand" + (i + 1)).val(parsedBrand);
             $("#edit_color" + (i + 1)).val(parsedColor);
             $("#edit_selling_price" + (i + 1)).val(data[i][5]);
-            $("#edit_quantity" + (i + 1)).val(data[i][6]);
-            $("#edit_reorder_point" + (i + 1)).val(data[i][7]);
+            $("#edit_original_quantity" + (i + 1)).val(data[i][6]);
+            $("#edit_quantity" + (i + 1)).val(data[i][7]);
+            $("#edit_reorder_point" + (i + 1)).val(data[i][8]);
         }
     };
 
@@ -890,4 +898,22 @@ $(document).ready(function ()
         $("#current-date").html(day + " " + month + " " + year);
     };
     
+    function getAdjustedDate() 
+    {
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+
+        if(month < 10)
+        {
+            month = "0" + month;
+        }
+        if(day < 10)
+        {
+            day = "0" + day;
+        }
+        
+        return month + "/" + day + "/" + year;
+    };
 });

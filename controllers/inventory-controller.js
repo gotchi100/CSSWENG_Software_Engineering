@@ -43,8 +43,10 @@ const inventoryController = {
                     Color: temp[0].Color,
                     BuyingPrice: temp[0].BuyingPrice,
                     SellingPrice: temp[0].SellingPrice,
+                    OriginalQuantity: temp[0].Quantity,
                     Quantity: temp[0].Quantity,
-                    ReorderPoint: temp[0].ReorderPoint
+                    ReorderPoint: temp[0].ReorderPoint,
+                    DateAdjusted: temp[0].DateAdjusted
                 });
     
                 // save the details to the database
@@ -88,9 +90,11 @@ const inventoryController = {
                                         {ProductName: temp[0].ProductName, 
                                             Brand: temp[0].Brand, 
                                             Color: temp[0].Color, 
-                                            SellingPrice: temp[0].SellingPrice, 
+                                            SellingPrice: temp[0].SellingPrice,
+                                            OriginalQuantity: temp[0].OriginalQuantity, 
                                             Quantity: temp[0].Quantity, 
-                                            ReorderPoint: temp[0].ReorderPoint}).exec()
+                                            ReorderPoint: temp[0].ReorderPoint,
+                                            DateAdjusted: temp[0].DateAdjusted}).exec()
             .then(() => {
                 console.log("Product updated in the database");
                 res.status(200).send(temp);
@@ -112,8 +116,10 @@ const inventoryController = {
                             Brand: temp[i].Brand, 
                             Color: temp[i].Color, 
                             SellingPrice: temp[i].SellingPrice, 
+                            OriginalQuantity: temp[i].OriginalQuantity, 
                             Quantity: temp[i].Quantity, 
-                            ReorderPoint: temp[i].ReorderPoint}
+                            ReorderPoint: temp[i].ReorderPoint,
+                            DateAdjusted: temp[i].DateAdjusted}
                     }
                 });
             }   

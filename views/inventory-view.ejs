@@ -30,7 +30,7 @@
     
         
     <!-- data table -->
-        <table class="table table-bordered text-center" id="inventory_view_table">
+        <table class="table table-bordered text-center vertical-align" id="inventory_view_table">
 
             <thead>
                 <th></th>
@@ -39,6 +39,7 @@
                 <th scope="col">Brand</th>
                 <th scope="col">Color</th>
                 <th scope="col">SRP</th>
+                <th scope="col">Original QTY</th>
                 <th scope="col">QTY On Hand</th>
                 <th scope="col">Reorder Point</th>
                 <th scope="col">Availability</th>
@@ -52,6 +53,7 @@
                         <td><%= ProductList[i].Brand %></td>
                         <td><%= ProductList[i].Color %></td>
                         <td><%= ProductList[i].SellingPrice %></td>
+                        <td><%= ProductList[i].OriginalQuantity %></td>
                         <td><%= ProductList[i].Quantity %></td>
                         <td><%= ProductList[i].ReorderPoint %></td>
                         <% var Availability = ""; %>
@@ -191,7 +193,7 @@
                         <table class="table table-bordered text-center bg-light" id="edit_product_table">
                             <thead>
                                 <tr>
-                                    <th colspan="7" class="h2">Edit Product</th>
+                                    <th colspan="8" class="h2">Edit Product</th>
                                 </tr>
                                 <tr>
                                     <th scope="col">Product ID</th>
@@ -199,6 +201,7 @@
                                     <th scope="col">Brand</th>
                                     <th scope="col">Color</th>
                                     <th scope="col">SRP</th>
+                                    <th scope="col">Original QTY</th>
                                     <th scope="col">QTY On Hand</th>
                                     <th scope="col">Reorder Point</th>
                                 </tr>
@@ -222,6 +225,9 @@
                                     </td>
                                     <td>
                                         <input type="number" class="form-control-file" id="edit_selling_price1" min="1" required>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control-file" id="edit_original_quantity1" min="1" required>
                                     </td>
                                     <td>
                                         <input type="number" class="form-control-file" id="edit_quantity1" min="1" required>

@@ -11,6 +11,12 @@ const _Port = process.env.PORT;
 // express app
 const app = express();
 
+// favicon
+const favicon = require('serve-favicon');
+const path = require('path');
+// setup favicon
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
 // register view engine
 app.set('view engine','ejs');
 
@@ -42,7 +48,7 @@ app.use(router);
 // 404 page
 app.use((req, res) => {
   console.log('404 on URL: ' + req.url);
-  res.status(404).render('404');
+  res.status(404).render('404', {title: "Page not found :("});
 });
 
 app.listen(_Port, () => {
