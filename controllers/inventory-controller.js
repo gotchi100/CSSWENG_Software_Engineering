@@ -85,11 +85,10 @@ const inventoryController = {
         UpdateOneProduct: async(req, res) => {
     
             var temp = req.body.ProductInfo;
-            var temp = false;
+            var equal = false;
 
             if(temp[0].OriginalQuantity == temp[0].OldOriginalQuantity && temp[0].Quantity == temp[0].OldQuantity)
             {
-                console.log("quantity not changed");
                 equal = true;
             }             
 
@@ -138,10 +137,8 @@ const inventoryController = {
     
             for(var i = 0; i < temp.length; i++)
             {
-                console.log(temp[i].OriginalQuantity + " == " + temp[i].OldOriginalQuantity  + " && " +  temp[i].Quantity + " == " + temp[i].OldQuantity);
                 if(temp[i].OriginalQuantity == temp[i].OldOriginalQuantity && temp[i].Quantity == temp[i].OldQuantity)
                 {
-                    console.log("quantity not changed");
                     equal = true;
                 }   
                 if(equal)
