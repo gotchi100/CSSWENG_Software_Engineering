@@ -78,7 +78,7 @@ $(document).ready(function ()
             var brand = $(this).closest("tr").children().eq(3).text();
             var color = $(this).closest("tr").children().eq(4).text();
             var price = $(this).closest("tr").children().eq(5).text();
-            var quantity = $(this).closest("tr").children().eq(6).text();
+            var quantity = $(this).closest("tr").children().eq(8).text();
             var temp = getVariations(name, brand, color);  
             var variations =   "";
 
@@ -138,6 +138,7 @@ $(document).ready(function ()
                         BuyingPrice: $("#add_buying_price" + i).val(),
                         SellingPrice: $("#add_selling_price" + i).val(),
                         OriginalQuantity: $("#add_quantity" + i).val(),
+                        ForecastQuantity: $("#add_quantity" + i).val(),
                         Quantity: $("#add_quantity" + i).val(),
                         ReorderPoint: $("#add_reorder_point" + i).val(),
                     }
@@ -152,7 +153,7 @@ $(document).ready(function ()
             
                         var Availability = getAvailability(data.Quantity, data.ReorderPoint); 
                         table.row.add(["", data.ProductId, data.ProductName, data.Brand, data.Color, 
-                                    data.SellingPrice, data.OriginalQuantity, data.Quantity, data.ReorderPoint, Availability]).draw(false);
+                                    data.SellingPrice, data.OriginalQuantity, data.ForecastQuantity, data.Quantity, data.ReorderPoint, Availability]).draw(false);
                     });
                 }
                 else
@@ -166,7 +167,7 @@ $(document).ready(function ()
                         {
                             Availability = getAvailability(data[i].Quantity, data[i].ReorderPoint);
                             table.row.add(["", data[i].ProductId, data[i].ProductName, data[i].Brand, data[i].Color, 
-                                        data[i].SellingPrice, data[i].OriginalQuantity, data[i].Quantity, data[i].ReorderPoint, Availability]).draw(false);
+                                        data[i].SellingPrice, data[i].OriginalQuantity, data[i].ForecastQuantity, data[i].Quantity, data[i].ReorderPoint, Availability]).draw(false);
                         }
                     });
                 }
@@ -243,10 +244,12 @@ $(document).ready(function ()
                         Color: $("#edit_color" + i).val(),
                         SellingPrice: $("#edit_selling_price" + i).val(),
                         OriginalQuantity: $("#edit_original_quantity" + i).val(),
+                        ForecastQuantity: $("#edit_forecast_quantity" + i).val(),
                         Quantity: $("#edit_quantity" + i).val(),
                         ReorderPoint: $("#edit_reorder_point" + i).val(),
                         OldOriginalQuantity: data[i-1][6],
-                        OldQuantity: data[i-1][7]
+                        OldForecastQuantity: data[i-1][7],
+                        OldQuantity: data[i-1][8]
                     }
                     ProductInfo.push(temp);
                 }
@@ -261,7 +264,7 @@ $(document).ready(function ()
                             
                         table.rows(".selected").remove().draw(false);
                         table.row.add(["", data[0].ProductId, data[0].ProductName, data[0].Brand, data[0].Color, 
-                                        data[0].SellingPrice, data[0].OriginalQuantity, data[0].Quantity, data[0].ReorderPoint, Availability]).draw(false);
+                                        data[0].SellingPrice, data[0].OriginalQuantity, data[0].ForecastQuantity, data[0].Quantity, data[0].ReorderPoint, Availability]).draw(false);
                     })
                 }
                 else
@@ -278,7 +281,7 @@ $(document).ready(function ()
                         {
                             Availability = getAvailability(data[i].Quantity, data[i].ReorderPoint); 
                             table.row.add(["", data[i].ProductId, data[i].ProductName, data[i].Brand, data[i].Color, 
-                                        data[i].SellingPrice, data[i].OriginalQuantity, data[i].Quantity, data[i].ReorderPoint, Availability]).draw(false);
+                                        data[i].SellingPrice, data[i].OriginalQuantity, data[i].ForecastQuantity, data[i].Quantity, data[i].ReorderPoint, Availability]).draw(false);
                         }
                     })
                 }
@@ -352,8 +355,8 @@ $(document).ready(function ()
             $("#delete_product_name" + (i + 1)).text(data[i][2]);
             $("#delete_brand" + (i + 1)).text(data[i][3]);
             $("#delete_color" + (i + 1)).text(data[i][4]);
-            $("#delete_quantity" + (i + 1)).text(data[i][7]);
-            $("#delete_reorder_point" + (i + 1)).text(data[i][8]);
+            $("#delete_quantity" + (i + 1)).text(data[i][8]);
+            $("#delete_reorder_point" + (i + 1)).text(data[i][9]);
         }
     });
 
@@ -600,7 +603,7 @@ $(document).ready(function ()
     // edit data functions
     function editProductFieldsIncomplete()
     {
-        var ProductName, Brand, Color, SellingPrice, Quantity, ReorderPoint;
+        var ProductName, Brand, Color, SellingPrice, OriginalQuantity, ReorderPoint;
 
         for(var i = 1; i <= editProductRowCount; i++)
         {
@@ -608,11 +611,11 @@ $(document).ready(function ()
             Brand = $("#edit_brand" + i).val();
             Color = $("#edit_color" + i).val();
             SellingPrice = $("#edit_selling_price" + i).val();
-            Quantity = $("#edit_quantity" + i).val();
+            OriginalQuantity = $("#edit_quantity" + i).val();
             ReorderPoint = $("#edit_reorder_point" + i).val();
 
-            if(ProductName == "" || Brand == "" || Color == "" || SellingPrice == "" || Quantity == "" || ReorderPoint == "" ||
-                SellingPrice < 1 || Quantity < 1 || ReorderPoint < 1)
+            if(ProductName == "" || Brand == "" || Color == "" || SellingPrice == "" || OriginalQuantity == "" || ReorderPoint == "" ||
+                SellingPrice < 1 || OriginalQuantity < 1 || ReorderPoint < 1)
             {
                 return true;
             }
@@ -651,7 +654,10 @@ $(document).ready(function ()
                 '<input type="number" class="form-control-file" id="edit_original_quantity' + editProductRowCount + '" min="1" required>' +
                 '</td><td>' +
 
-                '<input type="number" class="form-control-file" id="edit_quantity' + editProductRowCount + '" min="1" required>' +
+                '<input type="number" class="form-control-file" id="edit_forecast_quantity' + editProductRowCount + '" min="1" readonly>' +
+                '</td><td>' +
+
+                '<input type="number" class="form-control-file" id="edit_quantity' + editProductRowCount + '" min="1" readonly>' +
                 '</td><td>' +
 
                 '<input type="number" class="form-control-file" id="edit_reorder_point' + editProductRowCount + '" min="1" required>' +
@@ -687,8 +693,9 @@ $(document).ready(function ()
             $("#edit_color" + (i + 1)).val(parsedColor);
             $("#edit_selling_price" + (i + 1)).val(data[i][5]);
             $("#edit_original_quantity" + (i + 1)).val(data[i][6]);
-            $("#edit_quantity" + (i + 1)).val(data[i][7]);
-            $("#edit_reorder_point" + (i + 1)).val(data[i][8]);
+            $("#edit_forecast_quantity" + (i + 1)).val(data[i][7]);
+            $("#edit_quantity" + (i + 1)).val(data[i][8]);
+            $("#edit_reorder_point" + (i + 1)).val(data[i][9]);
         }
     };
 
@@ -709,6 +716,8 @@ $(document).ready(function ()
             $("#edit_brand" + i).val("");
             $("#edit_color" + i).val("");
             $("#edit_selling_price" + i).val("");
+            $("#edit_original_quantity" + i).val("");
+            $("#edit_forecast_quantity" + i).val("");
             $("#edit_quantity" + i).val("");
             $("#edit_reorder_point" + i).val("");        
         }

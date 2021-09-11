@@ -44,6 +44,7 @@ const inventoryController = {
                     BuyingPrice: temp[0].BuyingPrice,
                     SellingPrice: temp[0].SellingPrice,
                     OriginalQuantity: temp[0].Quantity,
+                    ForecastQuantity: temp[0].Quantity,
                     Quantity: temp[0].Quantity,
                     ReorderPoint: temp[0].ReorderPoint
                 });
@@ -84,39 +85,95 @@ const inventoryController = {
         UpdateOneProduct: async(req, res) => {
     
             var temp = req.body.ProductInfo;
-            await db.Inventory.updateOne({ProductId: temp[0].ProductId}, 
+            var equal = false;
+
+            if(temp[0].OldOriginalQuantity == temp[0].OriginalQuantity)
+            {
+                equal = true;
+            }
+
+            if(equal)
+            {
+                await db.Inventory.updateOne({ProductId: temp[0].ProductId}, 
+                                            {ProductName: temp[0].ProductName, 
+                                                Brand: temp[0].Brand, 
+                                                Color: temp[0].Color, 
+                                                SellingPrice: temp[0].SellingPrice, 
+                                                ReorderPoint: temp[0].ReorderPoint}).exec()
+                    .then(() => {
+                    console.log("Product updated in the database");
+                    res.status(200).send(temp);
+                    });
+            }
+            else
+            {
+                temp[0].ForecastQuantity = parseFloat(temp[0].ForecastQuantity) + parseFloat(temp[0].OriginalQuantity) - parseFloat(temp[0].OldOriginalQuantity);
+                temp[0].Quantity = parseFloat(temp[0].Quantity) + parseFloat(temp[0].OriginalQuantity) - parseFloat(temp[0].OldOriginalQuantity);
+
+                await db.Inventory.updateOne({ProductId: temp[0].ProductId}, 
                                         {ProductName: temp[0].ProductName, 
                                             Brand: temp[0].Brand, 
                                             Color: temp[0].Color, 
-                                            SellingPrice: temp[0].SellingPrice,
-                                            OriginalQuantity: temp[0].OriginalQuantity, 
-                                            Quantity: temp[0].Quantity, 
+                                            SellingPrice: temp[0].SellingPrice, 
+                                            OriginalQuantity: temp[0].OriginalQuantity,
+                                            ForecastQuantity: temp[0].ForecastQuantity,
+                                            Quantity: temp[0].Quantity,
                                             ReorderPoint: temp[0].ReorderPoint}).exec()
-                .then(() => {
+                    .then(() => {
                     console.log("Product updated in the database");
                     res.status(200).send(temp);
-                });
+                    }); 
+            }
+            
         },
     
         UpdateManyProduct: async(req, res) => {
     
             var temp = req.body.ProductInfo;
             var tempArr = [];
+            var equal = false;
+
+            
     
             for(var i = 0; i < temp.length; i++)
             {
-                tempArr.push({
-                    updateOne: {
-                        "filter" : {ProductId: temp[i].ProductId},
-                        "update" : {ProductName: temp[i].ProductName, 
-                            Brand: temp[i].Brand, 
-                            Color: temp[i].Color, 
-                            SellingPrice: temp[i].SellingPrice, 
-                            OriginalQuantity: temp[i].OriginalQuantity, 
-                            Quantity: temp[i].Quantity, 
-                            ReorderPoint: temp[i].ReorderPoint}  
-                    }
-                });
+                if(temp[i].OldOriginalQuantity == temp[i].OriginalQuantity)
+                {
+                    equal = true;
+                }
+
+                if(equal)
+                {
+                    tempArr.push({
+                        updateOne: {
+                            "filter" : {ProductId: temp[i].ProductId},
+                            "update" : {ProductName: temp[i].ProductName, 
+                                Brand: temp[i].Brand, 
+                                Color: temp[i].Color, 
+                                SellingPrice: temp[i].SellingPrice,
+                                ReorderPoint: temp[i].ReorderPoint}  
+                        }
+                    });
+                }
+                else
+                {
+                    temp[i].ForecastQuantity = parseFloat(temp[i].ForecastQuantity) + parseFloat(temp[i].OriginalQuantity) - parseFloat(temp[i].OldOriginalQuantity);
+                    temp[i].Quantity = parseFloat(temp[i].Quantity) + parseFloat(temp[i].OriginalQuantity) - parseFloat(temp[i].OldOriginalQuantity);
+                    tempArr.push({
+                        updateOne: {
+                            "filter" : {ProductId: temp[i].ProductId},
+                            "update" : {ProductName: temp[i].ProductName, 
+                                Brand: temp[i].Brand, 
+                                Color: temp[i].Color, 
+                                SellingPrice: temp[i].SellingPrice, 
+                                OriginalQuantity: temp[i].OriginalQuantity, 
+                                ForecastQuantity: temp[i].ForecastQuantity, 
+                                Quantity: temp[i].Quantity, 
+                                ReorderPoint: temp[i].ReorderPoint}  
+                        }
+                    });
+                }
+                
             }   
             db.Inventory.bulkWrite(tempArr).then((result) => {
                 console.log("Products updated in the database");

@@ -9,6 +9,7 @@ const inventorySchema = new mongoose.Schema({
     BuyingPrice: Number,
     SellingPrice: Number,
     OriginalQuantity: Number,
+    ForecastQuantity: Number,
     Quantity: Number,
     ReorderPoint: Number
 });

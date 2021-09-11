@@ -40,6 +40,7 @@
                 <th scope="col">Color</th>
                 <th scope="col">SRP</th>
                 <th scope="col">Original QTY</th>
+                <th scope="col">Forecast QTY</th>
                 <th scope="col">QTY On Hand</th>
                 <th scope="col">Reorder Point</th>
                 <th scope="col">Availability</th>
@@ -54,6 +55,7 @@
                         <td><%= ProductList[i].Color %></td>
                         <td><%= ProductList[i].SellingPrice %></td>
                         <td><%= ProductList[i].OriginalQuantity %></td>
+                        <td><%= ProductList[i].ForecastQuantity %></td>
                         <td><%= ProductList[i].Quantity %></td>
                         <td><%= ProductList[i].ReorderPoint %></td>
                         <% var Availability = ""; %>
@@ -193,7 +195,7 @@
                         <table class="table table-bordered text-center bg-light" id="edit_product_table">
                             <thead>
                                 <tr>
-                                    <th colspan="8" class="h2">Edit Product</th>
+                                    <th colspan="9" class="h2">Edit Product</th>
                                 </tr>
                                 <tr>
                                     <th scope="col">Product ID</th>
@@ -202,6 +204,7 @@
                                     <th scope="col">Color</th>
                                     <th scope="col">SRP</th>
                                     <th scope="col">Original QTY</th>
+                                    <th scope="col">Forecast QTY</th>
                                     <th scope="col">QTY On Hand</th>
                                     <th scope="col">Reorder Point</th>
                                 </tr>
@@ -230,7 +233,10 @@
                                         <input type="number" class="form-control-file" id="edit_original_quantity1" min="1" required>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control-file" id="edit_quantity1" min="1" required>
+                                        <input type="number" class="form-control-file" id="edit_forecast_quantity1" min="1" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control-file" id="edit_quantity1" min="1" readonly>
                                     </td>
                                     <td>
                                         <input type="number" class="form-control-file" id="edit_reorder_point1" min="1" required>
