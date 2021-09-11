@@ -1,4 +1,5 @@
 const db = require('../models/database.js');
+const { findOne } = require('../models/inventory.js');
 
 const inventoryController = {
 
@@ -241,6 +242,98 @@ const inventoryController = {
             })
         }
 
+    },
+
+    Shrinkage: {
+        GetShrinkageForm: (req, res) => {
+            if(req.session.username)
+            {         
+                db.Inventory.find()
+                .then((ProductList) => {
+                    res.render('inventory-shrinkage', {ProductList, title: "Inventory View"});
+                });
+            }
+            else
+            {
+                res.render('login', {title: "Login"});
+            } 
+        },
+
+        GetProduct: (req, res) => {
+            db.Inventory.findOne({ProductName: req.query.Product[0], Brand: req.query.Product[1], Color: req.query.Product[2]})
+                .then((result) => {
+                    res.status(200).send(result);
+                });
+        },
+
+        ShrinkageAction: (req, res) => {
+            var temp = req.body.ShrinkageInfo;
+
+            db.Inventory.findOne({ProductName: temp[0].ProductName, Brand: temp[0].Brand, Color: temp[0].Color})
+                .then((result) => {
+                    var Difference = temp[0].OriginalQuantity - result.ForecastQuantity;
+                    var OnHandQTY = temp[0].AdjustedQuantity;
+                    var Forecast =  temp[0].AdjustedQuantity - Difference;
+
+                    db.Inventory.updateOne({ProductName: temp[0].ProductName, Brand: temp[0].Brand, Color: temp[0].Color}, 
+                            {Quantity: OnHandQTY, ForecastQuantity: Forecast})
+                            .then(() => {
+
+                                var Cost = Difference * result.BuyingPrice;
+
+                                var shrinkage = new db.Shrinkage({
+                                    Date: temp[0].Date,
+                                    ProductName: temp[0].ProductName,
+                                    Brand: temp[0].Brand,
+                                    Color: temp[0].Color,
+                                    OriginalQuantity: temp[0].OriginalQuantity,
+                                    AdjustedQuantity: OnHandQTY,
+                                    Difference: Difference,
+                                    Price:result.BuyingPrice,
+                                    Cost: Cost
+                                })
+                                shrinkage.save();
+                                res.status(200).send();
+                            })
+                })
+        },
+
+        ShrinkageManyAction: async (req, res) => {
+            var temp = req.body.ShrinkageInfo;
+
+            for(var i = 0; i < temp.length; i++)
+            {
+                await db.Inventory.findOne({ProductName: temp[i].ProductName, Brand: temp[i].Brand, Color: temp[i].Color})
+                    .then(async (result) => {
+                        var Difference = temp[i].OriginalQuantity - result.ForecastQuantity;
+                        var OnHandQTY = temp[i].AdjustedQuantity;
+                        var Forecast =  temp[i].AdjustedQuantity - Difference;
+
+                        await db.Inventory.updateOne({ProductName: temp[i].ProductName, Brand: temp[i].Brand, Color: temp[i].Color}, 
+                                {Quantity: OnHandQTY, ForecastQuantity: Forecast})
+                                .then(() => {
+        
+                                    var Cost = Difference * result.BuyingPrice;
+                                    var shrinkage = new db.Shrinkage({
+                                        Date: temp[i].Date,
+                                        ProductName: temp[i].ProductName,
+                                        Brand: temp[i].Brand,
+                                        Color: temp[i].Color,
+                                        OriginalQuantity: temp[i].OriginalQuantity,
+                                        AdjustedQuantity: OnHandQTY,
+                                        Difference: Difference,
+                                        Price:result.BuyingPrice,
+                                        Cost: Cost
+                                    })
+                                    shrinkage.save();
+                                })
+                    })
+            }
+            
+            res.status(200).send();  
+        },
+
+        tempDelete: (req, res) => {db.Shrinkage.deleteMany().then(()=> {res.status(200).send();})}  //temporary delete all
     },
     
     DeleteOneProduct: async (req, res) => {

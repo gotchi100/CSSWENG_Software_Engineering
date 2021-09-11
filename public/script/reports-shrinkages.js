@@ -51,7 +51,7 @@ $(document).ready(function ()
         var temp;
         for(var i = 0; i < data.length; i++)
         {
-            temp = new Date(data[i].DateAdjusted);
+            temp = new Date(data[i].Date);
             if(temp.getTime() >= start_range && temp.getTime() <= end_range)
             {
                 ctr.push(i);
@@ -66,6 +66,7 @@ $(document).ready(function ()
         $("#date1").text("");
         $("#product_name1").text("");
         $("#brand1").text("");
+        $("#color1").text("");
         $("#original_quantity1").text("");
         $("#adjusted_quantity1").text("");
         $("#difference").text("");
@@ -86,6 +87,7 @@ $(document).ready(function ()
             '<td id="date' + tableRowCount + '"></td>'+
             '<td id="product_name' + tableRowCount + '"></td>'+
             '<td id="brand' + tableRowCount + '"></td>'+
+            '<td id="color' + tableRowCount + '"></td>'+
             '<td id="original_quantity' + tableRowCount + '"></td>'+
             '<td id="adjusted_quantity' + tableRowCount + '"></td>'+
             '<td id="difference' + tableRowCount + '"></td>'+
@@ -100,16 +102,15 @@ $(document).ready(function ()
         var totalAmount = 0;
         for(var i = 0; i < ctr.length; i++)
         {
-            $("#date" + (i + 1)).text(data[ctr[i]].DateAdjusted);
+            $("#date" + (i + 1)).text(data[ctr[i]].Date);
             $("#product_name" + (i + 1)).text(data[ctr[i]].ProductName);
             $("#brand" + (i + 1)).text(data[ctr[i]].Brand);
+            $("#color" + (i + 1)).text(data[ctr[i]].Color);
             $("#original_quantity" + (i + 1)).text(data[ctr[i]].OriginalQuantity);
-            $("#adjusted_quantity" + (i + 1)).text(data[ctr[i]].Quantity);
-            var difference = data[ctr[i]].OriginalQuantity - data[ctr[i]].Quantity;
-            $("#difference" + (i + 1)).text(difference);
-            var cost = data[ctr[i]].BuyingPrice * difference;
-            $("#cost" + (i + 1)).text(cost);
-            totalAmount += cost;
+            $("#adjusted_quantity" + (i + 1)).text(data[ctr[i]].AdjustedQuantity);
+            $("#difference" + (i + 1)).text(data[ctr[i]].Difference);
+            $("#cost" + (i + 1)).text(data[ctr[i]].Cost);
+            totalAmount += data[ctr[i]].Cost;
         }
         $("#total_amount").text(totalAmount);
     }

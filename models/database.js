@@ -4,6 +4,7 @@ const Sales = require('./sales.js');
 const Supplier = require('./supplier.js');
 const SupplierPO = require('./supplierPO.js');
 const Account = require('./account.js');
+const Shrinkage = require('./shrinkage.js');
 
 // url to connect to mongodb
 const dbURI = 'mongodb+srv://cssweng_s13_group_2:cssweng_s13_group_2@wardrobechoicesmnl.fbjkw.mongodb.net/Database?retryWrites=true&w=majority'
@@ -37,6 +38,9 @@ const database = {
 
     // mongoose account model
     Account,
+
+    // mongoose shrinkage model
+    Shrinkage
 
 
 }

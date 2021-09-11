@@ -46,12 +46,24 @@ router.post('/inventory-pricelist-edit-one-product', inventoryController.Priceli
 
 router.post('/inventory-pricelist-edit-many-product', inventoryController.Pricelist.UpdateManyProduct);
 
+// inventory shrinkage
+router.get('/inventory-shrinkage', inventoryController.Shrinkage.GetShrinkageForm)
+
+router.post('/shrinkage-post-one-data', inventoryController.Shrinkage.ShrinkageAction)
+
+router.post('/shrinkage-post-many-data', inventoryController.Shrinkage.ShrinkageManyAction)
+
+router.post('/temp-delete-all-shrinkages', inventoryController.Shrinkage.tempDelete);
+
+router.get('/get-product-for-shrinkage', inventoryController.Shrinkage.GetProduct)
 // other inventory functions used by both view and pricelist
 router.get('/is-product-available', inventoryController.IsProductAvailable);
 
 router.post('/inventory-delete-one-product', inventoryController.DeleteOneProduct);
 
 router.post('/inventory-delete-many-products', inventoryController.DeleteManyProduct);
+
+
 
 // sales po form
 router.get('/sales-customer-po-form', salesController.GetSalesPOFormView);

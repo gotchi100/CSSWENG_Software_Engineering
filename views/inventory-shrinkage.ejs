@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/dashboard.css">
+    <%- include('./partials/bootstrap-link.ejs') %>
+    <%- include('./partials/table-link.ejs') %>
+    <%- include('./partials/head.ejs') %>
+</head>
+<body>
+
+    <!-- dashboard -->
+    <%- include('./partials/nav.ejs') %>
+    
+    <!-- inventory shrinkages -->
+    <div class="container mb-3 mt-3">
+        
+        <div class="row mb-2">
+            <div class="col-8 h3">
+                    Inventory: Shrinkages
+            </div>
+        </div>
+        
+        <header class="text-center h3 bg-secondary">
+            <br>
+            Shrinkages Form
+            <br>
+            <br>
+        </header>
+
+
+    <!-- shrinkages form -->
+        <div class="container mt-5">
+            <form id="reorder-supplier-po-form" onsubmit="return false;">
+               
+                <table class="table table-bordered text-center mt-5" id="supplier_add_po_table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Quantity On Hand</th>
+                            <th scope="col">New Quantity</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <select name="" id="select_product1" class="products form-control-file" autofocus required>
+                                    <option value = "" hidden>Select one</option>
+                                <% for(var i = 0; i < ProductList.length; i++) { %>
+                                    <option><%= ProductList[i].ProductName + ", " + ProductList[i].Brand + ", " + ProductList[i].Color%></option>
+                                <% } %>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="number" class="form-control-file" id="quantity_on_hand1" min="1" readonly>
+                            </td>
+                            <td>
+                                <input type="number" class="form-control-file" id="new_quantity1" min="1" required>
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-center">
+                                    <button type="button" class="btn btn-secondary mr-2" id="add_item_button"><span class="fas fa-plus"></span></button>
+                                    <button type="button" class="btn btn-secondary" id="delete_item_button" disabled><span class="fas fa-trash"></span></button>
+                                </div>
+                        </tr>
+                    
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-secondary float-right" id="submit_button">Submit</button>
+            </form>
+        </div>        
+    
+    </div> 
+
+
+     <!-- add shrinkage success pop-up -->
+     <div class="modal fade" id="success_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-confirm">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p class="h3">Success!</p>
+                </div>
+                
+                <div class="modal-body text-center">
+                    
+				<p class="h6" id="success_modal_text">Shrinkage/s added!</p>
+                        
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary float-right mr-3" data-dismiss="modal" id="success_close_button">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- error pop-up -->
+    <div class="modal fade" id="error_modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-confirm">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p class="h3">Error!</p>
+                </div>
+                
+                <div class="modal-body text-center">
+                    
+				<p class="h6" id="error_modal_text"></p>
+                        
+                </div>
+
+                <div class="modal-footer">
+                    
+                    <button type="button" class="btn btn-secondary float-right mr-3" data-dismiss="modal" id="close_error_modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+
+    <!-- temp delete all shrinkages button -->
+    <!-- <button type="button" class="btn btn-secondary float-right mr-3" id="delete_all">Delete All</button> -->
+
+
+    <script src="/script/inventory-shrinkage.js"></script>
+
+</body>
+</html>

@@ -47,7 +47,7 @@ const reportController = {
         },
 
         GetReport: (req, res) => {
-            db.Inventory.find()
+            db.Shrinkage.find()
                 .then((result) => {
                     res.status(200).send(result);
                 })
