@@ -185,6 +185,17 @@ $(document).ready(function ()
 		}
     });
 	
+	$(document).on("change", "#returned_checkbox", function() {
+		if (this.checked)
+		{
+			$("#returned_checkbox").val("on");
+		}
+		else
+		{
+			$("#returned_checkbox").val("off");
+		}
+	});
+	
 	$("#delete_confirm_button").on("click", function () 
     {
 		var count = table.rows(".selected").data().length;

@@ -270,7 +270,7 @@ const inventoryController = {
 					})(productname, quantity);
 				}
 			}
-			else if ((result.Status == "delivered" || result.Status == "completed") && returned)
+			else if ((result.Status == "delivered" || result.Status == "completed") && returned == "on")
 			{
 				for(var i = 0; i < result.ProductNames.length; i++)
 				{
@@ -330,7 +330,7 @@ const inventoryController = {
 						})(productname, quantity);
 					}
 				}
-				else if ((result.Status == "delivered" || result.Status == "completed") && returned)
+				else if ((result.Status == "delivered" || result.Status == "completed") && returned == "on")
 				{
 					for(var i = 0; i < result.ProductNames.length; i++)
 					{
@@ -354,9 +354,7 @@ const inventoryController = {
 					}
 				}
 				
-				db.Sales.deleteOne({CustomerPO: po}, function(err, result){
-					
-				});
+				db.Sales.deleteOne({CustomerPO: po}, function(err, result){});
 			});
 		}
 		res.status(200).send();
