@@ -27,12 +27,12 @@ const Controller = {
         }
     },
 
-    GetSettings: (req, res) => {
+    GetProfile: (req, res) => {
         if(req.session.username)
         {
             db.Account.findOne({Username: req.session.username})
                 .then((User) => {
-                    res.render('settings', {User, title: "Settings"});
+                    res.render('profile', {User, title: "Profile"});
                 });
         }
         else
