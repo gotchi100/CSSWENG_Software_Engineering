@@ -33,6 +33,39 @@ const reorderController = {
             }
         },
 
+
+        GetEditSupplierForm: (req, res) => {
+            if(req.session.username)
+            {
+                if(req.session.role == "Owner")
+                {
+                    db.Supplier.find()
+                    .then((SupplierList) => {
+                        db.SupplierPO.find()
+                            .then((SupplierPOList) => {
+                                var next_PO = 0;
+                                for(var i = 0; i < SupplierPOList.length; i++) {
+                                    if(SupplierPOList[i].PO > next_PO) {
+                                        next_PO = SupplierPOList[i].PO;
+                                    }
+                                }
+                                next_PO += 1;
+                                res.render('reorder-edit-supplier', {SupplierList, next_PO, title: "Edit Supplier"});
+                            })
+                    });
+                }
+                else
+                {
+                    res.redirect('404');
+                }
+
+            }
+            else
+            {
+                res.redirect('/');
+            }   
+        },
+
         AddSupplier: (req, res) => {
 
             var temp = req.body.SupplierInfo;
@@ -52,6 +85,27 @@ const reorderController = {
             console.log("Supplier added to supplier database");
             res.status(200).send(supplier);
         },
+
+        EditSupplier: (req, res) => {
+
+            var temp = req.body.SupplierInfo;
+    
+            db.Supplier.updateOne({Id: temp.Id}, {Name: temp.Name, 
+                                                    Number: temp.Number, 
+                                                    Email: temp.Email,
+                                                    Address: temp.Address, 
+                                                    Products: temp.Products})
+                    .then(() => {
+
+                        db.Supplier.find()
+                            .then((result) => {
+                                console.log("Supplier updated in supplier database");
+                                res.status(200).send(result);
+                            })
+                        
+                    })
+        },
+
 
         FindSupplier: async (req, res) => {
 
@@ -115,6 +169,7 @@ const reorderController = {
             res.status(200).send(supplierPO);
         },
 
+        
         GetOrderList: (req, res) => {
             if(req.session.username)
             {

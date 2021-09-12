@@ -92,11 +92,16 @@ router.get('/reorder-supplier-po-form', reorderController.SupplierPO.GetSupplier
 
 router.get('/reorder-supplier-form', reorderController.Supplier.GetSupplierForm);
 
+router.get('/reorder-edit-supplier', reorderController.Supplier.GetEditSupplierForm);
+
 router.get('/get-supplier-info', reorderController.Supplier.FindSupplier);
 
 router.post('/reorder-add-supplier', reorderController.Supplier.AddSupplier);
 
+router.post('/reorder-edit-supplier', reorderController.Supplier.EditSupplier);
+
 router.post('/reorder-add-supplier-po', reorderController.SupplierPO.AddSupplierPO);
+
 
 router.get('/reorder-supplier-order-list', reorderController.SupplierPO.GetOrderList);
 
