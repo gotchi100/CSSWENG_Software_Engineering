@@ -67,7 +67,25 @@ const inventoryController = {
 			{
 				var stat = "packing";
 			}
-			
+
+			// added this
+			var productNames = [];
+			if(Array.isArray(req.body.ProductNames))
+			{
+				console.log("productnames is an array")
+				for(var i = 0; i < req.body.ProductNames.length; i++)
+				{
+					var temp = req.body.ProductNames[i].split(", ");
+					productNames.push(temp[0]);
+				}
+			}
+			else
+			{
+				var temp = req.body.ProductNames.split(", ");
+				productNames.push(temp[0]);
+				console.log("productnames is not an array")
+			}
+
             // store the new po details
 			const sales = new db.Sales({
 				CustomerPO: req.body.CustomerPO,
@@ -77,7 +95,7 @@ const inventoryController = {
 				Online: req.body.Online,
 				DateOrdered: resultDate[0],
 				PickupDate: resultDate[1],
-				ProductNames: req.body.ProductNames,
+				ProductNames: productNames,
 				ProductUnitPrices: req.body.ProductUnitPrices,
 				ProductQuantities: req.body.ProductQuantities,
 				ProductPrices: req.body.ProductPrices,
@@ -91,7 +109,7 @@ const inventoryController = {
 			
 			for(var i = 0; i < sales.ProductNames.length; i++)
 			{
-				productname = sales.ProductNames[i];
+				var productname = sales.ProductNames[i];
 				quantity = sales.ProductQuantities[i];
 				if (sales.Physical)
 				{
@@ -135,8 +153,8 @@ const inventoryController = {
 	
 	GetIndividualProduct: async (req, res) => {
 
-		var productname = req.query.productname;
-        db.Inventory.findOne({ProductName: productname}, function (err, result)
+		var product = req.query.productInfo;
+        db.Inventory.findOne({ProductName: product[0], Brand: product[1], Color: product[2]}, function (err, result)
 		{
 			if(err)
 			{
@@ -337,10 +355,11 @@ const inventoryController = {
 				}
 				
 				db.Sales.deleteOne({CustomerPO: po}, function(err, result){
-					res.send(result);
+					
 				});
 			});
 		}
+		res.status(200).send();
     },
 }
 

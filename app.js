@@ -7,6 +7,8 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 const _Port = process.env.PORT;
+const SECRET = process.env.SECRET;
+const DB_URL = process.env.DB_URL;
 
 // express app
 const app = express();
@@ -30,11 +32,11 @@ app.use(express.static('public'));
 database.connect();
 
 app.use(session({
-  secret: "secret-key",
+  secret: SECRET,
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
-    mongoUrl: 'mongodb+srv://cssweng_s13_group_2:cssweng_s13_group_2@wardrobechoicesmnl.fbjkw.mongodb.net/Database?retryWrites=true&w=majority',
+    mongoUrl: DB_URL,
     collectionName: "Session"
   }),
   cookie: {
