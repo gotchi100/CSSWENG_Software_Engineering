@@ -7,6 +7,8 @@ const accountController = {
         GetRegisterForm: (req, res) => {
             if(req.session.username)
             {
+                console.log(req.session.username)
+                console.log(req.session.role)
                 if(req.session.role == "Owner")
                 {
                     res.render('register', {title: "Register"});
@@ -82,7 +84,7 @@ const accountController = {
                         bcrypt.compare(temp.Password, User.Password, function(err, result) {
                             if(result) {
                                 req.session.username = temp.Username;
-                                req.session.role = temp.Role;
+                                req.session.role = User.Role;
                                 console.log('Successfully logged in');
                                 res.send("success");
                             }

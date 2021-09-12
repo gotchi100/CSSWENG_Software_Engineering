@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/dashboard.css">
+    <%- include('./partials/bootstrap-link.ejs') %>
+    <%- include('./partials/table-link.ejs') %>
+    <%- include('./partials/head.ejs') %>
+</head>
+<body>
+
+    <!-- dashboard -->
+    <%- include('./partials/nav.ejs') %>
+    
+    <div class="container mb-3 mt-3">
+        
+        <div class="row mb-2">
+            <div class="col-8 h1">
+                    Settings
+            </div>
+        </div>
+        <br>
+        <div class="form-group row">
+            <label for="name" class="col-2 col-form-label font-weight-bold">Name:</label>
+            <input type="text" class="form-control-file col-4" id="name" value="<%= User.FirstName + ' ' + User.LastName %>" readonly>
+        </div>
+        <div class="form-group row">
+            <label for="username" class="col-2 col-form-label font-weight-bold">Username:</label>
+            <input type="text" class="form-control-file col-4" id="username" value="<%= User.Username %>" readonly>
+        </div>
+        <div class="form-group row">
+            <label for="email" class="col-2 col-form-label font-weight-bold">Email:</label>
+            <input type="text" class="form-control-file col-4" id="email" value="<%= User.Email %>" readonly>
+        </div>
+        <div class="form-group row">
+            <label for="role" class="col-2 col-form-label font-weight-bold">Role:</label>
+            <input type="text" class="form-control-file col-4" id="role" value="<%= User.Role %>" readonly>
+        </div>
+        
+        <button class="btn btn-secondary mt-4" onclick="location.href='register'" type="button" id="create_account_button" disabled>Create an Account</button>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            checkRole();
+
+            function checkRole() {
+                $.get('/check-role', function(data, status) {
+                    if(data == "Owner")
+                    {
+                        $("#create_account_button").prop("disabled", false);
+                    }
+                    else
+                    {
+                        $("#create_account_button").prop("disabled", true);
+                    }
+                    
+                });
+            }
+            
+
+        });
+    </script>
+    
+</body>
+</html>

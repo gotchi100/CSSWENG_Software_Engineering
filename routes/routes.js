@@ -26,6 +26,10 @@ router.get('/', Controller.GetIndex);
 
 router.get('/dashboard', Controller.GetDashboard);
 
+router.get('/settings', Controller.GetSettings);
+
+router.get('/check-role', Controller.CheckRole);
+
 router.get('/logout', Controller.Logout);
 
 // inventory view

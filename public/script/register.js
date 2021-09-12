@@ -31,9 +31,10 @@ $(document).ready(function ()
                     LastName: $("#last_name").val(),
                     Username: $("#username").val().toLowerCase(),
                     Email: $("#email").val().toLowerCase(),
-                    Role: $("#role").text(),
+                    Role: $("#role :selected").text(),
                     Password: $("#password").val()
                 }
+                
     
                 $.post('/submit-register', {AccountInfo}, function(data, status)
                 {

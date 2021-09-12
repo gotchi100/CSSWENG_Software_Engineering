@@ -27,6 +27,24 @@ const Controller = {
         }
     },
 
+    GetSettings: (req, res) => {
+        if(req.session.username)
+        {
+            db.Account.findOne({Username: req.session.username})
+                .then((User) => {
+                    res.render('settings', {User, title: "Settings"});
+                });
+        }
+        else
+        {
+            res.redirect('login');
+        }
+    },
+
+    CheckRole: (req, res) => {
+        res.send(req.session.role);
+    },
+
     Logout: async (req, res) => {
         await req.session.destroy(); // Deletes the session in the database.
 		req.session = null // Deletes the cookie.
