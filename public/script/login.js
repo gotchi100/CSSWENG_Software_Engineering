@@ -13,7 +13,6 @@ $(document).ready(function ()
             };
             $.get('/check-login-information', {LoginInfo}, function(result)
             {
-                console.log("credentials not found = " + result);
                 if(result == "invalidpassword")
                 {
                     $("#username").removeClass("input-border-error");

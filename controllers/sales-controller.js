@@ -16,7 +16,7 @@ const inventoryController = {
 		}
 		else
 		{
-			res.render('login', {title: "Login"});
+            res.redirect('/');
 		}  
     },
 	
@@ -180,7 +180,7 @@ const inventoryController = {
 		}
 		else
 		{
-			res.render('login', {title: "Login"});
+            res.redirect('/');
 		}
     },
 	

@@ -44,7 +44,7 @@ $(document).ready(function ()
     
                 for(var i = 1; i <= addProductRowCount; i++) 
                 {
-                    SupplierInfo.Products.push($("#product_name" + i).val().trim());
+                    SupplierInfo.Products.push($("#product_name" + i).val().trim() + ", " + $("#brand" + i).val().trim() + ", " + $("#color" + i).val().trim());
                 }
     
                 nextIdNumber = parseInt($("#supplier_id").val()) + 1;
@@ -83,8 +83,17 @@ $(document).ready(function ()
         '<p class="col-form-label font-weight-bold text-right mr-2" id="product_number' + addProductRowCount +'">' + addProductRowCount + '.</p>' +
         '</td>' +
 
-        '<td style="width: 75%">' +
+        '<td style="width: 25%">' +
         '<input type="text" class="form-control-file" id="product_name' + addProductRowCount + '" required>' +
+        '</td>' +
+
+        
+        '<td style="width: 25%">' +
+        '<input type="text" class="form-control-file" id="brand' + addProductRowCount + '" required>' +
+        '</td>' +
+
+        '<td style="width: 25%">' +
+        '<input type="text" class="form-control-file" id="color' + addProductRowCount + '" required>' +
         '</td>' +
 
         '<td style="width: 15%">' +
@@ -130,6 +139,8 @@ $(document).ready(function ()
         $("#supplier_number").val("");
         for(var i = 1; i <= addProductRowCount; i++) {
             $("#product_name" + i).val(""); 
+            $("#brand" + i).val(""); 
+            $("#color" + i).val(""); 
         }
     }
 
@@ -147,30 +158,37 @@ $(document).ready(function ()
         }
         for(var i = 1; i <= addProductRowCount; i++)
         {
-            if($("#product_name" + i).val().trim() == "")
+            if($("#product_name" + i).val().trim() == "" || $("#brand" + i).val().trim() == "" || $("#color" + i).val().trim() == "")
             {
                 err = true;
             }
         }
         return err;
     }
+
     function checkAddDuplicates()
     {
         var data = [];
+        var temp;
 
         for(var k = 1; k <= addProductRowCount; k++)
         {
-            data.push($("#product_name" + k).val().toLowerCase().trim());
+            temp = {
+                ProductName: $("#product_name" + k).val().toLowerCase().trim(),
+                Brand: $("#brand" + k).val().toLowerCase().trim(),
+                Color: $("#color" + k).val().toLowerCase().trim()
+            }
+            data.push(temp);
         }
         
         var duplicatePos = [];
         var result = [];
 
         data.forEach((product, index) => {
-            duplicatePos[product] = duplicatePos[product] || [];
-            duplicatePos[product].push(index);
+            duplicatePos[product.ProductName + " " + product.Brand + " " + product.Color] = duplicatePos[product.ProductName + " " + product.Brand + " " + product.Color] || [];
+            duplicatePos[product.ProductName + " " + product.Brand + " " + product.Color].push(index);
         });
-
+        
         Object.keys(duplicatePos).forEach(function(value) {
             var posArray = duplicatePos[value];
             if (posArray.length > 1) {
@@ -193,6 +211,8 @@ $(document).ready(function ()
         for(var i = 1; i <= addProductRowCount; i++)
         {
             $("#product_name" + i).removeClass("input-border-error");
+            $("#brand" + i).removeClass("input-border-error");
+            $("#color" + i).removeClass("input-border-error");
         }
     }
 
@@ -205,6 +225,8 @@ $(document).ready(function ()
                 if(checkDuplicate.includes(i-1))
                 {
                     $("#product_name" + i).addClass("input-border-error");
+                    $("#brand" + i).addClass("input-border-error");
+                    $("#color" + i).addClass("input-border-error");
                 }
             }
         }

@@ -37,7 +37,7 @@ $(document).ready(function ()
                 {
                     $.post('/shrinkage-post-one-data', {ShrinkageInfo}, function(data, status)
                     {
-                        console.log("Post - Shrinkage One Action - Status: " + status);
+                        console.log("POST - Shrinkage One Action - Status: " + status);
                         
                         $("#success_modal").modal("show");
                     });
@@ -46,7 +46,7 @@ $(document).ready(function ()
                 {
                     $.post('/shrinkage-post-many-data', {ShrinkageInfo}, function(data, status)
                     {
-                        console.log("Post - Shrinkage Many Action - Status: " + status);
+                        console.log("POST - Shrinkage Many Action - Status: " + status);
                         
                         $("#success_modal").modal("show");
                     });
@@ -56,8 +56,6 @@ $(document).ready(function ()
 
             }
         }
-        else
-        console.log("button clicked")
     });
 
     $("#success_close_button").on("click", function ()

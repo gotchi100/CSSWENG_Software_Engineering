@@ -16,7 +16,7 @@ const inventoryController = {
             }
             else
             {
-                res.render('login', {title: "Login"});
+                res.redirect('/');
             }  
         },
 
@@ -52,7 +52,7 @@ const inventoryController = {
     
                 // save the details to the database
                 inventory.save()
-                console.log("Product added to inventory database:\n" + inventory);
+                console.log("Product added to inventory database");
                 res.status(200).send(inventory);
             });
         },
@@ -78,7 +78,7 @@ const inventoryController = {
     
                 db.Inventory.insertMany(req.body.ProductInfo).then((result) => {
                     res.status(200).send(result);
-                    console.log("Product added to inventory database:\n" + result);
+                    console.log("Product added to inventory database");
                 })
             });
         },
@@ -188,15 +188,22 @@ const inventoryController = {
         GetPricelist: (req, res) => {
             if(req.session.username)
             {
-                db.Inventory.find()
-                .then((ProductList) => {
-        
-                    res.render('inventory-pricelist', {ProductList, title: "Inventory Pricelist"});
-                });
+                if(req.session.role == "Owner")
+                {
+                    db.Inventory.find()
+                    .then((ProductList) => {
+                        res.render('inventory-pricelist', {ProductList, title: "Inventory Pricelist"});
+                    });
+                }
+                else
+                {
+                    res.redirect('404');
+                }
+
             }
             else
             {
-                res.render('login', {title: "Login"});
+                res.redirect('/');
             }     
         },
 
@@ -255,7 +262,7 @@ const inventoryController = {
             }
             else
             {
-                res.render('login', {title: "Login"});
+                res.redirect('/');
             } 
         },
 

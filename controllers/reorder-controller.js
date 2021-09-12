@@ -7,7 +7,9 @@ const reorderController = {
         GetSupplierForm: (req, res) => {
             if(req.session.username)
             {
-                db.Supplier.find()
+                if(req.session.role == "Owner")
+                {
+                    db.Supplier.find()
                     .then((SupplierList) => {
                         var next_id = 0;
                         for(var i = 0; i < SupplierList.length; i++) {
@@ -19,11 +21,16 @@ const reorderController = {
     
                         res.render('reorder-add-supplier', {next_id, title: "Supplier Form"});
                     });
+                }
+                else
+                {
+                    res.redirect('404');
+                }
             }
             else
             {
-                res.render('login', {title: "Login"});
-            }     
+                res.redirect('/');
+            }
         },
 
         AddSupplier: (req, res) => {
@@ -42,7 +49,7 @@ const reorderController = {
 
             // save the details to the database
             supplier.save()
-            console.log("Supplier added to supplier database:\n" + supplier);
+            console.log("Supplier added to supplier database");
             res.status(200).send(supplier);
         },
 
@@ -59,7 +66,9 @@ const reorderController = {
         GetSupplierPOForm: (req, res) => {
             if(req.session.username)
             {
-                db.Supplier.find()
+                if(req.session.role == "Owner")
+                {
+                    db.Supplier.find()
                     .then((SupplierList) => {
                         db.SupplierPO.find()
                             .then((SupplierPOList) => {
@@ -73,10 +82,16 @@ const reorderController = {
                                 res.render('reorder-supplier-po-form', {SupplierList, next_PO, title: "Supplier PO Form"});
                             })
                     });
+                }
+                else
+                {
+                    res.redirect('404');
+                }
+
             }
             else
             {
-                res.render('login', {title: "Login"});
+                res.redirect('/');
             }   
         },
     
@@ -96,21 +111,29 @@ const reorderController = {
             });
 
             supplierPO.save();
-            console.log("Supplier PO added to supplierPO database:\n" + supplierPO);
+            console.log("Supplier PO added to supplierPO database");
             res.status(200).send(supplierPO);
         },
 
         GetOrderList: (req, res) => {
             if(req.session.username)
             {
-                db.SupplierPO.find()
+                if(req.session.role == "Owner")
+                {
+                    db.SupplierPO.find()
                     .then((SupplierPOList) => {
                         res.render('reorder-supplier-order-list', {SupplierPOList, title: "Supplier Order List"});
                     });
+                }
+                else
+                {
+                    res.redirect('404');
+                }
+
             }
             else
             {
-                res.render('login', {title: "Login"});
+                res.redirect('/');
             }   
         },
 
@@ -150,10 +173,23 @@ const reorderController = {
     
             await db.SupplierPO.updateOne({PO: temp.PONumber}, 
                                         {Status: temp.Status}).exec()
-            .then(() => {
-                console.log("Product updated in the database");
-                res.status(200).send(temp);
-            })
+                .then(async () => {
+                    var ProductDetails;
+                    for(var i = 0; i < temp.Products.length; i++)
+                    {
+                        ProductDetails = temp.Products[i].ProductName.split(", ");
+                        await db.Inventory.findOne({ProductName: ProductDetails[0], Brand: ProductDetails[1], Color: ProductDetails[2]})
+                            .then(async (currentDetails) => {
+                                var newOriginalQuantity = parseFloat(temp.Products[i].Quantity) + parseFloat(currentDetails.OriginalQuantity);
+                                var newForecastQuantity = parseFloat(temp.Products[i].Quantity) + parseFloat(currentDetails.ForecastQuantity);
+                                var newOnHandQuantity = parseFloat(temp.Products[i].Quantity) + parseFloat(currentDetails.Quantity);
+                                await db.Inventory.updateOne({ProductName: ProductDetails[0], Brand: ProductDetails[1], Color: ProductDetails[2]},
+                                                    {OriginalQuantity: newOriginalQuantity, ForecastQuantity: newForecastQuantity, Quantity: newOnHandQuantity})
+                            })
+                    }
+                    console.log("Product updated in the database");
+                    res.status(200).send(temp);
+                })
         }
     }
 

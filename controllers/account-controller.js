@@ -5,7 +5,21 @@ const accountController = {
     
     Register: {
         GetRegisterForm: (req, res) => {
-            res.render('register', {title: "Register"});
+            if(req.session.username)
+            {
+                if(req.session.role == "Owner")
+                {
+                    res.render('register', {title: "Register"});
+                }
+                else
+                {
+                    res.redirect('404');
+                }
+            }
+            else
+            {
+                res.redirect('/');
+            }
         },
 
         CheckEmail: async (req, res) => {
@@ -68,6 +82,7 @@ const accountController = {
                         bcrypt.compare(temp.Password, User.Password, function(err, result) {
                             if(result) {
                                 req.session.username = temp.Username;
+                                req.session.role = temp.Role;
                                 console.log('Successfully logged in');
                                 res.send("success");
                             }

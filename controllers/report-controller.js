@@ -4,13 +4,13 @@ const reportController = {
     
     GetSalesAndExpensesView: (req, res) => {
         if(req.session.username)
-            {
-                res.render('reports-total-sales-and-expenses', {title: "Total Sales and Expenses Reports"});
-            }
-            else
-            {
-                res.render('login', {title: "Login"});
-            }  
+        {
+            res.render('reports-total-sales-and-expenses', {title: "Total Sales and Expenses Reports"});
+        }
+        else
+        {
+            res.redirect('/');
+        }  
     },
 
     Sales: {
@@ -42,7 +42,7 @@ const reportController = {
             }
             else
             {
-                res.render('login', {title: "Login"});
+                res.redirect('/');
             }  
         },
 

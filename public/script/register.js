@@ -7,7 +7,6 @@ $(document).ready(function ()
         {
             var usernameAvailable = await isUsernameAvailable();
             var emailAvailable = await isEmailAvailable();
-            console.log(usernameAvailable)
     
             if(!usernameAvailable || !emailAvailable)
             {
@@ -32,7 +31,7 @@ $(document).ready(function ()
                     LastName: $("#last_name").val(),
                     Username: $("#username").val().toLowerCase(),
                     Email: $("#email").val().toLowerCase(),
-                    Role: $("#role").val(),
+                    Role: $("#role").text(),
                     Password: $("#password").val()
                 }
     
@@ -131,7 +130,7 @@ $(document).ready(function ()
     function checkInputs()
     {
         if($("#first_name").val() == "" || $("#last_name").val() == "" || $("#username").val() == "" || $("#email").val() == "" ||
-            $("#role").val() == "" || $("#password").val() == "" || $("#confirm_password").val() == "" || $("#password").val().length < 8 || 
+            $("#role").text() == "" || $("#password").val() == "" || $("#confirm_password").val() == "" || $("#password").val().length < 8 || 
             $("#confirm_password").val().length < 8) 
         {
             return true;

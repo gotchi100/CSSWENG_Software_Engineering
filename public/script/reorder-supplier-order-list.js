@@ -133,10 +133,21 @@ $(document).ready(function ()
         {
             if(data[i][1] == PONumber)
             {
+                var Products = [];
+                var temp = [];
+                for(var j = 1; j <= productsRowCount; j++)
+                {
+                    temp = {
+                        ProductName: $("#product_name" + j).text().trim(),
+                        UnitPrice: $("#unit_price" + j).val().trim(),
+                        Quantity: $("#quantity" + j).val().trim()
+                    }
+                    Products.push(temp);
+                }
                 var SupplierPOInfo = {
                     PONumber: PONumber,
-                    Status: "Received"
-
+                    Status: "Received",
+                    Products: Products
                 }
                 
                 $.post('/reorder-update-status', {SupplierPOInfo}, function()

@@ -32,7 +32,12 @@
                             <p id="email_error" class="text-danger text-center"></p>
                           </div>
                           <div class="form-group">
-                            <input type="text" class="form-control-file" id="role" placeholder="Role" required>
+                            
+                            <select class="form-control-file" id="role" required>
+                              <option value = "" hidden>Select one</option>
+                              <option>Owner</option>
+                              <option>Manager</option>
+                          </select>
                           </div>
                           <div class="form-group">
                             <input type="password" class="form-control-file" id="password" placeholder="Password" minlength="8" required>
