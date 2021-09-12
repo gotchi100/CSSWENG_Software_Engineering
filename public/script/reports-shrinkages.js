@@ -1,16 +1,16 @@
 $(document).ready(function () 
 {
     let table = $("#report_table").DataTable(
-        {
-            rowReorder: true,
-            columnDefs: [
-                { orderable: true, className: 'reorder', targets: 0 },
-                { orderable: false, targets: '_all' }
-            ],
-            "info":     false,
-            "paging":   false,
-            "filter": false
-        });
+                {
+                    rowReorder: true,
+                    columnDefs: [
+                        { orderable: true, className: 'reorder', targets: 0 },
+                        { orderable: false, targets: '_all' }
+                    ],
+                    "info":     false,
+                    "paging":   false,
+                    "filter": false
+                });
     
     $("#start_range").attr("max", getCurrentDate(2))
     $("#end_range").attr("max", getCurrentDate(2))

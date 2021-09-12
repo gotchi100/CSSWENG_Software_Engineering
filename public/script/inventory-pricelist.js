@@ -92,11 +92,11 @@ $(document).ready(function ()
                 }
                 else if(checkError == true)
                 {
-                    $("#edit_error_modal_text").text("Please avoid using an existing product name and using numbers less than 0 for inputs that accept numbers.");
+                    $("#edit_error_modal_text").text("Please avoid using an existing product name, brand, and color.");
                 }
                 else if(checkDuplicate)
                 {
-                    $("#edit_error_modal_text").text("There are products with the same product name and color.");
+                    $("#edit_error_modal_text").text("There are products with the same product name, brand, and color.");
                 }
                 clearEditErrors();
                 $("#edit_error_modal").modal("show");
@@ -363,24 +363,27 @@ $(document).ready(function ()
 
     async function checkEditInputErrors() 
     {
-        var ProductName, Color;
+        var ProductName, Brand, Color;
         var data = table.rows(".selected").data();
-        var value, parsedName, parsedColor;
+        var value, parsedName, parsedBrand, parsedColor;
         var err = false;
         ProductNameTaken = [];
         for(var i = 1; i <= editProductRowCount; i++) 
         {
             ProductName = $("#edit_product_name" + i).val();
+            Brand = $("#edit_brand" + i).val();
             Color = $("#edit_color" + i).val();
             ProductNameTaken[i-1] = false;
             if(ProductName != "") {
-                value = await isProductAvailable(ProductName, Color);
+                value = await isProductAvailable(ProductName, Brand, Color);
             }
             
             parsedName = parser.parseFromString(data[i-1][2], 'text/html').body.textContent;
+            parsedBrand = parser.parseFromString(data[i-1][3], 'text/html').body.textContent;
             parsedColor = parser.parseFromString(data[i-1][4], 'text/html').body.textContent;
 
             if(ProductName.toLowerCase().trim() == parsedName.toLowerCase().trim() && 
+                Brand.toLowerCase().trim() == parsedBrand.toLowerCase().trim() &&
                 Color.toLowerCase().trim() == parsedColor.toLowerCase().trim())
             {
                 value = "available";
@@ -407,6 +410,7 @@ $(document).ready(function ()
         {
             temp = {
                 ProductName: $("#edit_product_name" + k).val().toLowerCase().trim(),
+                Brand: $("#edit_brand" + k).val().toLowerCase().trim(),
                 Color: $("#edit_color" + k).val().toLowerCase().trim()
             }
             data.push(temp);
@@ -416,8 +420,8 @@ $(document).ready(function ()
         var result = [];
 
         data.forEach((product, index) => {
-            duplicatePos[product.ProductName + " " + product.Color] = duplicatePos[product.ProductName + " " + product.Color] || [];
-            duplicatePos[product.ProductName + " " + product.Color].push(index);
+            duplicatePos[product.ProductName + " " + product.Brand + " " + product.Color] = duplicatePos[product.ProductName + " " + product.Brand + " " + product.Color] || [];
+            duplicatePos[product.ProductName + " " + product.Brand + " " + product.Color].push(index);
         });
 
         Object.keys(duplicatePos).forEach(function(value) {
@@ -448,12 +452,14 @@ $(document).ready(function ()
                 if(checkDuplicate.includes(i-1))
                 {
                     $("#edit_product_name_error" + i).text("Duplicate!");
+                    $("#edit_brand_error" + i).text("Duplicate!");
                     $("#edit_color_error" + i).text("Duplicate!");
                 }
             }
             if(ProductNameTaken[i - 1] == true)
             {
                 $("#edit_product_name_error" + i).text("Unavailable!");
+                $("#edit_brand_error" + i).text("Unavailable!");
                 $("#edit_color_error" + i).text("Unavailable!");
             }
         };
@@ -462,11 +468,11 @@ $(document).ready(function ()
     };
 
     // other functions
-    function isProductAvailable(ProductName, Color) 
+    function isProductAvailable(ProductName, Brand, Color) 
     {
         return new Promise((resolve, reject) => 
         {
-            $.get("/is-product-available", {ProductName: ProductName, Color: Color}, function(result) 
+            $.get("/is-product-available", {ProductName: ProductName, Brand: Brand, Color: Color}, function(result) 
             {
                 if(result) 
                 {

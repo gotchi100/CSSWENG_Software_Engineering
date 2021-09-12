@@ -101,10 +101,15 @@ $(document).ready(function ()
     });
 
     // add data to database
+    $("#add_modal_button").on("click", function()
+    {
+        $("#add_product_button").prop("disabled", false);
+    });
     $("#add_product_button").on("click", async function () 
     {
         if(addProductFieldsIncomplete() != true)
         {
+            $("#add_product_button").prop("disabled", true);
             var checkError = await checkAddInputErrors();
             checkDuplicate = checkAddDuplicates();
     
@@ -116,11 +121,11 @@ $(document).ready(function ()
                 }
                 else if(checkError == true)
                 {
-                    $("#add_error_modal_text").text("Please avoid using an existing product name and using numbers less than 0 for inputs that accept numbers.");
+                    $("#add_error_modal_text").text("Please avoid using an existing product name, brand, and color.");
                 }
                 else if(checkDuplicate)
                 {
-                    $("#add_error_modal_text").text("There are products with the same product name and color.");
+                    $("#add_error_modal_text").text("There are products with the same product name, brand, and color.");
                 }
                 clearAddErrors();
                 $("#add_error_modal").modal("show");
@@ -220,11 +225,11 @@ $(document).ready(function ()
                 }
                 else if(checkError == true)
                 {
-                    $("#edit_error_modal_text").text("Please avoid using an existing product name and using numbers less than 0 for inputs that accept numbers.");
+                    $("#edit_error_modal_text").text("Please avoid using an existing product name, brand, and color.");
                 }
                 else if(checkDuplicate)
                 {
-                    $("#edit_error_modal_text").text("There are products with the same product name and color.");
+                    $("#edit_error_modal_text").text("There are products with the same product name, brand and color.");
     
                 }
                 clearEditErrors();
@@ -512,7 +517,7 @@ $(document).ready(function ()
 
     async function checkAddInputErrors() 
     {
-        var ProductName, Color;
+        var ProductName, Brand, Color;
         var value;
         var err = false;
         ProductNameTaken = [];
@@ -520,9 +525,10 @@ $(document).ready(function ()
         for(var i = 1; i <= addProductRowCount; i++) 
         {
             ProductName = $("#add_product_name" + i).val();
+            Brand = $("#add_brand" + i).val();
             Color = $("#add_color" + i).val();
             if(ProductName != "") {
-                value = await isProductAvailable(ProductName, Color);
+                value = await isProductAvailable(ProductName, Brand, Color);
             }
             if(value == "unavailable" ) 
             {
@@ -546,6 +552,7 @@ $(document).ready(function ()
         {
             temp = {
                 ProductName: $("#add_product_name" + k).val().toLowerCase().trim(),
+                Brand: $("#add_brand" + k).val().toLowerCase().trim(),
                 Color: $("#add_color" + k).val().toLowerCase().trim()
             }
             data.push(temp);
@@ -555,8 +562,8 @@ $(document).ready(function ()
         var result = [];
 
         data.forEach((product, index) => {
-            duplicatePos[product.ProductName + " " + product.Color] = duplicatePos[product.ProductName + " " + product.Color] || [];
-            duplicatePos[product.ProductName + " " + product.Color].push(index);
+            duplicatePos[product.ProductName + " " + product.Brand + " " + product.Color] = duplicatePos[product.ProductName + " " + product.Brand + " " + product.Color] || [];
+            duplicatePos[product.ProductName + " " + product.Brand + " " + product.Color].push(index);
         });
         
         Object.keys(duplicatePos).forEach(function(value) {
@@ -578,6 +585,7 @@ $(document).ready(function ()
 
     function setAddInputErrors() 
     {
+        $("#add_product_button").prop("disabled", false);
         //if checkDuplicate is null, there are no duplicates on the form
         for(var i = 1; i <= addProductRowCount; i++)
         {
@@ -586,6 +594,7 @@ $(document).ready(function ()
                 if(checkDuplicate.includes(i-1))
                 {
                     $("#add_product_name_error" + i).text("Duplicate!");
+                    $("#add_brand_error" + i).text("Duplicate!");
                     $("#add_color_error" + i).text("Duplicate!");
                 }
             }
@@ -593,6 +602,7 @@ $(document).ready(function ()
             if(ProductNameTaken[i - 1] == true) 
             {
                 $("#add_product_name_error" + i).text("Unavailable!");
+                $("#add_brand_error" + i).text("Unavailable!");
                 $("#add_color_error" + i).text("Unavailable!");
             }
         }
@@ -725,23 +735,26 @@ $(document).ready(function ()
 
     async function checkEditInputErrors() 
     {
-        var ProductName, Color;
+        var ProductName, Brand, Color;
         var data = table.rows(".selected").data();
-        var value, parsedName, parsedColor;
+        var value, parsedName, parsedBrand, parsedColor;
         var err = false;
         ProductNameTaken = [];
         for(var i = 1; i <= editProductRowCount; i++) 
         {
             ProductName = $("#edit_product_name" + i).val();
+            Brand = $("#edit_brand" + i).val();
             Color = $("#edit_color" + i).val();
             if(ProductName != "") 
             {
-                value = await isProductAvailable(ProductName, Color);
+                value = await isProductAvailable(ProductName, Brand, Color);
             }
             parsedName = parser.parseFromString(data[i-1][2], 'text/html').body.textContent;
+            parsedBrand = parser.parseFromString(data[i-1][3], 'text/html').body.textContent;
             parsedColor = parser.parseFromString(data[i-1][4], 'text/html').body.textContent;
 
             if(ProductName.toLowerCase().trim() == parsedName.toLowerCase().trim() && 
+                Brand.toLowerCase().trim() == parsedBrand.toLowerCase().trim() && 
                 Color.toLowerCase().trim() == parsedColor.toLowerCase().trim())
             {
                 value = "available";
@@ -768,6 +781,7 @@ $(document).ready(function ()
         {
             temp = {
                 ProductName: $("#edit_product_name" + k).val().toLowerCase().trim(),
+                Brand: $("#edit_brand" + k).val().toLowerCase().trim(),
                 Color: $("#edit_color" + k).val().toLowerCase().trim()
             }
             data.push(temp);
@@ -777,8 +791,8 @@ $(document).ready(function ()
         var result = [];
 
         data.forEach((product, index) => {
-            duplicatePos[product.ProductName + " " + product.Color] = duplicatePos[product.ProductName + " " + product.Color] || [];
-            duplicatePos[product.ProductName + " " + product.Color].push(index);
+            duplicatePos[product.ProductName + " " + product.Brand + " " + product.Color] = duplicatePos[product.ProductName + " " + product.Brand + " " + product.Color] || [];
+            duplicatePos[product.ProductName + " " + product.Brand + " " + product.Color].push(index);
         });
 
         Object.keys(duplicatePos).forEach(function(value) {
@@ -809,12 +823,14 @@ $(document).ready(function ()
                 if(checkDuplicate.includes(i-1))
                 {
                     $("#edit_product_name_error" + i).text("Duplicate!");
+                    $("#edit_brand_error" + i).text("Duplicate!");
                     $("#edit_color_error" + i).text("Duplicate!");
                 }
             }
             if(ProductNameTaken[i - 1] == true)
             {
                 $("#edit_product_name_error" + i).text("Unavailable!");
+                $("#edit_brand_error" + i).text("Unavailable!");
                 $("#edit_color_error" + i).text("Unavailable!");
             }
         };
@@ -837,7 +853,8 @@ $(document).ready(function ()
             if(ProductName.toLowerCase().trim() == parsedName.toLowerCase().trim() && 
                     Brand.toLowerCase().trim() == parsedBrand.toLowerCase().trim())
             {
-                //if(Color.toLowerCase().trim() != parsedColor.toLowerCase().trim())
+                // include color?
+                // if(Color.toLowerCase().trim() != parsedColor.toLowerCase().trim())
                     result.push(parsedColor);
             }
         }
@@ -865,11 +882,11 @@ $(document).ready(function ()
         } 
     };
 
-    function isProductAvailable(ProductName, Color) 
+    function isProductAvailable(ProductName, Brand, Color) 
     {
         return new Promise((resolve, reject) => 
         {
-            $.get("/is-product-available", {ProductName: ProductName, Color: Color}, function(result) 
+            $.get("/is-product-available", {ProductName: ProductName, Brand: Brand, Color: Color}, function(result) 
             {
                 if(result) 
                 {

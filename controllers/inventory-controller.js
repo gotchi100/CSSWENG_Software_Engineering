@@ -250,7 +250,7 @@ const inventoryController = {
             {         
                 db.Inventory.find()
                 .then((ProductList) => {
-                    res.render('inventory-shrinkage', {ProductList, title: "Inventory View"});
+                    res.render('inventory-shrinkage', {ProductList, title: "Shrinkages"});
                 });
             }
             else
@@ -355,12 +355,14 @@ const inventoryController = {
     IsProductAvailable: async (req, res) => {
 
         var ProductName = req.query.ProductName;
+        var Brand = req.query.Brand;
         var Color = req.query.Color;
         var temp = false;
         await db.Inventory.find()
         .then((result) => {
             for(var i = 0; i < result.length; i++){
                 if(result[i].ProductName.toLowerCase().trim() == ProductName.toLowerCase().trim() && 
+                    result[i].Brand.toLowerCase().trim() == Brand.toLowerCase().trim() && 
                     result[i].Color.toLowerCase().trim() == Color.toLowerCase().trim()) {
                     temp = true;
                 }
