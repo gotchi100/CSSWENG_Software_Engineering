@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="/style/dashboard.css">
     <%- include('./partials/bootstrap-link.ejs') %>
+    <%- include('./partials/table-link.ejs') %>
     <%- include('./partials/head.ejs') %>
 </head>
 <body>
@@ -76,17 +77,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td id="date1"></td>
-                                <td id="product_name1"></td>
-                                <td id="brand1"></td>
-                                <td id="color1"></td>
-                                <td id="original_quantity1"></td>
-                                <td id="adjusted_quantity1"></td>
-                                <td id="difference1"></td>
-                                <td id="cost1"></td>
-                            </tr>
-
                         </tbody>
                         <tfoot>
                             <tr>
@@ -114,7 +104,7 @@
         </div>
     
     </div>
-
+    <button type="button" class="btn btn-secondary float-right mr-3" id="delete_all">Delete All</button> 
     <script src="/script/reports-shrinkages.js"></script>
     
 </body>

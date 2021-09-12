@@ -1,6 +1,16 @@
 $(document).ready(function () 
 {
-    var tableRowCount = 1;
+    let table = $("#report_table").DataTable(
+        {
+            rowReorder: true,
+            columnDefs: [
+                { orderable: true, className: 'reorder', targets: 0 },
+                { orderable: false, targets: '_all' }
+            ],
+            "info":     false,
+            "paging":   false,
+            "filter": false
+        });
     
     $("#start_range").attr("max", getCurrentDate(2))
     $("#end_range").attr("max", getCurrentDate(2))
@@ -36,8 +46,7 @@ $(document).ready(function ()
                 {
                     var tempStart = new Date($("#start_range").val());
                     var tempEnd = new Date($("#end_range").val());
-                    var count = countItemsInRange(data, tempStart.getTime(), tempEnd.getTime())
-                    addTableRow(count.length);
+                    var count = countItemsInRange(data, tempStart.getTime(), tempEnd.getTime());
                     populateShrinkagesTableRow(data, count);
                 }
             });
@@ -63,38 +72,7 @@ $(document).ready(function ()
 
     function clearReport()
     {
-        $("#date1").text("");
-        $("#product_name1").text("");
-        $("#brand1").text("");
-        $("#color1").text("");
-        $("#original_quantity1").text("");
-        $("#adjusted_quantity1").text("");
-        $("#difference").text("");
-        $("#cost1").text("");
-        while(tableRowCount != 1)
-        {
-            tableRowCount--;
-            $("#report_table tbody tr:last").remove();
-        }
-    }
-
-    function addTableRow(length)
-    {
-        for(var i = 1; i < length; i++)
-        {
-            tableRowCount++;
-            $("#report_table tbody tr:last").after('<tr>' +
-            '<td id="date' + tableRowCount + '"></td>'+
-            '<td id="product_name' + tableRowCount + '"></td>'+
-            '<td id="brand' + tableRowCount + '"></td>'+
-            '<td id="color' + tableRowCount + '"></td>'+
-            '<td id="original_quantity' + tableRowCount + '"></td>'+
-            '<td id="adjusted_quantity' + tableRowCount + '"></td>'+
-            '<td id="difference' + tableRowCount + '"></td>'+
-            '<td id="cost' + tableRowCount + '"></td>'+
-            '</tr>');
-
-        }
+       table.rows().remove().draw(false);
     }
 
     function populateShrinkagesTableRow(data, ctr)
@@ -102,14 +80,9 @@ $(document).ready(function ()
         var totalAmount = 0;
         for(var i = 0; i < ctr.length; i++)
         {
-            $("#date" + (i + 1)).text(data[ctr[i]].Date);
-            $("#product_name" + (i + 1)).text(data[ctr[i]].ProductName);
-            $("#brand" + (i + 1)).text(data[ctr[i]].Brand);
-            $("#color" + (i + 1)).text(data[ctr[i]].Color);
-            $("#original_quantity" + (i + 1)).text(data[ctr[i]].OriginalQuantity);
-            $("#adjusted_quantity" + (i + 1)).text(data[ctr[i]].AdjustedQuantity);
-            $("#difference" + (i + 1)).text(data[ctr[i]].Difference);
-            $("#cost" + (i + 1)).text(data[ctr[i]].Cost);
+            table.row.add([data[ctr[i]].Date, data[ctr[i]].ProductName, data[ctr[i]].Brand, data[ctr[i]].Color, 
+                            data[ctr[i]].OriginalQuantity, data[ctr[i]].AdjustedQuantity, data[ctr[i]].Difference,
+                            data[ctr[i]].Cost]).draw(false);
             totalAmount += data[ctr[i]].Cost;
         }
         $("#total_amount").text(totalAmount);
@@ -156,4 +129,7 @@ $(document).ready(function ()
         return month + "/" + day + "/" + year;
     }
 
+    $("#delete_all").on("click", function(){
+       table.rows().remove().draw(false);
+    })
 });

@@ -1,6 +1,17 @@
 $(document).ready(function () 
 {
-    var tableRowCount = 1;
+    let table = $("#report_table").DataTable(
+                {
+                    rowReorder: true,
+                    columnDefs: [
+                        { orderable: true, className: 'reorder', targets: 0 },
+                        { orderable: false, targets: '_all' }
+                    ],
+                    "info":     false,
+                    "paging":   false,
+                    "filter": false
+                });
+
     $("#start_range").attr("max", getCurrentDate(2))
     $("#end_range").attr("max", getCurrentDate(2))
 
@@ -43,8 +54,7 @@ $(document).ready(function ()
                     {
                         var tempStart = new Date($("#start_range").val());
                         var tempEnd = new Date($("#end_range").val());
-                        var count = countItemsInRange(data, tempStart.getTime(), tempEnd.getTime())
-                        addTableRow(count.length);
+                        var count = countItemsInRange(data, tempStart.getTime(), tempEnd.getTime());
                         populateSalesTableRow(data, count);
                     }
                 });
@@ -62,8 +72,7 @@ $(document).ready(function ()
                     {
                         var tempStart = new Date($("#start_range").val());
                         var tempEnd = new Date($("#end_range").val());
-                        var count = countItemsInRange(data, tempStart.getTime(), tempEnd.getTime())
-                        addTableRow(count.length);
+                        var count = countItemsInRange(data, tempStart.getTime(), tempEnd.getTime());
                         populateExpensesTableRow(data, count);
                     }
                 });
@@ -88,30 +97,7 @@ $(document).ready(function ()
     }
     function clearReport()
     {
-        
-        $("#date1").text("");
-        $("#name1").text("");
-        $("#amount1").text("");
-        while(tableRowCount != 1)
-        {
-            tableRowCount--;
-            $("#report_table tbody tr:last").remove();
-        }
-
-    }
-
-    function addTableRow(length)
-    {
-        for(var i = 1; i < length; i++)
-        {
-            tableRowCount++;
-            $("#report_table tbody tr:last").after('<tr>' +
-            '<td id="date' + tableRowCount + '"></td>'+
-            '<td id="name' + tableRowCount + '"></td>'+
-            '<td id="amount' + tableRowCount + '"></td>'+
-            '</tr>');
-
-        }
+        table.rows().remove().draw(false);
     }
 
     function populateSalesTableRow(data, ctr)
@@ -119,9 +105,7 @@ $(document).ready(function ()
         var totalAmount = 0;
         for(var i = 0; i < ctr.length; i++)
         {
-            $("#date" + (i + 1)).text(data[ctr[i]].DateOrdered);
-            $("#name" + (i + 1)).text(data[ctr[i]].CustomerName);
-            $("#amount" + (i + 1)).text(data[ctr[i]].TotalPrice);
+            table.row.add([data[ctr[i]].DateOrdered, data[ctr[i]].CustomerName, data[ctr[i]].TotalPrice]).draw(false);
             totalAmount += data[ctr[i]].TotalPrice;
         }
         $("#total_amount").text(totalAmount);
@@ -132,9 +116,7 @@ $(document).ready(function ()
         var totalAmount = 0;
         for(var i = 0; i < ctr.length; i++)
         {
-            $("#date" + (i + 1)).text(data[ctr[i]].DateOrdered);
-            $("#name" + (i + 1)).text(data[ctr[i]].SupplierName);
-            $("#amount" + (i + 1)).text(data[ctr[i]].TotalPrice);
+            table.row.add([data[ctr[i]].DateOrdered, data[ctr[i]].SupplierName, data[ctr[i]].TotalPrice]).draw(false);
             totalAmount += data[ctr[i]].TotalPrice;
         }
         $("#total_amount").text(totalAmount);
