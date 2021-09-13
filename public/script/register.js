@@ -45,6 +45,11 @@ $(document).ready(function ()
     
             }
         }
+        else if($("#confirm_password").val() != $("#password").val())
+        {
+            $("#error_modal_text").text("Passwords do not match!");
+            $("#error_modal").modal("show");
+        }
 
     });
 
@@ -132,10 +137,11 @@ $(document).ready(function ()
     {
         if($("#first_name").val() == "" || $("#last_name").val() == "" || $("#username").val() == "" || $("#email").val() == "" ||
             $("#role").text() == "" || $("#password").val() == "" || $("#confirm_password").val() == "" || $("#password").val().length < 8 || 
-            $("#confirm_password").val().length < 8) 
+            $("#confirm_password").val().length < 8 || ($("#confirm_password").val() != $("#password").val())) 
         {
             return true;
         }
+
         return false;
     }
 

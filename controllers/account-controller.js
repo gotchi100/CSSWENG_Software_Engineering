@@ -7,8 +7,6 @@ const accountController = {
         GetRegisterForm: (req, res) => {
             if(req.session.username)
             {
-                console.log(req.session.username)
-                console.log(req.session.role)
                 if(req.session.role == "Owner")
                 {
                     res.render('register', {title: "Register"});
